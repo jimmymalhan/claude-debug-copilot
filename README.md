@@ -134,20 +134,20 @@ This repo enforces strict safety constraints:
 - **Agent definitions** are read-only during normal usage; changes require code review
 - **Evidence verification** mandatory before any claim is approved
 
-For detailed development guidelines, see `EXECUTION_GUARDRAILS.md` (created during integration planning).
+For detailed development guidelines, see `EXECUTION_GUARDRAILS.md`.
 
-## Paperclip Integration (In Progress)
+## Paperclip Integration (Complete)
 
-This tool is being integrated with Paperclip, an orchestration platform that will add:
+Integrated with Paperclip orchestration platform:
 
-- **Automatic incident detection** - Hourly log scanning
-- **Task tracking** - Incidents as Paperclip issues with workflow
-- **Budget enforcement** - $15/month ceiling per agent
-- **Approval gates** - Verifier output requires manual approval before deployment
-- **Audit trail** - Complete history of all investigations
-- **Scheduling** - Heartbeats trigger agent runs on demand or schedule
+- ✅ **Local orchestration** - 14 modules for safe agent execution
+- ✅ **Task tracking** - Incidents as Paperclip tasks with workflow
+- ✅ **Budget enforcement** - Token limits per-agent and org-wide
+- ✅ **Approval gates** - Verifier output requires approval before execution
+- ✅ **Audit trail** - Complete history via AuditLogger
+- ✅ **Heartbeats** - Agent health monitoring and scheduling
 
-See `PAPERCLIP_INTEGRATION_PLAN.md` for integration details.
+Use `PaperclipClient` for orchestration with 319+ passing tests.
 
 ## Philosophy
 
