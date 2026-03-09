@@ -134,7 +134,6 @@ This repo enforces strict safety constraints:
 - **Agent definitions** are read-only during normal usage; changes require code review
 - **Evidence verification** mandatory before any claim is approved
 
-For detailed development guidelines, see `EXECUTION_GUARDRAILS.md` (created during integration planning).
 
 ## Paperclip Integration (Complete & Operational ✅)
 
@@ -356,8 +355,6 @@ Issues and PRs welcome. Ensure:
 
 ## Technical Documentation
 
-- `REPO_NOTES.md` - Deep technical analysis of the codebase (all 10 sections)
-- `EXECUTION_GUARDRAILS.md` - Safe execution procedures during integration
 - `CLAUDE.md` - Non-negotiable project rules and output contracts
 
 ## License
