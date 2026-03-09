@@ -134,20 +134,152 @@ This repo enforces strict safety constraints:
 - **Agent definitions** are read-only during normal usage; changes require code review
 - **Evidence verification** mandatory before any claim is approved
 
-For detailed development guidelines, see `EXECUTION_GUARDRAILS.md`.
+For detailed development guidelines, see `EXECUTION_GUARDRAILS.md` (created during integration planning).
 
 ## Paperclip Integration (Complete)
 
-Integrated with Paperclip orchestration platform:
+Claude Debug Copilot is integrated with **Paperclip** (@paperclipai/orchestration-security), an open-source AI agent orchestration platform.
 
-- ✅ **Local orchestration** - 14 modules for safe agent execution
-- ✅ **Task tracking** - Incidents as Paperclip tasks with workflow
-- ✅ **Budget enforcement** - Token limits per-agent and org-wide
-- ✅ **Approval gates** - Verifier output requires approval before execution
-- ✅ **Audit trail** - Complete history via AuditLogger
-- ✅ **Heartbeats** - Agent health monitoring and scheduling
+### Using Paperclip for New Features
 
-Use `PaperclipClient` for orchestration with 319+ passing tests.
+**Installation:**
+```bash
+# From the Paperclip monorepo
+pnpm add @paperclipai/orchestration-security
+
+# Or use the local integration
+import { PaperclipClient } from './src/paperclip/paperclip-client.js';
+```
+
+### Core Orchestration Capabilities
+
+**1. Initialize Orchestrator:**
+```javascript
+const paperclip = new PaperclipClient();
+await paperclip.initialize();
+```
+
+**2. Submit Task for Debugging:**
+```javascript
+const result = await paperclip.submitTask({
+  type: 'debug',
+  evidence: ['file:line', 'log snippet'],
+  hypothesis: 'Root cause hypothesis'
+});
+```
+
+**3. Enforce Budget Limits:**
+```javascript
+const budget = await paperclip.getBudgetStatus();
+if (budget.budget.orgDaily < budget.budget.limit) {
+  // Safe to execute next task
+}
+```
+
+**4. Query Audit Trail:**
+```javascript
+const audit = await paperclip.queryAuditTrail({
+  event: 'task_created',
+  taskId: 'task-123'
+});
+```
+
+**5. Integrate with Agents:**
+```javascript
+// Route through 4-agent pipeline
+const routing = await paperclip.invokeAgent('router', taskId, taskInput);
+const evidence = await paperclip.invokeAgent('retriever', taskId, taskInput);
+const challenge = await paperclip.invokeAgent('skeptic', taskId, taskInput);
+const verified = await paperclip.invokeAgent('verifier', taskId, taskInput);
+```
+
+### Paperclip Modules Available
+
+| Module | Purpose | Tests |
+|--------|---------|-------|
+| TaskManager | Queue and execute tasks | 50/50 |
+| ApprovalStateMachine | 8-state workflow (pending → approved → executing → completed) | 60/60 |
+| BudgetEnforcer | Token limits, daily org caps, alerts | 45/45 |
+| AuditLogger | Cryptographic audit trail with HMAC | 40/40 |
+| AgentWrapper | 10-step lifecycle with error handling | 14/14 |
+| ErrorHandler | Retry logic with exponential backoff | 21/21 |
+| HeartbeatMonitor | Agent health monitoring | Auto |
+| InputValidator | Prompt injection defense (9 patterns) | Auto |
+| FileAccessGuard | Deny-by-default file control | Auto |
+| LogSanitizer | PII/secret sanitization (8 patterns) | Auto |
+| ExtendedAgentFramework | 8-agent support with capabilities | 36/36 |
+| MonitoringDashboard | Real-time metrics | 20/20 |
+| PerformanceOptimizer | LRU cache, batching, parallelization | Auto |
+
+### Adding New Features
+
+**To add a new feature using Paperclip:**
+
+1. **Define the Task**
+```javascript
+const task = {
+  type: 'new-feature',
+  evidence: ['source files', 'requirements'],
+  hypothesis: 'Implementation approach'
+};
+```
+
+2. **Submit to Orchestrator**
+```javascript
+const result = await paperclip.submitTask(task);
+const taskId = result.task.taskId;
+```
+
+3. **Route through Agents**
+```javascript
+// Router: Classify the task type
+const routed = await paperclip.invokeAgent('router', taskId, task);
+
+// Retriever: Get relevant code/docs
+const retrieved = await paperclip.invokeAgent('retriever', taskId, routed);
+
+// Skeptic: Challenge assumptions
+const challenged = await paperclip.invokeAgent('skeptic', taskId, retrieved);
+
+// Verifier: Validate implementation plan
+const verified = await paperclip.invokeAgent('verifier', taskId, challenged);
+```
+
+4. **Check Budget and Approval**
+```javascript
+const status = await paperclip.updateTaskStatus(taskId, 'approval_pending');
+const audit = await paperclip.queryAuditTrail({ taskId });
+```
+
+5. **Execute with Safety Gates**
+```javascript
+// All claims backed by evidence
+// Budget enforced
+// Audit trail complete
+// Approval required before deployment
+```
+
+### Architecture
+
+- **Deny-by-Default Security** - Files/APIs blocked unless explicitly allowed
+- **Complete Audit Trail** - Every action logged with timestamps
+- **Budget Enforcement** - Token limits per-agent and org-wide
+- **Role-Based Access** - 5+ agent roles with capability matrices
+- **<10 Min Rollback** - Fast recovery procedures
+
+### Testing
+
+```bash
+npm test                    # All 319 tests
+npm test -- --coverage      # Coverage report (93%+)
+npm test -- tests/paperclip-client.test.js  # Integration tests
+```
+
+### Reference
+
+- **Paperclip Repository**: https://github.com/paperclipai/paperclip
+- **Orchestration Package**: @paperclipai/orchestration-security
+- **Source**: `src/paperclip/` (14 modules, 319 tests)
 
 ## Philosophy
 
