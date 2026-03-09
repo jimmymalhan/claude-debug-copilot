@@ -50,10 +50,15 @@ export class PaperclipClient {
    * Submit task through orchestration pipeline
    */
   async submitTask(taskInput) {
-    return this.errorHandler.executeWithRetry(async () => {
+    const result = await this.errorHandler.executeWithRetry(async () => {
       const { taskId } = this.taskManager.createTask(taskInput);
       return this.getTask(taskId);
     });
+    // Unwrap and restructure the response
+    if (result.success && result.result.status === 'success') {
+      return { success: true, task: result.result.task };
+    }
+    return { success: false, error: result.error || 'Task submission failed' };
   }
 
   /**
@@ -91,11 +96,16 @@ export class PaperclipClient {
    * Send agent heartbeat
    */
   async sendHeartbeat(agentId, payload) {
-    return this.errorHandler.executeWithRetry(async () => {
+    const result = await this.errorHandler.executeWithRetry(async () => {
       this.heartbeatMonitor.registerAgent(agentId);
       this.heartbeatMonitor.receiveHeartbeat(agentId, payload);
       return { status: 'heartbeat_received', agentId };
     });
+    // Return the actual heartbeat result
+    if (result.success) {
+      return result.result;
+    }
+    return result;
   }
 
   /**

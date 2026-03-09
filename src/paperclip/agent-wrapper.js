@@ -82,6 +82,7 @@ export class AgentWrapper {
       // Step 7: Update state
       execution.steps.update_state = this._step('update_state', () => {
         this.agentOutputs.set(agentId, {
+          agentId,
           taskId,
           output: execution.steps.sanitize_output.result,
           timestamp: new Date().toISOString()
@@ -194,12 +195,20 @@ export class AgentWrapper {
    */
   _executeAgent(agentId, taskInput) {
     // Placeholder: actual agent execution would call agent-specific logic
-    return {
+    const output = {
       agentId,
-      input: taskInput,
-      output: `Agent ${agentId} executed successfully`,
+      result: `Agent ${agentId} executed successfully`,
       executedAt: new Date().toISOString()
     };
+
+    // Add required fields based on agent role
+    if (agentId === 'router' || agentId === 'retriever') {
+      output.evidence = taskInput.evidence || [];
+    } else if (agentId === 'skeptic' || agentId === 'verifier') {
+      output.verdict = `Verified by ${agentId}`;
+    }
+
+    return output;
   }
 
   /**
