@@ -1,7 +1,7 @@
 /**
- * Mock Paperclip API for offline testing.
+ * Mock Orchestrator API for offline testing.
  *
- * Simulates Paperclip API responses for task submission,
+ * Simulates Orchestrator API responses for task submission,
  * audit queries, heartbeat, and budget.
  */
 
@@ -122,7 +122,7 @@ export class MockOrchestratorApi {
 export class MockApiError extends Error {
   constructor(status, body, path) {
     super(`Mock API error ${status} on ${path}: ${body}`);
-    this.name = 'PaperclipApiError';
+    this.name = 'OrchestratorApiError';
     this.status = status;
     this.body = body;
     this.path = path;

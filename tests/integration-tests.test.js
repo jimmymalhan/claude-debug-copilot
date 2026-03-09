@@ -1,5 +1,5 @@
 /**
- * Paperclip Integration Tests
+ * Debug Copilot Integration Tests
  *
  * 10 integration test scenarios covering all Phase 2.7 requirements
  * plus 3 additional scenarios from QA review (error handling,
@@ -598,21 +598,21 @@ describe('Scenario 7: Rollback State Consistency', () => {
 // SCENARIO 8: Error/Failure Handling (NEW - QA REVIEW)
 // ============================================================
 describe('Scenario 8: Error/Failure Handling', () => {
-  test('Paperclip API 500 error is caught and surfaced', async () => {
+  test('Orchestrator API 500 error is caught and surfaced', async () => {
     const mockApi = new MockOrchestratorApi({ shouldFail: true, failStatus: 500 });
 
     await expect(mockApi.submitTask({ type: 'debug' }))
       .rejects.toThrow('Mock API error 500');
   });
 
-  test('Paperclip API 400 error for malformed task', async () => {
+  test('Orchestrator API 400 error for malformed task', async () => {
     const mockApi = new MockOrchestratorApi();
 
     await expect(mockApi.submitTask({}))
       .rejects.toThrow('Missing required field: type');
   });
 
-  test('Paperclip API 404 for non-existent task', async () => {
+  test('Orchestrator API 404 for non-existent task', async () => {
     const mockApi = new MockOrchestratorApi();
 
     await expect(mockApi.getTask('nonexistent'))

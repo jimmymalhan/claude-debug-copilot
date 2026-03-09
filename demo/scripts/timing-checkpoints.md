@@ -33,7 +33,7 @@ Frame-accurate timing reference matching `demo/script.md` narration.
 | Check          | Expected                                         |
 |----------------|--------------------------------------------------|
 | Textarea       | Contains incident text                           |
-| Button         | "Diagnose with Paperclip" enabled                |
+| Button         | "Diagnose" enabled                |
 | Cursor         | Blinking in textarea                             |
 | Screenshot     | `02-incident-typed.png`                          |
 | Narration sync | "Paste your incident."                           |

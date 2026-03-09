@@ -10,7 +10,7 @@ Major release focused on production-readiness with comprehensive testing, securi
 
 ### Added
 
-- **Orchestrator Framework**: Renamed from Paperclip to DebugOrchestrator for internal branding consistency
+- **Orchestrator Framework**: Renamed from DebugOrchestrator to DebugOrchestrator for internal branding consistency
   - Local multi-agent orchestration with 8 coordinated modules
   - Task management with 11-state lifecycle
   - Approval gates enforcing human review before any AI decision
@@ -55,15 +55,15 @@ Major release focused on production-readiness with comprehensive testing, securi
 
 ### Changed
 
-- **Branding Update**: Renamed Paperclip to internal DebugOrchestrator naming
+- **Branding Update**: Renamed DebugOrchestrator to internal DebugOrchestrator naming
   - `/src/paperclip/` → `/src/orchestrator/`
-  - `PaperclipClient` → `DebugOrchestrator`
-  - `PaperclipApiError` → `OrchestratorError`
+  - `DebugOrchestratorClient` → `DebugOrchestrator`
+  - `DebugOrchestratorApiError` → `OrchestratorError`
   - All test files updated for new naming convention
   - Module comments updated to reference Debug Copilot Orchestration
 
 - **Documentation Cleanup**: Removed architectural/planning content
-  - Removed Paperclip Integration Guide (integration planning docs)
+  - Removed DebugOrchestrator Integration Guide (integration planning docs)
   - Preserved action-oriented content for operators
   - Focused README on usage, not architecture
 
@@ -97,12 +97,12 @@ Major release focused on production-readiness with comprehensive testing, securi
 ### Removed
 
 - Old `/src/paperclip/` directory (migrated to `/src/orchestrator/`)
-- Paperclip branding references from public code
+- DebugOrchestrator branding references from public code
 - Large integration guide section from README (moved to internal planning)
 
 ### Technical Debt
 
-- Updated all 27 files with Paperclip references
+- Updated all 27 files with DebugOrchestrator references
 - Renamed test files and fixtures for consistency
 - Updated jest.config.js coverage reporting
 
