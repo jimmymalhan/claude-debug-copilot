@@ -1,5 +1,5 @@
 /**
- * Budget Enforcement Module for Paperclip Integration
+ * Budget Enforcement Module for Debug Copilot Orchestration
  *
  * Enforces token budgets per-agent, per-incident, and org-wide.
  * Implements Phase 2.7 budget specification.

@@ -1,5 +1,5 @@
 /**
- * Input Validator for Paperclip Integration (SC-1 Compliance)
+ * Input Validator for Debug Copilot Orchestration (SC-1 Compliance)
  *
  * Prevents prompt injection attacks by validating task inputs before they reach any agent.
  * Enforces schema validation, length enforcement, and pattern rejection.

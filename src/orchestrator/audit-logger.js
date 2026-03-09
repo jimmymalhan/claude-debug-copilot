@@ -1,5 +1,5 @@
 /**
- * Audit Logger for Paperclip Integration
+ * Audit Logger for Debug Copilot Orchestration
  *
  * Immutable, append-only audit trail with mandatory fields.
  * Implements Phase 2.8 audit logging specification.

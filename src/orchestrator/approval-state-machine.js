@@ -1,5 +1,5 @@
 /**
- * Approval State Machine for Paperclip Integration
+ * Approval State Machine for Debug Copilot Orchestration
  *
  * States: pending, skeptic_review, verifier_review, awaiting_approver,
  *         approved, blocked, escalated, user_override

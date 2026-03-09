@@ -1,5 +1,5 @@
 /**
- * Error Handler for Paperclip Integration
+ * Error Handler for Debug Copilot Orchestration
  *
  * Centralized error handling with retry logic and escalation.
  */

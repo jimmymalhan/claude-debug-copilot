@@ -1,5 +1,5 @@
 /**
- * File Access Guard for Paperclip Integration (SC-2 Compliance)
+ * File Access Guard for Debug Copilot Orchestration (SC-2 Compliance)
  *
  * Enforces deny-by-default file access control per agent role.
  * All file operations must be explicitly allowed per agent's allowlist.
@@ -30,18 +30,18 @@ const AGENT_PERMISSIONS = {
     deny_always: ['.env', '.env.*', 'credentials*', '.git/**/*']
   },
   skeptic: {
-    read: ['.paperclip/task-outputs/**/*'],
-    write: ['.paperclip/skeptic-output.json'],
+    read: ['.orchestrator/task-outputs/**/*'],
+    write: ['.orchestrator/skeptic-output.json'],
     deny_always: ['.env', 'src/**/*', 'CLAUDE.md', '.claude/**/*']
   },
   verifier: {
-    read: ['.paperclip/task-outputs/**/*', '.claude/agents/**/*'],
-    write: ['.paperclip/verifier-output.json'],
+    read: ['.orchestrator/task-outputs/**/*', '.claude/agents/**/*'],
+    write: ['.orchestrator/verifier-output.json'],
     deny_always: ['.env', 'src/**/*', 'CLAUDE.md']
   },
   orchestrator: {
-    read: ['.paperclip/**/*'],
-    write: ['.paperclip/task-state/**/*'],
+    read: ['.orchestrator/**/*'],
+    write: ['.orchestrator/task-state/**/*'],
     deny_always: ['.env', 'src/**/*', 'CLAUDE.md', '.claude/agents/**/*', 'package.json']
   }
 };

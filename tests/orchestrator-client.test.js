@@ -1,16 +1,16 @@
 /**
- * Paperclip Client (Local Orchestrator) Tests
+ * Debug Copilot Orchestrator Tests
  * 15+ test cases covering all 8 coordinated modules
  */
 
 import { jest } from '@jest/globals';
-import { PaperclipClient } from '../src/paperclip/paperclip-client.js';
+import { DebugOrchestrator } from '../src/orchestrator/orchestrator-client.js';
 
-describe('PaperclipClient: Local Orchestrator Tests', () => {
+describe('DebugOrchestrator: Local Orchestrator Tests', () => {
   let client;
 
   beforeEach(async () => {
-    client = new PaperclipClient();
+    client = new DebugOrchestrator();
     await client.initialize();
   });
 

@@ -1,5 +1,5 @@
 /**
- * Task Manager for Paperclip Integration
+ * Task Manager for Debug Copilot Orchestration
  *
  * Manages task lifecycle: creation, validation, routing, and completion.
  * Enforces CLAUDE.md output contract on task completion.

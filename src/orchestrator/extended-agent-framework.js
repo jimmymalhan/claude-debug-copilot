@@ -135,12 +135,12 @@ export class ExtendedAgentFramework {
     const capabilities = {
       router: ['src/**', 'logs/**'],
       retriever: ['src/**', '*.json', '*.md'],
-      skeptic: ['.paperclip/task-outputs/**'],
-      verifier: ['.paperclip/task-outputs/**', '.claude/**'],
-      analyst: ['src/**', 'logs/**', '.paperclip/**'],
-      executor: ['.paperclip/**', 'src/**'],
-      monitor: ['.paperclip/**', 'logs/**'],
-      coordinator: ['.paperclip/**', 'src/**']
+      skeptic: ['.orchestrator/task-outputs/**'],
+      verifier: ['.orchestrator/task-outputs/**', '.claude/**'],
+      analyst: ['src/**', 'logs/**', '.orchestrator/**'],
+      executor: ['.orchestrator/**', 'src/**'],
+      monitor: ['.orchestrator/**', 'logs/**'],
+      coordinator: ['.orchestrator/**', 'src/**']
     };
     return capabilities[agentId] || [];
   }
@@ -152,12 +152,12 @@ export class ExtendedAgentFramework {
     const capabilities = {
       router: [],
       retriever: [],
-      skeptic: ['.paperclip/skeptic-output.json'],
-      verifier: ['.paperclip/verifier-output.json'],
-      analyst: ['.paperclip/reports/**'],
-      executor: ['.paperclip/task-state/**'],
-      monitor: ['.paperclip/metrics/**'],
-      coordinator: ['.paperclip/coordination/**']
+      skeptic: ['.orchestrator/skeptic-output.json'],
+      verifier: ['.orchestrator/verifier-output.json'],
+      analyst: ['.orchestrator/reports/**'],
+      executor: ['.orchestrator/task-state/**'],
+      monitor: ['.orchestrator/metrics/**'],
+      coordinator: ['.orchestrator/coordination/**']
     };
     return capabilities[agentId] || [];
   }

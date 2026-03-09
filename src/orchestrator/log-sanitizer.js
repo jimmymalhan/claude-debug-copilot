@@ -1,5 +1,5 @@
 /**
- * Log Sanitizer for Paperclip Integration (SC-4 Compliance)
+ * Log Sanitizer for Debug Copilot Orchestration (SC-4 Compliance)
  *
  * Strips PII and secrets from logs at write-time.
  * 8 sanitization patterns for API keys, env vars, emails, IPs, tokens.

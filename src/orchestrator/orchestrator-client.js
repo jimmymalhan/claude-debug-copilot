@@ -1,5 +1,5 @@
 /**
- * Paperclip Local Orchestrator
+ * Debug Copilot Orchestrator
  *
  * Local orchestration system coordinating all 8 modules:
  * - input-validator, file-access-guard, log-sanitizer (security)
@@ -16,7 +16,7 @@ import { HeartbeatMonitor } from './heartbeat-monitor.js';
 import { AgentWrapper } from './agent-wrapper.js';
 import { ErrorHandler } from './error-handler.js';
 
-export class PaperclipClient {
+export class DebugOrchestrator {
   constructor(config = {}) {
     // Initialize all 8 modules
     this.auditLogger = new AuditLogger();
@@ -150,10 +150,10 @@ export class PaperclipClient {
   }
 }
 
-export class PaperclipApiError extends Error {
+export class OrchestratorError extends Error {
   constructor(message, code = 'ORCHESTRATION_ERROR') {
     super(message);
-    this.name = 'PaperclipApiError';
+    this.name = 'OrchestratorError';
     this.code = code;
   }
 }

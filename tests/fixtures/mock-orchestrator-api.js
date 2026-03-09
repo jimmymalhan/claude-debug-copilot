@@ -5,7 +5,7 @@
  * audit queries, heartbeat, and budget.
  */
 
-export class MockPaperclipApi {
+export class MockOrchestratorApi {
   constructor(options = {}) {
     this.tasks = new Map();
     this.auditEntries = [];

@@ -1,5 +1,5 @@
 /**
- * Agent Wrapper for Paperclip Integration
+ * Agent Wrapper for Debug Copilot Orchestration
  *
  * Translates between repo agents and task system.
  * Manages 4 agent roles: router, retriever, skeptic, verifier

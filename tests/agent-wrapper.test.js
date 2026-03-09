@@ -4,8 +4,8 @@
  */
 
 import { jest } from '@jest/globals';
-import { AgentWrapper } from '../src/paperclip/agent-wrapper.js';
-import { AuditLogger } from '../src/paperclip/audit-logger.js';
+import { AgentWrapper } from '../src/orchestrator/agent-wrapper.js';
+import { AuditLogger } from '../src/orchestrator/audit-logger.js';
 
 describe('AgentWrapper: Lifecycle Tests', () => {
   let wrapper, auditLogger;

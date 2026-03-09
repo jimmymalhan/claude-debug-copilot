@@ -1,5 +1,5 @@
 /**
- * Heartbeat Monitor for Paperclip Integration
+ * Heartbeat Monitor for Debug Copilot Orchestration
  *
  * Monitors agent health via periodic heartbeats.
  * Implements Phase 2.6 heartbeat specification.
