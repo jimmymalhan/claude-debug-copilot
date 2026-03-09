@@ -31,7 +31,7 @@ export class MonitoringDashboard {
    * Get system health snapshot
    */
   _getSystemHealth() {
-    const agentStatus = this.heartbeatMonitor.getHeartbeatStatus();
+    const agentStatus = this.heartbeatMonitor.agents || {};
     const taskCount = this.taskManager.tasks?.size || 0;
 
     return {
@@ -66,7 +66,7 @@ export class MonitoringDashboard {
    * Get agent performance metrics
    */
   _getAgentPerformance() {
-    const agentStatus = this.heartbeatMonitor.getHeartbeatStatus() || {};
+    const agentStatus = this.heartbeatMonitor.agents || {};
     const agents = {};
 
     Object.entries(agentStatus).forEach(([agentId, status]) => {
@@ -85,12 +85,14 @@ export class MonitoringDashboard {
    * Get budget consumption metrics
    */
   _getBudgetStatus() {
-    const budgetStatus = this.budgetEnforcer.getBudgetStatus();
+    const usage = this.budgetEnforcer.getUsage();
+    const budgetLimit = 10000;
+    const spent = (usage?.orgDaily || 0) + (usage?.orgReserved || 0);
     return {
-      totalBudget: budgetStatus.budgetLimit || 10000,
-      spent: budgetStatus.tokensUsed || 0,
-      remaining: (budgetStatus.budgetLimit || 10000) - (budgetStatus.tokensUsed || 0),
-      percentageUsed: ((budgetStatus.tokensUsed || 0) / (budgetStatus.budgetLimit || 10000)) * 100,
+      totalBudget: budgetLimit,
+      spent: spent,
+      remaining: budgetLimit - spent,
+      percentageUsed: (spent / budgetLimit) * 100,
       dailyTrend: this._getBudgetTrend()
     };
   }
@@ -99,7 +101,7 @@ export class MonitoringDashboard {
    * Get audit trail analytics
    */
   _getAuditMetrics() {
-    const auditTrail = this.auditLogger.getAuditTrail() || [];
+    const auditTrail = this.auditLogger.getAll() || [];
     const eventCounts = {};
 
     auditTrail.forEach(entry => {

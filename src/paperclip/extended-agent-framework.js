@@ -72,6 +72,15 @@ export class ExtendedAgentFramework {
   }
 
   /**
+   * Get capabilities (alias for getAgentCapabilities)
+   */
+  getCapabilities(agentId) {
+    const capabilities = this.getAgentCapabilities(agentId);
+    // Return as array for compatibility
+    return Object.values(capabilities).flat();
+  }
+
+  /**
    * Load custom agent dynamically
    */
   loadCustomAgent(agentId, config) {
