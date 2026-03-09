@@ -3,4 +3,5 @@ node_modules
 logs/*
 data/*
 incidents/*
+coverage/*
 .DS_Store
