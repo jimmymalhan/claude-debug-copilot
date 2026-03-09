@@ -362,4 +362,4 @@ Issues and PRs welcome. Ensure:
 
 ## License
 
-ISC
+MIT
