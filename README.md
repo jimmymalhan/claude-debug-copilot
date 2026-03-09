@@ -39,6 +39,26 @@ A four-agent pipeline that enforces evidence-first methodology:
 }
 ```
 
+## 🎬 Demo Video
+
+See Claude Debug Copilot in action—watch the 4-agent pipeline diagnose a real backend failure in 20 seconds:
+
+[![Claude Debug Copilot Demo](https://img.shields.io/badge/▶️%20Watch%20Demo-20.8s-blue?style=for-the-badge)](https://github.com/jimmymalhan/claude-debug-copilot/releases/tag/v1.0-demo)
+
+**What the demo shows:**
+- Submit a production incident (database connection pool exhaustion)
+- Watch the 4-agent pipeline run in real-time:
+  - **Router** classifies failure type
+  - **Retriever** gathers evidence from logs and metrics
+  - **Skeptic** challenges the diagnosis
+  - **Verifier** validates root cause with 92% confidence
+- Get actionable fix plan, rollback strategy, and test cases
+- See the complete audit trail of every decision
+
+**Video specs:** 20.8 seconds | 1920×1080 | Professional audio narration
+
+[Download full video](https://github.com/jimmymalhan/claude-debug-copilot/releases/download/v1.0-demo/poc-demo.mp4) | [View release](https://github.com/jimmymalhan/claude-debug-copilot/releases/tag/v1.0-demo)
+
 ## Safety Constraints
 
 The tool enforces five non-negotiable rules (see `CLAUDE.md`):
