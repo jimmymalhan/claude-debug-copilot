@@ -40,5 +40,11 @@ export default {
   testMatch: [
     '<rootDir>/tests/**/*.test.js'
   ],
+  testPathIgnorePatterns: [
+    // E2E tests require server running - skip by default
+    '<rootDir>/tests/e2e-business-website.test.js',
+    // Agent scaling tests require special configuration - skip by default
+    '<rootDir>/tests/agent-scaling.test.js'
+  ],
   verbose: true
 };

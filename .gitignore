@@ -1,7 +1,58 @@
+# Environment & Dependencies
 .env
+.env.local
 node_modules
+package-lock.json
+
+# Build & Coverage
+coverage/*
+dist/*
+build/*
+.cache/*
+
+# Local Files
 logs/*
 data/*
 incidents/*
-coverage/*
 .DS_Store
+
+# Custom Planning & Coordination (keep locally, don't commit)
+*_CHECKLIST.md
+*_PLAN.md
+*_COORDINATION*.md
+*_TRACKER.md
+*_PROGRESS*.md
+EXECUTION_*.md
+BUCKET*.md
+DELIVERY_REPORT*.md
+STAKEHOLDER_*.md
+FEEDBACK_*.md
+REVENUE_*.md
+LIVE_*.md
+TEAM_COORDINATION*.md
+MASTER_EXECUTION*.md
+INCIDENT_SENTINEL*.md
+ULTRA_ADVANCED*.md
+DESKTOP_*.md
+ANALYTICS_*.md
+EXPANDED_TEAM*.md
+GITHUB_ADOPTION*.md
+OPEN_SOURCE*.md
+READY_FOR_GITHUB*.md
+
+# Worktrees
+.claude/worktrees/*
+
+# Temporary Files
+*.tmp
+*.log
+tmp/*
+/tmp
+.cache
+
+# IDE
+.vscode/*
+.idea/*
+*.swp
+*.swo
+*~
