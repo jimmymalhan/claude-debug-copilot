@@ -2,6 +2,36 @@
 
 All notable changes to Claude Debug Copilot are documented in this file.
 
+## [3.4.0] - 2026-03-10
+
+### Premium Visual Overhaul — Cinematic Multi-Color Design System
+
+**Summary**: Complete visual redesign of the homepage with a cinematic multi-color system, dark hero section, premium typography (Inter), individually-colored feature cards, bold dark stats section, and refined footer. Removed static "How It Works" section. Apple-quality motion pacing and depth.
+
+### Changed
+- **Hero**: Dark cinematic gradient background (#0a0a0f → #1e1b4b → #312e81) with aurora light effects, white→lavender→pink gradient headline text, font-weight 800
+- **Color System**: Replaced flat blue (#0071e3) with 6-color accent palette: Indigo #6366f1, Purple #a855f7, Pink #ec4899, Orange #f97316, Emerald #10b981, Cyan #06b6d4
+- **Typography**: Inter from Google Fonts, tighter letter-spacing (-2px headlines), heavier weights
+- **Buttons**: Purple gradient pills (rounded 50px) with deeper hover darkening, no more flash/blend bug
+- **Feature Cards**: White background, left-aligned, unique color stripe per card on hover with matching colored shadow
+- **Stats Section**: Deep dark gradient background, each stat value colored individually (indigo/emerald/orange/pink), uppercase labels
+- **Footer**: Deep black (#0a0a0f), uppercase section headers with 1.5px letter-spacing, lavender hover
+- **Header**: Enhanced glass blur with saturate(180%), indigo-tinted bottom gradient line
+- **Integrate Section**: Purple gradient tabs and CTA, lavender-tinted background
+- **Spinner**: Split indigo+purple borders for richer loading animation
+- **Focus States**: All focus-visible outlines now indigo #6366f1
+- **Background**: Subtle purple-tinted gradient with richer aurora blobs
+
+### Removed
+- Static "How It Works" 4-step section and its nav link (replaced by Integrate section)
+
+### Verified
+- 24 test suites, 1117 tests pass, 0 failures
+- localhost:3000 returns 200, all sections render correctly
+- PR #13 CI: Node 18 SUCCESS, Node 20 SUCCESS, GitGuardian SUCCESS
+
+---
+
 ## [3.3.0] - 2026-03-10
 
 ### Integrate With Your Stack — API Integration Section
