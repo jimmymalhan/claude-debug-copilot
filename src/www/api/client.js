@@ -14,6 +14,7 @@
 import {
   APIError,
   NetworkError,
+  TimeoutError,
   ValidationError,
   HTTPError,
   RateLimitError,
@@ -179,41 +180,34 @@ export class APIClient {
       });
 
       // Execute request with retry and timeout
-      let response;
+      let fetchResponse;
 
-      response = await withRetry(
+      await withRetry(
         async () => {
-          return await createFetchOptionsWithTimeout(
+          // Create fetch options with timeout
+          const optionsWithTimeout = createFetchOptionsWithTimeout(
             { ...fetchOptions },
             config.timeout
           );
+
+          // Perform the actual fetch
+          fetchResponse = await fetch(fullUrl, optionsWithTimeout);
+
+          // Clean up timeout controller
+          if (optionsWithTimeout._timeoutId) {
+            clearTimeoutController({
+              timeoutId: optionsWithTimeout._timeoutId,
+              controller: optionsWithTimeout._timeoutController
+            });
+          }
+
+          return fetchResponse;
         },
         {
           maxAttempts: config.maxRetries,
           onRetry: (info) => this.onRetry(requestId, info)
         }
       );
-
-      // Get actual timeout options from the wrapped promise
-      const actualFetchOptions = response;
-      const timeoutMs = actualFetchOptions._timeoutMs;
-
-      // Perform the actual fetch
-      const fetchResponse = await fetch(fullUrl, {
-        ...actualFetchOptions,
-        // Remove internal properties
-        _timeoutController: undefined,
-        _timeoutId: undefined,
-        _timeoutMs: undefined
-      });
-
-      // Clean up timeout controller
-      if (actualFetchOptions._timeoutId) {
-        clearTimeoutController({
-          timeoutId: actualFetchOptions._timeoutId,
-          controller: actualFetchOptions._timeoutController
-        });
-      }
 
       // Record metrics
       const duration = Date.now() - startTime;

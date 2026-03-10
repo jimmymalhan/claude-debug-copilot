@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Claude Debug Copilot - Incident Diagnosis Made Simple">
   <meta name="theme-color" content="#ffffff">
+  <!-- Preconnect to external resources for faster loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <!-- Performance: Enable resource hints -->
+  <link rel="dns-prefetch" href="//anthropic.com">
   <title>Claude Debug Copilot - Diagnose Incidents Instantly</title>
   <style>
     * {
@@ -15,6 +19,9 @@
 
     html {
       scroll-behavior: smooth;
+      /* Optimize rendering performance */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     body {
@@ -331,7 +338,7 @@
       text-decoration: none;
       font-size: 0.95rem;
       font-weight: 500;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       animation: zoomInFade 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       opacity: 0;
       position: relative;
@@ -414,12 +421,13 @@
       font-weight: 600;
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: background 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       font-family: inherit;
       animation: zoomInFadeUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
       opacity: 0;
       position: relative;
       overflow: hidden;
+      contain: layout style paint;
     }
 
     .btn::before {
@@ -498,13 +506,13 @@
       border-radius: 24px;
       padding: 48px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       animation: zoomInFade 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
       opacity: 0;
       backdrop-filter: blur(10px);
-      will-change: transform, box-shadow;
       position: relative;
       overflow: hidden;
+      contain: layout style paint;
     }
 
     .diagnosis-card::before {
@@ -551,11 +559,12 @@
       font-size: 1rem;
       font-family: inherit;
       color: #1d1d1f;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       resize: vertical;
       min-height: 130px;
       animation: slideInFromBottom 0.6s ease 0.35s forwards;
       opacity: 0;
+      contain: layout style paint;
     }
 
     .form-input:focus {
@@ -650,7 +659,8 @@
       animation: slideInFromBottom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       opacity: 0;
       border-left: 4px solid #0071e3;
-      transition: all 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      contain: layout style paint;
     }
 
     .result-item:nth-child(1) { animation-delay: 0.1s; }
@@ -723,14 +733,14 @@
       padding: 40px 24px;
       border-radius: 24px;
       background: linear-gradient(135deg, #f5f5f7 0%, #efefef 100%);
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       cursor: pointer;
       animation: slideInFromBottom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       opacity: 0;
-      will-change: transform, box-shadow, background;
       border: 1px solid rgba(0, 0, 0, 0.05);
       position: relative;
       overflow: hidden;
+      contain: layout style paint;
     }
 
     .product-card::before {
@@ -766,8 +776,10 @@
     .product-icon {
       font-size: 3.5rem;
       margin-bottom: 16px;
-      transition: all 0.3s ease;
+      transition: transform 0.3s ease;
       animation: floatingAnimation 3s ease-in-out infinite;
+      will-change: transform;
+      transform: translateZ(0);
     }
 
     .product-card:hover .product-icon {
@@ -812,7 +824,8 @@
       background: rgba(255, 255, 255, 0.5);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(0, 113, 227, 0.1);
-      transition: all 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+      contain: layout style paint;
     }
 
     .stat:hover {
@@ -1128,8 +1141,16 @@
     document.addEventListener('DOMContentLoaded', () => {
       setupScrollObserver();
       setupParallaxOnScroll();
-      setupMouseTracking();
+      // Only enable mouse tracking on desktop (not touch devices)
+      if (!isTouchDevice()) {
+        setupMouseTracking();
+      }
     });
+
+    // Check if device supports touch
+    function isTouchDevice() {
+      return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
+    }
 
     // ===== SCROLL-TRIGGERED ANIMATIONS =====
     function setupScrollObserver() {
@@ -1137,6 +1158,8 @@
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
+            // Stop observing once visible to save resources
+            observer.unobserve(entry.target);
           }
         });
       }, {
@@ -1149,37 +1172,48 @@
       });
     }
 
-    // ===== PARALLAX EFFECT ON SCROLL =====
+    // ===== PARALLAX EFFECT ON SCROLL (Optimized) =====
     function setupParallaxOnScroll() {
+      let ticking = false;
       window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        const blobs = document.querySelectorAll('.blob-animation');
-
-        blobs.forEach((blob, index) => {
-          const speed = 0.5 + (index * 0.1);
-          blob.style.transform = `translateY(${scrolled * speed}px)`;
-        });
-      });
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const scrolled = window.pageYOffset;
+            const blobs = document.querySelectorAll('.blob-animation');
+            blobs.forEach((blob, index) => {
+              const speed = 0.5 + (index * 0.1);
+              blob.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
     }
 
-    // ===== MOUSE TRACKING EFFECT =====
+    // ===== MOUSE TRACKING EFFECT (Optimized) =====
     function setupMouseTracking() {
+      const diagnosisCard = document.querySelector('.diagnosis-card');
+      if (!diagnosisCard) return;
+
+      let ticking = false;
       document.addEventListener('mousemove', (e) => {
-        const diagnosisCard = document.querySelector('.diagnosis-card');
-        if (!diagnosisCard) return;
-
-        const rect = diagnosisCard.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-
-        const rotateX = (y / rect.height) * 5;
-        const rotateY = (x / rect.width) * 5;
-
-        diagnosisCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-      });
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const rect = diagnosisCard.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            const rotateX = (y / rect.height) * 5;
+            const rotateY = (x / rect.width) * 5;
+            diagnosisCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
 
       document.addEventListener('mouseleave', () => {
-        document.querySelector('.diagnosis-card').style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+        diagnosisCard.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
       });
     }
 

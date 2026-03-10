@@ -6,6 +6,9 @@ import NavigationBar from './components/NavigationBar'
 import LoadingOverlay from './components/LoadingOverlay'
 import ErrorBoundary from './components/ErrorBoundary'
 import './styles/app.css'
+import './styles/motion.css'
+import './styles/animated-components.css'
+import './styles/micro-interactions.css'
 
 export default function App() {
   const [stage, setStage] = useState('form') // form, loading, results, error
