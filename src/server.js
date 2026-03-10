@@ -2,6 +2,7 @@ import express from 'express'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import 'dotenv/config'
+import { DebugOrchestrator } from './orchestrator/orchestrator-client.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const app = express()
@@ -11,6 +12,15 @@ const PORT = process.env.PORT || 3000
 const diagnostics = new Map()
 const auditLog = []
 const webhooks = new Map()
+
+// Orchestrator singleton
+let orchestrator = null
+const getOrchestrator = () => {
+  if (!orchestrator) {
+    orchestrator = new DebugOrchestrator({ repoRoot: process.cwd() })
+  }
+  return orchestrator
+}
 
 // Generate unique trace ID
 const generateTraceId = () =>
@@ -286,6 +296,250 @@ app.post('/api/batch-diagnose', express.json({ limit: '50mb' }), async (req, res
   res.json({ batchId: `batch-${Date.now()}`, traceId, results, errors })
 })
 
+// ============================================================
+// Orchestration API Endpoints (Paperclip Integration)
+// ============================================================
+
+// List all tasks (paginated, filterable)
+app.get('/api/tasks', (req, res) => {
+  const { traceId, startTime } = req
+  try {
+    const page = parseInt(req.query.page) || 1
+    const limit = Math.min(parseInt(req.query.limit) || 20, 100)
+    const status = req.query.status || null
+    const type = req.query.type || null
+
+    const orchestrator = getOrchestrator()
+    const filter = {}
+    if (status) filter.status = status
+    if (type) filter.type = type
+
+    const allTasks = orchestrator.taskManager.listTasks(filter)
+    const skip = (page - 1) * limit
+    const paginatedTasks = allTasks.slice(skip, skip + limit)
+
+    const duration = Date.now() - startTime
+    logger.info('Listed tasks', {
+      traceId, operation: 'list_tasks', count: paginatedTasks.length, total: allTasks.length, duration
+    })
+
+    res.json({
+      page,
+      limit,
+      total: allTasks.length,
+      tasks: paginatedTasks
+    })
+  } catch (error) {
+    const duration = Date.now() - startTime
+    logger.error('Failed to list tasks', {
+      traceId, operation: 'list_tasks', error: error.message, duration
+    })
+    res.status(500).json({
+      error: 'internal_error',
+      message: 'Failed to retrieve tasks',
+      traceId,
+      status: 500,
+      retryable: true,
+      suggestion: 'Try again in a moment.'
+    })
+  }
+})
+
+// Get single task details
+app.get('/api/tasks/:taskId', (req, res) => {
+  const { taskId } = req.params
+  const { traceId, startTime } = req
+
+  try {
+    // Validate taskId format
+    if (!taskId || typeof taskId !== 'string' || taskId.trim().length === 0) {
+      return res.status(400).json({
+        error: 'invalid_task_id',
+        message: 'Task ID must be a non-empty string',
+        traceId,
+        status: 400,
+        retryable: false,
+        suggestion: 'Provide a valid task ID.'
+      })
+    }
+
+    const orchestrator = getOrchestrator()
+    const task = orchestrator.taskManager.getTask(taskId)
+
+    const duration = Date.now() - startTime
+    logger.info('Retrieved task', {
+      traceId, operation: 'get_task', taskId, duration
+    })
+
+    res.json({
+      taskId: task.taskId,
+      type: task.type,
+      status: task.status,
+      state: task.stateMachine.getState(),
+      input: task.input,
+      output: task.output,
+      approvals: task.approvals,
+      governance: task.governance,
+      createdAt: task.createdAt,
+      completedAt: task.completedAt
+    })
+  } catch (error) {
+    const duration = Date.now() - startTime
+    if (error.message.includes('Task not found')) {
+      logger.warn('Task not found', {
+        traceId, operation: 'get_task', taskId, error: error.message, duration
+      })
+      return res.status(404).json({
+        error: 'not_found',
+        message: `Task not found: ${taskId}`,
+        traceId,
+        status: 404,
+        retryable: false,
+        suggestion: 'Verify the task ID and try again.'
+      })
+    }
+
+    logger.error('Failed to retrieve task', {
+      traceId, operation: 'get_task', taskId, error: error.message, duration
+    })
+    res.status(500).json({
+      error: 'internal_error',
+      message: 'Failed to retrieve task',
+      traceId,
+      status: 500,
+      retryable: true,
+      suggestion: 'Try again in a moment.'
+    })
+  }
+})
+
+// Get approval state for a task
+app.get('/api/tasks/:taskId/approvals', (req, res) => {
+  const { taskId } = req.params
+  const { traceId, startTime } = req
+
+  try {
+    if (!taskId || typeof taskId !== 'string' || taskId.trim().length === 0) {
+      return res.status(400).json({
+        error: 'invalid_task_id',
+        message: 'Task ID must be a non-empty string',
+        traceId,
+        status: 400,
+        retryable: false,
+        suggestion: 'Provide a valid task ID.'
+      })
+    }
+
+    const orchestrator = getOrchestrator()
+    const task = orchestrator.taskManager.getTask(taskId)
+    const stateMachine = task.stateMachine
+
+    const duration = Date.now() - startTime
+    logger.info('Retrieved approval state', {
+      traceId, operation: 'get_approvals', taskId, state: stateMachine.getState(), duration
+    })
+
+    res.json({
+      taskId,
+      state: stateMachine.getState(),
+      verdicts: stateMachine.getVerdicts(),
+      history: stateMachine.getHistory(),
+      timeout: new Date(stateMachine.stateEnteredAt + 4 * 60 * 60 * 1000).toISOString()
+    })
+  } catch (error) {
+    const duration = Date.now() - startTime
+    if (error.message.includes('Task not found')) {
+      logger.warn('Task not found', {
+        traceId, operation: 'get_approvals', taskId, error: error.message, duration
+      })
+      return res.status(404).json({
+        error: 'not_found',
+        message: `Task not found: ${taskId}`,
+        traceId,
+        status: 404,
+        retryable: false,
+        suggestion: 'Verify the task ID and try again.'
+      })
+    }
+
+    logger.error('Failed to retrieve approval state', {
+      traceId, operation: 'get_approvals', taskId, error: error.message, duration
+    })
+    res.status(500).json({
+      error: 'internal_error',
+      message: 'Failed to retrieve approval state',
+      traceId,
+      status: 500,
+      retryable: true,
+      suggestion: 'Try again in a moment.'
+    })
+  }
+})
+
+// List pending approvals across all tasks
+app.get('/api/approvals', (req, res) => {
+  const { traceId, startTime } = req
+  try {
+    const page = parseInt(req.query.page) || 1
+    const limit = Math.min(parseInt(req.query.limit) || 20, 100)
+    const state = req.query.state || null
+    const taskType = req.query.taskType || null
+
+    const orchestrator = getOrchestrator()
+    const allTasks = orchestrator.taskManager.listTasks({})
+
+    // Filter tasks by approval state and task type
+    let approvals = allTasks
+      .map(task => {
+        const fullTask = orchestrator.taskManager.getTask(task.taskId)
+        const approvalState = fullTask.stateMachine.getState()
+        return {
+          taskId: task.taskId,
+          taskType: task.type,
+          state: approvalState,
+          verdicts: fullTask.stateMachine.getVerdicts(),
+          createdAt: fullTask.createdAt,
+          dueAt: new Date(fullTask.stateMachine.stateEnteredAt + 4 * 60 * 60 * 1000).toISOString()
+        }
+      })
+      .filter(a => {
+        if (state && a.state !== state) return false
+        if (taskType && a.taskType !== taskType) return false
+        // Only return tasks that need approval (not in terminal states)
+        if (a.state === 'approved' || a.state === 'blocked') return false
+        return true
+      })
+
+    const skip = (page - 1) * limit
+    const paginatedApprovals = approvals.slice(skip, skip + limit)
+
+    const duration = Date.now() - startTime
+    logger.info('Listed approvals', {
+      traceId, operation: 'list_approvals', count: paginatedApprovals.length, total: approvals.length, duration
+    })
+
+    res.json({
+      page,
+      limit,
+      total: approvals.length,
+      approvals: paginatedApprovals
+    })
+  } catch (error) {
+    const duration = Date.now() - startTime
+    logger.error('Failed to list approvals', {
+      traceId, operation: 'list_approvals', error: error.message, duration
+    })
+    res.status(500).json({
+      error: 'internal_error',
+      message: 'Failed to retrieve approvals',
+      traceId,
+      status: 500,
+      retryable: true,
+      suggestion: 'Try again in a moment.'
+    })
+  }
+})
+
 // Retrieve diagnosis
 app.get('/api/diagnose/:id', (req, res) => {
   const diagnosis = diagnostics.get(req.params.id)
@@ -470,6 +724,10 @@ app.use((req, res) => {
       'GET /api/audit-log',
       'POST /api/webhooks',
       'GET /api/webhooks/:url/deliveries',
+      'GET /api/tasks',
+      'GET /api/tasks/:taskId',
+      'GET /api/tasks/:taskId/approvals',
+      'GET /api/approvals',
       'GET /health'
     ]
   })

@@ -3,6 +3,55 @@
 All notable changes to Claude Debug Copilot are documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [3.6.0] - 2026-03-10
+
+### feat(api): Paperclip orchestration REST endpoints
+
+**Summary**: Added 4 dedicated REST API endpoints to expose Paperclip orchestration data. Enables clients to list tasks, retrieve task details, check approval states, and query pending approvals across the system.
+
+### Added
+- `GET /api/tasks` - List all tasks with pagination and filtering
+  - Query params: `?page=1&limit=20&status=pending&type=debug`
+  - Returns: paginated task array with taskId, type, status, state
+- `GET /api/tasks/:taskId` - Get single task details
+  - Returns: full task object including input, output, approvals, governance, timestamps
+  - Errors: 400 (invalid taskId), 404 (not found)
+- `GET /api/tasks/:taskId/approvals` - Get approval state for a task
+  - Returns: state, verdicts, history, timeout (4-hour from entry)
+  - Errors: 400 (invalid taskId), 404 (not found)
+- `GET /api/approvals` - List pending approvals across all tasks
+  - Query params: `?page=1&limit=20&state=awaiting_approver&taskType=debug`
+  - Returns: paginated approval array (excludes terminal states)
+  - Filters by state and taskType
+
+### Tests
+- Added `tests/integration/orchestration-endpoints.test.js` with 33 integration tests
+  - Task listing: pagination, filtering by status/type, empty cases
+  - Task retrieval: valid/invalid taskId, full structure validation
+  - Approval state: state machine methods, verdicts, history, timeout calculation
+  - Pending approvals: filtering, pagination, terminal state exclusion
+  - Error handling: graceful failures, error format consistency
+  - Contract validation: response structure consistency, ISO 8601 timestamps
+  - Pagination math: page/limit calculations, max limit enforcement
+
+### Verified
+- All 1131 existing tests still pass (no regressions)
+- 33 new tests all passing
+- Orchestrator integration: endpoints access TaskManager and ApprovalStateMachine directly
+- Error responses follow API contract (error, message, traceId, status, retryable, suggestion)
+- All timestamps in ISO 8601 format
+- All endpoints include traceId in response headers
+- Pagination enforces maximum limit of 100 items
+
+### Technical Details
+- New `getOrchestrator()` singleton in server.js initializes DebugOrchestrator on demand
+- Endpoints validate input (taskId format, page/limit ranges) before querying
+- Error messages are user-friendly (no stack traces)
+- Approval list filters out terminal states (approved, blocked)
+- Timeout calculated as 4 hours from state entry (matches ApprovalStateMachine timeout)
+
+---
+
 ## [3.5.0] - 2026-03-10
 
 ### refactor(tests): industry-standard file organization and naming
