@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import PipelineVisualization from './PipelineVisualization'
+
+function getConfidenceLevel(confidence) {
+  if (confidence >= 85) return 'high'
+  if (confidence >= 60) return 'medium'
+  return 'low'
+}
 
 export default function ResultsDisplay({ diagnosis, onReset, onExport }) {
   const [copied, setCopied] = useState(false)
   const { result } = diagnosis
   const confidence = (result.verifier.confidence * 100).toFixed(0)
+  const confidenceLevel = getConfidenceLevel(Number(confidence))
 
   const handleCopy = async () => {
     try {
@@ -17,13 +24,17 @@ export default function ResultsDisplay({ diagnosis, onReset, onExport }) {
   }
 
   return (
-    <div className="results-container">
+    <div className="results-container" role="region" aria-label="Diagnosis results">
       <div className="results-header">
         <div className="header-content">
           <h2>Analysis Complete</h2>
           <p className="subtitle">Your incident diagnosis is ready</p>
         </div>
-        <div className={`confidence-badge confidence-${confidence > 85 ? 'high' : 'medium'}`}>
+        <div
+          className={`confidence-badge confidence-${confidenceLevel}`}
+          role="status"
+          aria-label={`Confidence score: ${confidence} percent, ${confidenceLevel} confidence`}
+        >
           <span className="confidence-value">{confidence}%</span>
           <span className="confidence-label">Confidence</span>
         </div>
@@ -106,6 +117,13 @@ export default function ResultsDisplay({ diagnosis, onReset, onExport }) {
           title="Export as JSON"
         >
           📥 Export JSON
+        </button>
+        <button
+          className="btn btn-secondary"
+          onClick={() => onExport('csv')}
+          title="Export as CSV"
+        >
+          📥 Export CSV
         </button>
         <button
           className="btn btn-primary"

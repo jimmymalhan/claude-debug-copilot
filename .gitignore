@@ -21,6 +21,7 @@ incidents/*
 *_PLAN.md
 *_COORDINATION*.md
 *_TRACKER.md
+PROJECT_TRACKER_*.md
 *_PROGRESS*.md
 EXECUTION_*.md
 BUCKET*.md
@@ -40,8 +41,72 @@ GITHUB_ADOPTION*.md
 OPEN_SOURCE*.md
 READY_FOR_GITHUB*.md
 
+# Sprint and Phase Documentation (local planning, research, and execution)
+A1_*.md
+A1-*.md
+A2_*.md
+A2-*.md
+PHASE_B_*.md
+PHASE_C_*.md
+PHASE_D_*.md
+PHASE_F_*.md
+PHASE_G_*.md
+PHASE_H_*.md
+*_SPRINT_*.md
+*_SUMMARY.md
+*_COMPLETION_*.md
+*_DELIVERY_*.md
+*_EXECUTION_*.md
+AUDIT_COMPLETE.md
+AUDIT_SUMMARY.md
+ACCESSIBILITY_AUDIT_REPORT.md
+PROGRESS_DASHBOARD*.md
+LUXURY_*.md
+REFACTORING_*.md
+*_TASK_BREAKDOWN*.md
+FRONTEND_UPGRADE_PLAN.md
+IMPLEMENTATION_GUIDE.md
+LOCALHOST_TESTING.md
+TESTING_GUIDE.md
+UI_QA_TEST_SUITE.md
+E1-*.md
+DATA_FLOW.md
+STAKEHOLDER_FEEDBACK*.md
+FRONTEND_TASK_BREAKDOWN.csv
+
+# Local Claude settings (private, not committed)
+.claude/settings.local.json
+
+# User-scope personal agents and skills (keep at ~/.claude not in repo)
+.claude/agents/**
+.claude/skills/**
+
 # Worktrees
 .claude/worktrees/*
+
+# Claude local-only directories (private workspace)
+.claude/local/
+.claude/agent-memory-local/
+.claude/reports/
+.claude/plans/
+.claude/checklists/
+.claude/feedback/
+.claude/tmp/
+.claude/local-docs/
+
+# Private docs and local-only project files
+docs/private/**
+docs/**/*.local.md
+docs/**/PROJECT_STATUS*.md
+docs/**/TEST_PLAN*.md
+docs/**/CONFIDENCE_SCORE*.md
+docs/**/FEEDBACK_LOG*.md
+docs/**/REVIEW_NOTES*.md
+docs/**/EXECUTION_PLAN*.md
+docs/Phase-B-Design-Tokens/*.md
+
+# Local-only testing and coverage reports
+tests/testing-coverage-report.md
 
 # Temporary Files
 *.tmp

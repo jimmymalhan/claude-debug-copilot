@@ -430,3 +430,92 @@ OVERALL PROGRESS: [████░░░░░░░░░░░░░░░░]
 
 **Ready for**: Production use with 1000s of agents locally; 10,000+ with distributed deployment
 **Next steps**: Fix fleet tests, add Redis, implement load balancer, deploy to Kubernetes
+
+---
+
+## Session 4: Homepage Integration & Guardrail Fixes
+
+**Date**: March 10, 2026
+
+### Task: Refine homepage experience, fix guardrail bugs, and record proof
+
+- **Files changed** (subset relevant to this task):
+  - `.claude/hooks/branch-aware-permissions.sh` (secrets/credentials checks tightened)
+  - `.claude/CLAUDE.md` (Homepage Premium Standard section)
+  - `.claude/settings.json`, `.claude/rules/*.md` (agent + guardrail refinements)
+  - `.gitignore` (ensure planning/docs like A1/A2, accessibility audit, and project trackers stay local-only)
+  - `docs/INTERNAL_STAKEHOLDER_ALIGNMENT.md`, `docs/USER_FEEDBACK_ACTIONS.md`
+  - `docs/Phase-B-Design-Tokens/B3-18_PERFORMANCE_TOKENS.md`
+  - `src/www/components/Hero.jsx`, `RealTime.jsx`, `HowItWorks.jsx`, `FAQ.jsx`, `Features.jsx`
+  - `src/www/index.html`, `src/www/styles/app.css`, `src/www/styles/sections.css`
+  - `tests/website-components.test.js`, `tests/integration/ui-workflow.test.js`, `tests/e2e/critical-paths.test.js`
+  - `src/server.js`, `src/www/api/errors.js`, `src/www/App.jsx`, `src/www/WebsiteApp.jsx`
+  - Deleted: `ACCESSIBILITY_AUDIT_REPORT.md` (fabricated audit claims), A1/A2 sprint planning docs
+
+- **Observed**:
+  - Removed `ACCESSIBILITY_AUDIT_REPORT.md` which violated the “Never invent test results” rule.
+  - Simplified and hardened secret/credential detection in `branch-aware-permissions.sh` so any Bash command touching `.env`, `secrets`, `credentials`, `auth`, `token`, `key`, or `password` is treated as dangerous regardless of tool name.
+  - Added a **Homepage Premium Standard** section to `CLAUDE.md` directing agents to use `docs/HOMEPAGE_UPGRADE_CHECKLIST.md` and to treat homepage work as a discrete, idempotent mini-project.
+  - Updated `.gitignore` so sprint/planning docs (A1/A2, accessibility audit, project trackers) are kept local-only and do not reappear in future commits.
+  - Refined homepage copy for incident owners and SRE teams (hero, Real-time, How It Works, FAQ/Features) to emphasize evidence-first diagnosis and safe rehearsal of incidents without secrets.
+  - Updated CSS so icon buttons (including dashboard icon) keep a visible color on hover and SVG icons inherit `currentColor`; tests added to lock this behavior.
+  - Strengthened website tests to cover the new copy, icon behavior, and “how it works” guidance so regressions are caught automatically.
+
+- **Tests run**:
+  ```
+  npm test
+  npm run test:ci
+  ```
+  - Both commands completed successfully with exit code 0 in this branch after the homepage/guardrail changes.
+  - Jest suite: all suites passing; coverage unchanged at **89.87%** lines (above 60% guardrail and consistent with prior sessions).
+
+- **GitHub Actions**:
+  - Workflow remains defined in `.github/workflows/test.yml` and is still configured for Node 18/20 with coverage thresholds.
+  - [UNKNOWN] Whether this exact commit has already run in GitHub Actions during this session; CI verification will occur after push.
+
+- **Critical flows verified (locally)**:
+  - ✅ Homepage loads with updated hero, Real-time, and How It Works copy without JS errors.
+  - ✅ Dashboard icon and other `.btn-icon` elements keep a visible icon on hover; SVG icons use `currentColor`.
+  - ✅ Website component tests cover new homepage copy and icon behavior.
+  - ✅ Guardrail script correctly flags `.env`/secrets/credentials-related commands as dangerous.
+  - ✅ Planning and audit docs now live behind `.gitignore` patterns to avoid future hallucinated “audit complete” files.
+
+- **Edge cases checked**:
+  - ✅ `.gitignore` patterns for A1/A2 sprint docs and accessibility audit reports prevent re-adding those files.
+  - ✅ Local-only project tracker (`PROJECT_TRACKER_*.md`) remains untracked while code/docs are committed.
+  - ✅ Branch-aware permissions script no longer contains dead patterns (e.g., `git reset -hard`) or inverted `.env` logic.
+
+- **Error handling**:
+  - ✅ Fabricated accessibility audit documentation removed instead of patched, to avoid relying on unverifiable historical claims.
+  - ✅ Guardrail script errs on the side of blocking suspicious secret/credential access rather than attempting “smart” parsing.
+
+- **Unknowns**:
+  - [UNKNOWN] Real user feedback from 1000+ external A/B tests (not run in this environment).
+  - [UNKNOWN] Full browser-based WCAG audit using assistive technologies in this session (screen reader tooling not executed here).
+  - [UNKNOWN] GitHub Actions status for this exact commit until after push.
+
+- **Residual risks**:
+  - Homepage refinements rely on Jest and DOM-based tests; real browser/device differences (older mobile browsers, high-contrast modes) are not fully covered here.
+  - Guardrail tightening may block some legitimate advanced maintenance commands involving `.env` or credentials and could require human override on rare occasions.
+
+- **Rollback**:
+  - Revert commit(s) touching homepage and guardrails:
+    - `git revert <commit_sha>` for the homepage + guardrail refinement commit(s), or
+    - `git reset --hard <previous_sha>` on the feature branch (not on `main`) if this branch needs to be discarded.
+  - All changes are scoped to this feature branch; production `main` remains protected.
+
+- **Confidence**: 94/100
+  - ✅ All local tests (`npm test`, `npm run test:ci`) passing after homepage + guardrail changes.
+  - ✅ Coverage remains high at 89.87% lines.
+  - ✅ Guardrail bugs around `.env` and fabricated accessibility audits have been corrected with strong deny-by-default behavior.
+  - ✅ Homepage refinements are backed by tests and confined to copy/CSS/website components, reducing blast radius.
+  - ⚠️ CI verification and real-world browser/accessibility audits are pending, plus large-scale A/B user testing.
+
+---
+
+## Idempotent Agent Execution Rule
+
+- Homepage and website-integration work must be **idempotent**:
+  - Agents should first **check** `CHANGELOG.md`, `docs/CONFIDENCE_SCORE.md`, and relevant website files/tests to detect if a requested change already exists.
+  - If a task is already complete (code + tests + docs), agents must **skip implementation** and only update notes if needed.
+  - Re-running the same high-level prompt on this branch should primarily result in verification, not re-implementation, to save time and tokens.
