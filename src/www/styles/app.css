@@ -332,8 +332,39 @@ body {
   box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
 }
 
+.form-textarea.invalid {
+  border-color: var(--error-color);
+  background: rgba(255, 59, 48, 0.02);
+}
+
+.form-textarea.invalid:focus {
+  box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.1);
+}
+
+.form-textarea.valid {
+  border-color: var(--success-color);
+  background: rgba(52, 199, 89, 0.02);
+}
+
+.form-textarea.valid:focus {
+  box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.1);
+}
+
 .form-textarea::placeholder {
   color: var(--text-tertiary);
+}
+
+.textarea-wrapper {
+  position: relative;
+}
+
+.validation-checkmark {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 1.2rem;
+  color: var(--success-color);
+  animation: scaleIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .char-counter {
@@ -791,6 +822,210 @@ body {
 .progress-text {
   font-size: 0.85rem;
   color: var(--text-tertiary);
+}
+
+/* Progress Tracker (Task 1.2) */
+.progress-tracker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  animation: slideInUp 0.6s var(--transition-slow);
+  padding: 60px 40px;
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.progress-tracker-header {
+  text-align: center;
+}
+
+.progress-tracker-header h2 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.progress-subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.progress-tracker-bar-container {
+  width: 100%;
+  max-width: 400px;
+}
+
+.progress-tracker-bar {
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.progress-tracker-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+  border-radius: 3px;
+  transition: width var(--transition-slow);
+}
+
+.progress-percentage {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.progress-stages {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  width: 100%;
+}
+
+.progress-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  opacity: 0.4;
+  transition: opacity var(--transition-med);
+}
+
+.progress-stage.active,
+.progress-stage.completed {
+  opacity: 1;
+}
+
+.stage-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  border: 2px solid;
+  color: white;
+  transition: all var(--transition-med);
+}
+
+.progress-stage.active .stage-circle {
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(0, 113, 227, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(0, 113, 227, 0);
+  }
+}
+
+.stage-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.progress-info {
+  text-align: center;
+}
+
+.progress-info p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.time-value {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.time-estimate {
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+}
+
+/* Error Recovery (Task 1.4) */
+.error-recovery {
+  margin-bottom: 24px;
+  animation: slideInDown 0.3s var(--transition-fast);
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-recovery-card {
+  padding: 20px;
+  background: rgba(255, 59, 48, 0.02);
+  border: 1px solid var(--error-color);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.error-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.error-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.error-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--error-color);
+}
+
+.error-content {
+  padding: 0 0 0 26px;
+}
+
+.error-message {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.error-note {
+  margin: 0;
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+  padding: 0 0 0 26px;
+}
+
+.error-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+  padding-left: 26px;
+}
+
+.error-actions .btn {
+  flex-shrink: 0;
 }
 
 /* Error */

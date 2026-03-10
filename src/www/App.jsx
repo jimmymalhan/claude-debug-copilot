@@ -63,14 +63,19 @@ export default function App() {
     }
   }
 
-  const handleSubmit = useCallback(async (incident) => {
+  const handleSubmit = useCallback(async (incident, callbacks = {}) => {
     if (!incident || incident.length < 10) {
-      setError({
+      const errorData = {
         message: 'Incident description must be at least 10 characters',
-        suggestion: 'Add more detail about the failure, including symptoms and timeline.',
+        errorType: 'validation_error',
         retryable: false
-      })
-      setStage('error')
+      }
+      if (callbacks.onError) {
+        callbacks.onError(errorData)
+      } else {
+        setError({ ...errorData, suggestion: 'Add more detail about the failure, including symptoms and timeline.' })
+        setStage('error')
+      }
       return
     }
 
@@ -81,14 +86,25 @@ export default function App() {
       const data = await apiClient.post('/diagnose', { incident })
       setDiagnosis(data)
       setStage('results')
+      if (callbacks.onSuccess) {
+        callbacks.onSuccess(data)
+      }
     } catch (err) {
       const classified = classifyError(err)
-      setError({
+      const errorData = {
         message: classified.userMessage || err.message,
-        suggestion: classified.suggestion || 'Try again or contact support.',
+        errorType: classified.errorType || 'unknown_error',
         retryable: classified.retryable !== false
-      })
-      setStage('error')
+      }
+      if (callbacks.onError) {
+        callbacks.onError(errorData)
+      } else {
+        setError({
+          ...errorData,
+          suggestion: classified.suggestion || 'Try again or contact support.'
+        })
+        setStage('error')
+      }
     }
   }, [])
 

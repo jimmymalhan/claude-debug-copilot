@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
+import ProgressTracker from './ProgressTracker'
+import ErrorRecovery from './ErrorRecovery'
 
 const MAX_LENGTH = 2000
 const MIN_LENGTH = 10
@@ -7,7 +9,10 @@ export default function DiagnosisForm({ onSubmit, resetKey }) {
   const [incident, setIncident] = useState('')
   const [isValid, setIsValid] = useState(false)
   const [charCount, setCharCount] = useState(0)
-  const [submitted, setSubmitted] = useState(false)
+  const [validationState, setValidationState] = useState('empty')
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [retryCount, setRetryCount] = useState(0)
   const textareaRef = useRef(null)
 
   useEffect(() => {
@@ -15,7 +20,10 @@ export default function DiagnosisForm({ onSubmit, resetKey }) {
       setIncident('')
       setCharCount(0)
       setIsValid(false)
-      setSubmitted(false)
+      setValidationState('empty')
+      setIsLoading(false)
+      setError(null)
+      setRetryCount(0)
       if (textareaRef.current) {
         textareaRef.current.focus()
       }
@@ -26,19 +34,69 @@ export default function DiagnosisForm({ onSubmit, resetKey }) {
     const value = e.target.value
     setIncident(value)
     setCharCount(value.length)
-    setIsValid(value.length >= MIN_LENGTH && value.length <= MAX_LENGTH)
-    if (submitted) setSubmitted(false)
+
+    // Calculate validation state
+    if (value.length === 0) {
+      setValidationState('empty')
+      setIsValid(false)
+    } else if (value.length < MIN_LENGTH) {
+      setValidationState('invalid')
+      setIsValid(false)
+    } else if (value.length <= MAX_LENGTH) {
+      setValidationState('valid')
+      setIsValid(true)
+    } else {
+      setValidationState('overflow')
+      setIsValid(false)
+    }
+
+    // Clear error when user starts typing valid input
+    if (error && value.length >= MIN_LENGTH) {
+      setError(null)
+    }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (isValid) {
-      setSubmitted(true)
-      onSubmit(incident)
+    if (isValid && !isLoading) {
+      setIsLoading(true)
+      setError(null)
+      onSubmit(incident, {
+        onSuccess: handleSuccess,
+        onError: handleError
+      })
     }
   }
 
+  const handleSuccess = () => {
+    setIsLoading(false)
+    setIncident('')
+    setCharCount(0)
+    setValidationState('empty')
+    setRetryCount(0)
+  }
+
+  const handleError = (errorData) => {
+    setIsLoading(false)
+    setError({
+      message: errorData.message || 'An error occurred during analysis',
+      errorType: errorData.errorType || 'unknown_error',
+      retryable: errorData.retryable !== false
+    })
+  }
+
+  const handleRetry = () => {
+    setError(null)
+    setRetryCount(prev => prev + 1)
+    setIsLoading(true)
+    onSubmit(incident, {
+      onSuccess: handleSuccess,
+      onError: handleError
+    })
+  }
+
   const percentage = (charCount / MAX_LENGTH) * 100
+
   const validationMessage = charCount === 0
     ? `Enter at least ${MIN_LENGTH} characters to describe your incident`
     : charCount < MIN_LENGTH
@@ -47,12 +105,32 @@ export default function DiagnosisForm({ onSubmit, resetKey }) {
         ? 'Maximum length reached'
         : 'Ready to submit'
 
+  // Validation class for textarea
+  const getValidationClass = () => {
+    if (validationState === 'valid') return 'valid'
+    if (validationState === 'invalid') return 'invalid'
+    if (validationState === 'overflow') return 'invalid'
+    return ''
+  }
+
+  if (isLoading) {
+    return <ProgressTracker />
+  }
+
   return (
     <div className="diagnosis-form-container" role="region" aria-label="Incident diagnosis form">
       <div className="form-header">
         <h1>Diagnose Your Incident</h1>
         <p>Describe what's happening and get instant root cause analysis with a fix plan.</p>
       </div>
+
+      {error && (
+        <ErrorRecovery
+          error={error}
+          onRetry={handleRetry}
+          retryCount={retryCount}
+        />
+      )}
 
       <form onSubmit={handleSubmit} className="diagnosis-form" aria-label="Diagnosis submission form">
         <div className="form-group">
@@ -64,22 +142,25 @@ export default function DiagnosisForm({ onSubmit, resetKey }) {
             <textarea
               ref={textareaRef}
               id="incident"
-              className={`form-textarea ${charCount > 0 && !isValid ? 'invalid' : ''} ${isValid ? 'valid' : ''}`}
+              className={`form-textarea ${getValidationClass()}`}
               placeholder="Example: Database queries are timing out. API responses went from 2s to 45s. Error rate at 15%."
               value={incident}
               onChange={handleChange}
               minLength={MIN_LENGTH}
               maxLength={MAX_LENGTH}
               aria-describedby="incident-hint incident-counter"
-              aria-invalid={charCount > 0 && !isValid}
+              aria-invalid={validationState === 'invalid' || validationState === 'overflow'}
               aria-required="true"
-              disabled={submitted}
+              disabled={isLoading}
             />
             <div className="char-counter" id="incident-counter" aria-live="polite">
               <span>{charCount}</span>
               <span className="separator">/</span>
               <span className="max">{MAX_LENGTH}</span>
             </div>
+            {validationState === 'valid' && (
+              <div className="validation-checkmark" aria-hidden="true">✓</div>
+            )}
           </div>
 
           <div className="progress-bar" role="progressbar" aria-valuenow={charCount} aria-valuemin={0} aria-valuemax={MAX_LENGTH}>
@@ -97,22 +178,22 @@ export default function DiagnosisForm({ onSubmit, resetKey }) {
 
           <p
             id="incident-hint"
-            className={`form-hint ${charCount >= MIN_LENGTH && charCount <= MAX_LENGTH ? 'success' : charCount > 0 ? 'error' : ''}`}
+            className={`form-hint ${validationState === 'valid' ? 'success' : validationState !== 'empty' ? 'error' : ''}`}
             role="status"
             aria-live="polite"
           >
-            {charCount >= MIN_LENGTH && charCount <= MAX_LENGTH ? '✓ ' : ''}{validationMessage}
+            {validationState === 'valid' ? '✓ ' : ''}{validationMessage}
           </p>
         </div>
 
         <button
           type="submit"
           className="btn btn-primary btn-submit"
-          disabled={!isValid || submitted}
+          disabled={!isValid || isLoading}
           aria-label={isValid ? 'Submit incident for analysis' : 'Enter a valid incident description to submit'}
         >
-          <span className="btn-text">{submitted ? 'Submitted' : 'Analyze Incident'}</span>
-          <span className="btn-icon">{submitted ? '✓' : '→'}</span>
+          <span className="btn-text">{isLoading ? 'Analyzing' : 'Analyze Incident'}</span>
+          <span className="btn-icon">{isLoading ? '⏳' : '→'}</span>
         </button>
       </form>
 
