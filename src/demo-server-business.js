@@ -465,11 +465,39 @@ footer {
 app.get('/', (req, res) => {
   const html = `
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Downtime Cost Eliminated - AI Incident Diagnostics</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Reduce MTTR by 90%. Diagnose production incidents in 2 minutes instead of 2 hours.">
+  <title>Downtime Cost Eliminated - AI Incident Diagnostics</title>
   <style>${businessStyles}</style>
+  <style>
+    /* Mobile responsive fixes */
+    @media (max-width: 768px) {
+      .dashboard { grid-template-columns: 1fr 1fr !important; }
+      .comparison-table { overflow-x: auto; }
+      nav { flex-direction: column; gap: 10px; }
+      .roi-box { grid-template-columns: 1fr !important; }
+      div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+    }
+
+    @media (max-width: 480px) {
+      .dashboard { grid-template-columns: 1fr !important; }
+      h1 { font-size: 24px; }
+      .button { padding: 10px 16px; font-size: 14px; }
+    }
+
+    /* Focus states for accessibility */
+    button:focus, a:focus, input:focus {
+      outline: 2px solid #60a5fa;
+      outline-offset: 2px;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -481,7 +509,7 @@ app.get('/', (req, res) => {
         <a href="/cases">Results</a>
         <a href="/roi">ROI Calculator</a>
         <a href="/pricing">Pricing</a>
-        <a href="#contact">Contact</a>
+        <a href="mailto:contact@incidentcommander.com">Contact</a>
       </nav>
     </div>
   </header>
