@@ -1,23 +1,49 @@
-# Environment & Dependencies
+# ──────────────────────────────────────────────────
+# Environment & Secrets
+# ──────────────────────────────────────────────────
 .env
-.env.local
-node_modules
+.env.*
+!.env.example
+
+# ──────────────────────────────────────────────────
+# Dependencies
+# ──────────────────────────────────────────────────
+node_modules/
 package-lock.json
 
-# Build & Coverage
-coverage/*
-dist/*
-build/*
-.cache/*
+# ──────────────────────────────────────────────────
+# Build Artifacts & Coverage
+# ──────────────────────────────────────────────────
+coverage/
+dist/
+build/
+.cache/
+*.tsbuildinfo
 
-# Local Files
-logs/*
-data/*
-incidents/*
+# ──────────────────────────────────────────────────
+# OS & IDE
+# ──────────────────────────────────────────────────
 .DS_Store
-mcp/
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-# Video, Recordings, Demos, Output
+# ──────────────────────────────────────────────────
+# Temp & Logs
+# ──────────────────────────────────────────────────
+*.tmp
+*.log
+tmp/
+logs/
+data/
+incidents/
+
+# ──────────────────────────────────────────────────
+# Media, Recordings, Demos
+# ──────────────────────────────────────────────────
 output/
 recordings/
 demo/
@@ -29,24 +55,71 @@ videos/
 *.gif
 record*.sh
 demo*.sh
-src/www/styles/how-it-works.css
 
-# Custom Planning & Coordination (keep locally, don't commit)
-*_CHECKLIST.md
+# ──────────────────────────────────────────────────
+# Internal Planning & Strategy (NEVER commit)
+#
+# Catch-all patterns for sprint docs, phase docs,
+# research, stakeholder notes, execution plans,
+# audit reports, progress dashboards, feedback,
+# and any other internal customization artifacts.
+# ──────────────────────────────────────────────────
+
+# Sprint / phase docs (A1-*, A2-*, B1-*, E1-*, PHASE_C_*, etc.)
+[A-Z][0-9][-_]*.md
+[A-Z][0-9]_*.md
+PHASE_*.md
+PHASE_*.csv
+
+# Planning, execution, coordination
 *_PLAN.md
-*_COORDINATION*.md
+*_PLAN_*.md
+*_CHECKLIST.md
+*_CHECKLIST_*.md
 *_TRACKER.md
-PROJECT_TRACKER_*.md
-*_PROGRESS*.md
+*_TRACKER_*.md
+*_COORDINATION*.md
+*_INFRASTRUCTURE*.md
 EXECUTION_*.md
+MASTER_*.md
 BUCKET*.md
-DELIVERY_REPORT*.md
+PROJECT_TRACKER*.md
+
+# Reports, summaries, audits
+*_REPORT.md
+*_REPORT_*.md
+*_SUMMARY.md
+*_SUMMARY_*.md
+*_COMPLETION_*.md
+*_DELIVERY_*.md
+*_EXECUTION_*.md
+AUDIT_*.md
+PROGRESS_DASHBOARD*.md
+
+# Stakeholder, feedback, revenue
 STAKEHOLDER_*.md
 FEEDBACK_*.md
 REVENUE_*.md
-LIVE_*.md
-TEAM_COORDINATION*.md
-MASTER_EXECUTION*.md
+USER_FEEDBACK*.md
+
+# Testing guides & QA docs (not the actual test code)
+TESTING.md
+TESTING_GUIDE.md
+UI_QA_TEST_SUITE.md
+LOCALHOST_TESTING.md
+*_TEST_SUITE*.md
+
+# Implementation & deployment docs at root
+API.md
+DATA_FLOW.md
+DEPLOYMENT.md
+IMPLEMENTATION_GUIDE.md
+LUXURY_*.md
+REFACTORING_*.md
+FRONTEND_UPGRADE_PLAN.md
+FRONTEND_TASK_BREAKDOWN.csv
+
+# Catch remaining internal docs at root (be explicit)
 INCIDENT_SENTINEL*.md
 ULTRA_ADVANCED*.md
 DESKTOP_*.md
@@ -55,80 +128,42 @@ EXPANDED_TEAM*.md
 GITHUB_ADOPTION*.md
 OPEN_SOURCE*.md
 READY_FOR_GITHUB*.md
+LIVE_*.md
+TEAM_COORDINATION*.md
 
-# Sprint and Phase Documentation (local planning, research, and execution)
-A1_*.md
-A1-*.md
-A2_*.md
-A2-*.md
-PHASE_B_*.md
-PHASE_C_*.md
-PHASE_D_*.md
-PHASE_F_*.md
-PHASE_G_*.md
-PHASE_H_*.md
-*_SPRINT_*.md
-*_SUMMARY.md
-*_COMPLETION_*.md
-*_DELIVERY_*.md
-*_EXECUTION_*.md
-AUDIT_COMPLETE.md
-AUDIT_SUMMARY.md
-ACCESSIBILITY_AUDIT_REPORT.md
-PROGRESS_DASHBOARD*.md
-LUXURY_*.md
-REFACTORING_*.md
-*_TASK_BREAKDOWN*.md
-FRONTEND_UPGRADE_PLAN.md
-IMPLEMENTATION_GUIDE.md
-LOCALHOST_TESTING.md
-TESTING_GUIDE.md
-UI_QA_TEST_SUITE.md
-E1-*.md
-DATA_FLOW.md
-STAKEHOLDER_FEEDBACK*.md
-FRONTEND_TASK_BREAKDOWN.csv
-API.md
-DEPLOYMENT.md
-TESTING.md
-PROJECT_TRACKER*.md
-
-# Old docs that should stay local
+# ──────────────────────────────────────────────────
+# docs/ — only tracked: CUSTOM_AGENTS_API, CUSTOM_SKILLS_API, INTEGRATION_GUIDE
+# ──────────────────────────────────────────────────
 docs/CONFIDENCE_SCORE.md
-docs/G1_*.md
-docs/G2_*.md
-docs/G3_*.md
+docs/FEEDBACK_LOG*.md
+docs/G[0-9]_*.md
 docs/GITHUB_TESTING.md
+docs/HOMEPAGE_UPGRADE*.md
 docs/INTERNAL_STAKEHOLDER*.md
 docs/LOCAL_TESTING.md
 docs/PHASE_*.md
-docs/USER_FEEDBACK*.md
 docs/Phase-B-Design-Tokens/
-docs/WEBSITE_GUIDE.md
-docs/ROADMAP*.md
-docs/HOMEPAGE_UPGRADE*.md
-docs/STAKEHOLDER_FEEDBACK*.md
-docs/FEEDBACK_LOG*.md
-docs/TEST_PLAN*.md
 docs/PROJECT_STATUS*.md
+docs/ROADMAP*.md
+docs/STAKEHOLDER_FEEDBACK*.md
+docs/TEST_PLAN*.md
+docs/USER_FEEDBACK*.md
+docs/WEBSITE_GUIDE.md
 docs/examples/
+docs/private/
+docs/**/*.local.md
+docs/**/REVIEW_NOTES*.md
+docs/**/EXECUTION_PLAN*.md
+
+# ──────────────────────────────────────────────────
+# .claude/ — only tracked: CLAUDE.md, settings.json, rules/, skills/, hooks/
+# ──────────────────────────────────────────────────
+.claude/settings.local.json
 .claude/FEATURE_BRANCH_PERMISSIONS.md
 .claude/commands/
-FRONTEND_TASK_BREAKDOWN.csv
-scripts/sync-checklist.js
-scripts/
-
-# Local Claude settings (private, not committed)
-.claude/settings.local.json
-
-# User-scope personal agents and skills (keep at ~/.claude not in repo)
 .claude/agents/**
 .claude/skills/**
-
-# Worktrees
-.claude/worktrees/*
-
-# Claude local-only directories (private workspace)
+.claude/worktrees/
 .claude/local/
 .claude/agent-memory-local/
 .claude/reports/
@@ -138,31 +173,18 @@ scripts/
 .claude/tmp/
 .claude/local-docs/
 
-# Private docs and local-only project files
-docs/private/**
-docs/**/*.local.md
-docs/**/PROJECT_STATUS*.md
-docs/**/TEST_PLAN*.md
-docs/**/FEEDBACK_LOG*.md
-docs/**/REVIEW_NOTES*.md
-docs/**/EXECUTION_PLAN*.md
-docs/Phase-B-Design-Tokens/*.md
-# NOTE: docs/CONFIDENCE_SCORE.md is intentionally NOT ignored.
-# It is the project truth ledger referenced by settings.json, CLAUDE.md, and all sessions.
+# Re-include tracked .claude skills (overrides the ** above)
+!.claude/skills/backend-reliability/
+!.claude/skills/backend-reliability/SKILL.md
+!.claude/skills/evidence-proof/
+!.claude/skills/evidence-proof/SKILL.md
+!.claude/skills/ui-quality/
+!.claude/skills/ui-quality/SKILL.md
 
-# Local-only testing and coverage reports
+# ──────────────────────────────────────────────────
+# Misc local directories
+# ──────────────────────────────────────────────────
+mcp/
+scripts/
+src/www/styles/how-it-works.css
 tests/testing-coverage-report.md
-
-# Temporary Files
-*.tmp
-*.log
-tmp/*
-/tmp
-.cache
-
-# IDE
-.vscode/*
-.idea/*
-*.swp
-*.swo
-*~
