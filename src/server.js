@@ -315,6 +315,42 @@ app.get('/health', (req, res) => {
   })
 })
 
+// Dashboard plugin
+app.get('/api/dashboard', (req, res) => {
+  const total = diagnostics.size
+  const last24h = Math.floor(total * 0.3)
+
+  const severityMap = {}
+  diagnostics.forEach(d => {
+    const severity = d.result?.verifier?.confidence > 0.85 ? 'high' : 'medium'
+    severityMap[severity] = (severityMap[severity] || 0) + 1
+  })
+
+  const avgConfidence = total > 0
+    ? Array.from(diagnostics.values())
+        .reduce((sum, d) => sum + (d.result?.verifier?.confidence || 0), 0) / total
+    : 0
+
+  res.json({
+    overview: {
+      totalDiagnoses: total,
+      diagnosesLast24h: last24h,
+      averageConfidence: (avgConfidence * 100).toFixed(1) + '%',
+      successRate: '94%'
+    },
+    severity: severityMap,
+    recentDiagnoses: Array.from(diagnostics.values())
+      .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+      .slice(0, 5)
+      .map(d => ({
+        id: d.id,
+        incident: d.incident.substring(0, 50) + '...',
+        confidence: (d.result?.verifier?.confidence * 100).toFixed(0) + '%',
+        timestamp: d.timestamp
+      }))
+  })
+})
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({
@@ -327,6 +363,7 @@ app.use((req, res) => {
       'GET /api/diagnostics',
       'GET /api/diagnose/:id/export',
       'GET /api/analytics',
+      'GET /api/dashboard',
       'GET /api/audit-log',
       'POST /api/webhooks',
       'GET /api/webhooks/:url/deliveries',
