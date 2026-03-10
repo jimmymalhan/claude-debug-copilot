@@ -172,6 +172,20 @@ export const designTokens = {
     xl: '1280px',
     '2xl': '1400px',
   },
+
+  // Motion System (Phase 2.1)
+  motion: {
+    durations: {
+      quick: 150,       // ms - for quick interactions
+      smooth: 300,      // ms - standard animations
+      dramatic: 800,    // ms - attention-grabbing animations
+    },
+    easings: {
+      easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
+      easeOut: 'cubic-bezier(0, 0, 0.2, 1)',
+      easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    },
+  },
 };
 
 // Export individual token groups for convenience
@@ -185,4 +199,5 @@ export const {
   breakpoints,
   zIndex,
   container,
+  motion,
 } = designTokens;

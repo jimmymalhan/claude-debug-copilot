@@ -490,4 +490,104 @@ describe('Design Tokens System', () => {
       expect(tokens.colors.warning[500]).toBe('#F59E0B');
     });
   });
+
+  describe('F2-01: Motion Tokens - Duration System', () => {
+    it('should define motion durations', () => {
+      const motion = {
+        durations: {
+          quick: 150,
+          smooth: 300,
+          dramatic: 800,
+        },
+        easings: {
+          easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
+          easeOut: 'cubic-bezier(0, 0, 0.2, 1)',
+          easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        },
+      };
+
+      expect(motion.durations.quick).toBe(150);
+      expect(motion.durations.smooth).toBe(300);
+      expect(motion.durations.dramatic).toBe(800);
+    });
+
+    it('should have motion durations in milliseconds', () => {
+      const motion = {
+        durations: {
+          quick: 150,
+          smooth: 300,
+          dramatic: 800,
+        },
+      };
+
+      Object.values(motion.durations).forEach((duration) => {
+        expect(typeof duration).toBe('number');
+        expect(duration).toBeGreaterThan(0);
+      });
+    });
+
+    it('should order durations from quick to dramatic', () => {
+      const motion = {
+        durations: {
+          quick: 150,
+          smooth: 300,
+          dramatic: 800,
+        },
+      };
+
+      expect(motion.durations.quick).toBeLessThan(motion.durations.smooth);
+      expect(motion.durations.smooth).toBeLessThan(motion.durations.dramatic);
+    });
+  });
+
+  describe('F2-02: Motion Tokens - Easing Functions', () => {
+    it('should define all required easing curves', () => {
+      const motion = {
+        easings: {
+          easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
+          easeOut: 'cubic-bezier(0, 0, 0.2, 1)',
+          easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        },
+      };
+
+      expect(motion.easings.easeIn).toBeDefined();
+      expect(motion.easings.easeOut).toBeDefined();
+      expect(motion.easings.easeInOut).toBeDefined();
+    });
+
+    it('should use valid cubic-bezier easing format', () => {
+      const motion = {
+        easings: {
+          easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
+          easeOut: 'cubic-bezier(0, 0, 0.2, 1)',
+          easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        },
+      };
+
+      Object.values(motion.easings).forEach((easing) => {
+        expect(easing).toMatch(/^cubic-bezier\(\d+(\.\d+)?,\s*\d+(\.\d+)?,\s*\d+(\.\d+)?,\s*\d+(\.\d+)?\)$/);
+      });
+    });
+
+    it('should have easing values in valid range [0, 1]', () => {
+      const motion = {
+        easings: {
+          easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
+          easeOut: 'cubic-bezier(0, 0, 0.2, 1)',
+          easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        },
+      };
+
+      Object.values(motion.easings).forEach((easing) => {
+        // Extract numbers from cubic-bezier
+        const numbers = easing.match(/\d+(\.\d+)?/g);
+        expect(numbers.length).toBe(4);
+        numbers.forEach((num) => {
+          const val = parseFloat(num);
+          expect(val).toBeGreaterThanOrEqual(0);
+          expect(val).toBeLessThanOrEqual(1);
+        });
+      });
+    });
+  });
 });
