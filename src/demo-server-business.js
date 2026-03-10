@@ -1554,6 +1554,86 @@ app.get('/pricing', (req, res) => {
       <p>&copy; 2026 Incident Commander. Enterprise-grade incident diagnosis. SMB pricing.</p>
     </div>
   </footer>
+
+  <script>
+    // Hamburger menu toggle functionality
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    const navLinks = mobileNav.querySelectorAll('a');
+
+    // Toggle menu on hamburger click
+    hamburgerBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const isActive = mobileNav.classList.toggle('active');
+      hamburgerBtn.classList.toggle('active', isActive);
+      hamburgerBtn.setAttribute('aria-expanded', isActive);
+    });
+
+    // Close menu when a link is clicked
+    navLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        mobileNav.classList.remove('active');
+        hamburgerBtn.classList.remove('active');
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!hamburgerBtn.contains(e.target) && !mobileNav.contains(e.target)) {
+        if (mobileNav.classList.contains('active')) {
+          mobileNav.classList.remove('active');
+          hamburgerBtn.classList.remove('active');
+          hamburgerBtn.setAttribute('aria-expanded', 'false');
+        }
+      }
+    });
+
+    // Close menu on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
+        mobileNav.classList.remove('active');
+        hamburgerBtn.classList.remove('active');
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+        hamburgerBtn.focus();
+      }
+    });
+
+    // Keyboard navigation support (Arrow keys, Home, End)
+    document.addEventListener('keydown', function(e) {
+      if (!mobileNav.classList.contains('active')) return;
+
+      const links = Array.from(navLinks);
+      const activeElement = document.activeElement;
+      const currentIndex = links.indexOf(activeElement);
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const nextIndex = (currentIndex + 1) % links.length;
+        links[nextIndex].focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prevIndex = currentIndex === 0 ? links.length - 1 : currentIndex - 1;
+        links[prevIndex].focus();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        links[0].focus();
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        links[links.length - 1].focus();
+      }
+    });
+
+    // Set active link based on current page
+    const currentPath = window.location.pathname;
+    navLinks.forEach(link => {
+      if (link.getAttribute('href') === currentPath) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  </script>
 </body>
 </html>
   `;
