@@ -53,7 +53,8 @@ export default {
     '<rootDir>/tests/components/app-framework.test.js',
     '<rootDir>/tests/integration/workflows.test.js',
     '<rootDir>/tests/unit/design-tokens.test.js',
-    '<rootDir>/tests/unit/motion-utils.test.js'
+    '<rootDir>/tests/unit/motion-utils.test.js',
+    '<rootDir>/tests/unit/accessibility.test.js'
   ],
   verbose: true
 };

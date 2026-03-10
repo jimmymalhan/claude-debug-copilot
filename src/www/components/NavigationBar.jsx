@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 
-export default function NavigationBar({ onDashboardToggle, showDashboard }) {
+export default function NavigationBar({
+  onDashboardToggle,
+  showDashboard,
+  onOrchestrationToggle,
+  showOrchestration
+}) {
   const [isScrolled, setIsScrolled] = useState(false)
 
   React.useEffect(() => {
@@ -31,9 +36,22 @@ export default function NavigationBar({ onDashboardToggle, showDashboard }) {
           <button
             className={`btn-icon ${showDashboard ? 'active' : ''}`}
             onClick={onDashboardToggle}
-            title="Toggle Dashboard"
+            title="Toggle Analytics Dashboard"
+            aria-pressed={showDashboard}
+            type="button"
           >
-            <span className="icon">📊</span>
+            <span className="icon" aria-hidden="true">📊</span>
+            <span className="sr-only">Toggle analytics dashboard</span>
+          </button>
+          <button
+            className={`btn-icon ${showOrchestration ? 'active' : ''}`}
+            onClick={onOrchestrationToggle}
+            title="Toggle Paperclip Orchestration"
+            aria-pressed={showOrchestration}
+            type="button"
+          >
+            <span className="icon" aria-hidden="true">🧠</span>
+            <span className="sr-only">Toggle orchestration view</span>
           </button>
           <a href="/health" className="nav-link small">Status</a>
         </div>

@@ -1280,3 +1280,307 @@ body {
 
 .orch-status-ready { color: var(--success-color) !important; }
 .orch-status-off { color: var(--error-color) !important; }
+
+/* Orchestration Dashboard */
+.orch-dashboard {
+  margin-top: 24px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  padding: 28px 28px 24px;
+}
+
+.orch-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.orch-header h2 {
+  font-size: 1.6rem;
+  margin-bottom: 4px;
+}
+
+.orch-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.orch-tabs {
+  display: inline-flex;
+  gap: 8px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--bg-secondary);
+}
+
+.orch-tab {
+  border: none;
+  background: transparent;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.orch-tab.active {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.orch-content {
+  margin-top: 12px;
+}
+
+.orch-section-loading,
+.orch-section-error,
+.orch-empty {
+  padding: 16px;
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.95rem;
+}
+
+.orch-spinner {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  animation: spin 0.8s linear infinite;
+}
+
+.orch-section-error {
+  background: rgba(255, 59, 48, 0.04);
+  border: 1px solid rgba(255, 59, 48, 0.5);
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.orch-error-header {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.orch-error-icon {
+  font-size: 1.2rem;
+}
+
+.orch-error-suggestion {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+}
+
+.orch-error-actions {
+  margin-top: 8px;
+}
+
+.orch-tasks-grid,
+.orch-approvals-list {
+  display: grid;
+  gap: 16px;
+}
+
+.orch-card {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  padding: 16px 16px 12px;
+  background: var(--bg-primary);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.orch-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.orch-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.orch-card-header h4 {
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.orch-task-id {
+  font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.78rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--bg-secondary);
+}
+
+.orch-pill {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  text-transform: capitalize;
+}
+
+.orch-pill-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.orch-pill-in_progress {
+  background: #cce5ff;
+  color: #004085;
+}
+
+.orch-pill-completed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.orch-pill-failed {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.orch-metadata {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 8px 0 4px;
+  font-size: 0.8rem;
+}
+
+.orch-metadata dt {
+  color: var(--text-tertiary);
+}
+
+.orch-metadata dd {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.orch-state {
+  margin-top: 6px;
+  font-size: 0.8rem;
+}
+
+.orch-state-label {
+  color: var(--text-tertiary);
+}
+
+.orch-state-value {
+  font-weight: 600;
+}
+
+.orch-approval-summary {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 4px 0 8px;
+}
+
+.orch-agents-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.orch-stat-card {
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+}
+
+.orch-stat-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  margin-bottom: 4px;
+}
+
+.orch-stat-value {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.orch-audit-list ul {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.orch-audit-item {
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  font-size: 0.85rem;
+}
+
+.orch-audit-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.orch-audit-time {
+  color: var(--text-tertiary);
+  font-size: 0.75rem;
+}
+
+.orch-audit-level {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.orch-audit-message {
+  color: var(--text-secondary);
+}
+
+.orch-audit-task {
+  margin-top: 2px;
+  color: var(--text-tertiary);
+}
+
+@media (max-width: 1024px) {
+  .orch-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .orch-agents-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .orch-dashboard {
+    padding: 20px 16px 16px;
+  }
+
+  .orch-tabs {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .orch-metadata {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .orch-agents-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

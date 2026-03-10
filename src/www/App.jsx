@@ -5,6 +5,7 @@ import DashboardPanel from './components/DashboardPanel'
 import NavigationBar from './components/NavigationBar'
 import LoadingOverlay from './components/LoadingOverlay'
 import ErrorBoundary from './components/ErrorBoundary'
+import OrchestrationDashboard from './components/OrchestrationDashboard'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { getClient } from './api/client'
 import { classifyError } from './api/errors'
@@ -41,6 +42,7 @@ export default function App() {
   const [diagnosis, setDiagnosis] = useState(null)
   const [error, setError] = useState(null)
   const [showDashboard, setShowDashboard] = useState(false)
+  const [showOrchestration, setShowOrchestration] = useState(false)
   const [dashboardData, setDashboardData] = useState(null)
   const [formResetKey, setFormResetKey] = useState(0)
   const abortRef = useRef(null)
@@ -159,48 +161,58 @@ export default function App() {
           <NavigationBar
             onDashboardToggle={() => setShowDashboard(!showDashboard)}
             showDashboard={showDashboard}
+            onOrchestrationToggle={() => setShowOrchestration(!showOrchestration)}
+            showOrchestration={showOrchestration}
           />
 
           <main className="app-main">
             {stage === 'loading' && <LoadingOverlay onCancel={handleCancel} />}
 
             <div className="app-container">
-              {stage === 'form' && (
-                <DiagnosisForm onSubmit={handleSubmit} resetKey={formResetKey} />
-              )}
+              {!showOrchestration && (
+                <>
+                  {stage === 'form' && (
+                    <DiagnosisForm onSubmit={handleSubmit} resetKey={formResetKey} />
+                  )}
 
-              {stage === 'results' && diagnosis && (
-                <ResultsDisplay
-                  diagnosis={diagnosis}
-                  onReset={handleReset}
-                  onExport={handleExport}
-                />
-              )}
+                  {stage === 'results' && diagnosis && (
+                    <ResultsDisplay
+                      diagnosis={diagnosis}
+                      onReset={handleReset}
+                      onExport={handleExport}
+                    />
+                  )}
 
-              {stage === 'error' && error && (
-                <div className="error-container" role="alert" aria-live="assertive">
-                  <div className="error-box">
-                    <div className="error-icon" aria-hidden="true">⚠️</div>
-                    <h2>Something went wrong</h2>
-                    <p className="error-message">{error.message}</p>
-                    {error.suggestion && (
-                      <p className="error-suggestion">{error.suggestion}</p>
-                    )}
-                    <div className="error-actions">
-                      {error.retryable && (
-                        <button className="btn btn-primary" onClick={handleRetry}>
-                          Retry
-                        </button>
-                      )}
-                      <button className="btn btn-secondary" onClick={handleReset}>
-                        Start Over
-                      </button>
+                  {stage === 'error' && error && (
+                    <div className="error-container" role="alert" aria-live="assertive">
+                      <div className="error-box">
+                        <div className="error-icon" aria-hidden="true">⚠️</div>
+                        <h2>Something went wrong</h2>
+                        <p className="error-message">{error.message}</p>
+                        {error.suggestion && (
+                          <p className="error-suggestion">{error.suggestion}</p>
+                        )}
+                        <div className="error-actions">
+                          {error.retryable && (
+                            <button className="btn btn-primary" onClick={handleRetry}>
+                              Retry
+                            </button>
+                          )}
+                          <button className="btn btn-secondary" onClick={handleReset}>
+                            Start Over
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  )}
+                </>
               )}
 
-              {showDashboard && dashboardData && (
+              {showOrchestration && (
+                <OrchestrationDashboard />
+              )}
+
+              {showDashboard && dashboardData && !showOrchestration && (
                 <DashboardPanel data={dashboardData} />
               )}
             </div>
