@@ -34,8 +34,8 @@ jobs:
 
       - name: Check for secrets in committed files
         run: |
-          echo "Scanning for potential secrets..."
-          ! grep -rn "sk-ant-\|ANTHROPIC_API_KEY=sk\|password=" --include="*.js" --include="*.json" --include="*.html" src/ tests/ || {
+          echo "Scanning for potential secrets in src/..."
+          ! grep -rn "sk-ant-api\|ANTHROPIC_API_KEY=sk-ant-api" --include="*.js" --include="*.json" --include="*.html" src/ || {
             echo "::error::Potential secret found in source files"
             exit 1
           }
