@@ -57,6 +57,11 @@ record*.sh
 demo*.sh
 
 # ──────────────────────────────────────────────────
+# Reference Materials (local planning artifacts)
+# ──────────────────────────────────────────────────
+reference/
+
+# ──────────────────────────────────────────────────
 # Internal Planning & Strategy (NEVER commit)
 #
 # Catch-all patterns for sprint docs, phase docs,
