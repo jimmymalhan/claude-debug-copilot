@@ -208,6 +208,20 @@ h3 {
   cursor: pointer;
 }
 
+.card[role="button"],
+.provider-card {
+  border: none;
+  background: inherit;
+  padding: inherit;
+  font-family: inherit;
+  text-align: inherit;
+}
+
+.provider-card:focus-visible {
+  outline: 3px solid var(--accent-blue-light);
+  outline-offset: 2px;
+}
+
 .card--incident {
   border-left: 4px solid var(--accent-red);
 }
