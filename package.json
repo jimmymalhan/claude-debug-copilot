@@ -1,6 +1,6 @@
 {
   "name": "claude-debug-copilot",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Evidence-first diagnostic system for backend failures",
   "main": "index.js",
   "type": "module",

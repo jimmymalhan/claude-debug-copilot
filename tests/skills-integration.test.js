@@ -43,7 +43,7 @@ describe('EvidenceVerifier', () => {
     const claims = [{ text: 'Claim', citation: 'no-line-number' }];
     const report = verifier.verify(claims);
     expect(report.valid).toBe(false);
-    expect(report.issues[0].message).toMatch(/does not match file:line format/);
+    expect(report.issues[0].message).toMatch(/does not match file:line/);
   });
 
   test('should flag non-existent file in citation', () => {

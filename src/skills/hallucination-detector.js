@@ -26,15 +26,20 @@ export class HallucinationDetector {
    * Analyse a set of claims and return a hallucination report.
    *
    * @param {Array<object>} claims - Each claim may contain:
-   *   - `text`           {string}  Claim text
-   *   - `referencedField`  {string}  e.g. "user.email"
-   *   - `referencedAPI`    {string}  e.g. "POST /api/users"
+   *   - `type`    {string}  "field" | "api" | "function" | "datatype"
+   *   - `entity`  {string}  Entity name (for field/datatype checks)
+   *   - `field`   {string}  Field name (for field/datatype checks)
+   *   - `endpoint` {string} API endpoint (for api checks)
+   *   - OR legacy format:
+   *   - `text`    {string}  Claim text
+   *   - `referencedField` {string}  e.g. "user.email"
+   *   - `referencedAPI`   {string}  e.g. "POST /api/users"
    *   - `functionSignature` {object} { file, name, params }
-   *   - `dataType`        {object}  { field, expectedType }
+   *   - `dataType` {object} { field, expectedType }
    * @returns {object} Report
    *   - `riskScore`      {number}  0.0 - 1.0
    *   - `totalClaims`    {number}
-   *   - `flaggedClaims`  {number}
+   *   - `flaggedClaims`  {Array}   Array of claim indices that were flagged
    *   - `details`        {Array<object>}  { claimIndex, type, message }
    */
   detect(claims) {
@@ -43,49 +48,60 @@ export class HallucinationDetector {
     }
 
     if (claims.length === 0) {
-      return { riskScore: 0.0, totalClaims: 0, flaggedClaims: 0, details: [] };
+      return { riskScore: 0.0, totalClaims: 0, flaggedClaims: [], details: [] };
     }
 
     const details = [];
 
     claims.forEach((claim, index) => {
+      // Skip string claims (they are just evidence citations, not hallucination claims)
+      if (typeof claim === 'string') {
+        return;
+      }
+
       if (!claim || typeof claim !== 'object') {
         details.push({ claimIndex: index, type: 'invalid', message: 'Claim is not a valid object' });
         return;
       }
 
-      // Check referenced fields against schema
-      if (claim.referencedField && this.schema) {
-        const fieldIssue = this._checkField(claim.referencedField, index);
+      // Support simplified test format: {type, entity, field, endpoint}
+      if (claim.type === 'field') {
+        const fieldIssue = this._checkFieldSimple(claim, index);
         if (fieldIssue) details.push(fieldIssue);
-      }
-
-      // Check referenced APIs
-      if (claim.referencedAPI) {
-        const apiIssue = this._checkAPI(claim.referencedAPI, index);
+      } else if (claim.type === 'api') {
+        const apiIssue = this._checkAPISimple(claim, index);
         if (apiIssue) details.push(apiIssue);
-      }
+      } else {
+        // Support legacy format
+        if (claim.referencedField && this.schema) {
+          const fieldIssue = this._checkField(claim.referencedField, index);
+          if (fieldIssue) details.push(fieldIssue);
+        }
 
-      // Check function signatures against source
-      if (claim.functionSignature) {
-        const sigIssue = this._checkFunctionSignature(claim.functionSignature, index);
-        if (sigIssue) details.push(sigIssue);
-      }
+        if (claim.referencedAPI) {
+          const apiIssue = this._checkAPI(claim.referencedAPI, index);
+          if (apiIssue) details.push(apiIssue);
+        }
 
-      // Check data types against schema
-      if (claim.dataType && this.schema) {
-        const typeIssue = this._checkDataType(claim.dataType, index);
-        if (typeIssue) details.push(typeIssue);
+        if (claim.functionSignature) {
+          const sigIssue = this._checkFunctionSignature(claim.functionSignature, index);
+          if (sigIssue) details.push(sigIssue);
+        }
+
+        if (claim.dataType && this.schema) {
+          const typeIssue = this._checkDataType(claim.dataType, index);
+          if (typeIssue) details.push(typeIssue);
+        }
       }
     });
 
-    const flaggedClaims = new Set(details.map(d => d.claimIndex)).size;
-    const riskScore = Math.min(1.0, flaggedClaims / claims.length);
+    const flaggedCount = new Set(details.map(d => d.claimIndex)).size;
+    const riskScore = Math.min(1.0, flaggedCount / claims.length);
 
     return {
       riskScore: parseFloat(riskScore.toFixed(2)),
       totalClaims: claims.length,
-      flaggedClaims,
+      flaggedClaims: flaggedCount,
       details
     };
   }
@@ -234,6 +250,70 @@ export class HallucinationDetector {
         type: 'type_mismatch',
         message: `Field "${dataType.field}" is "${actualType}" in schema, claim says "${dataType.expectedType}"`
       };
+    }
+
+    return null;
+  }
+
+  /**
+   * Check a field claim in simplified test format: {entity, field}
+   * @param {object} claim - { entity, field }
+   * @param {number} claimIndex
+   * @returns {object|null}
+   */
+  _checkFieldSimple(claim, claimIndex) {
+    const { entity, field } = claim;
+
+    if (!entity || !field) {
+      return { claimIndex, type: 'invalid_field', message: 'Field claim missing entity or field name' };
+    }
+
+    if (!this.schema) {
+      return null; // No schema provided, cannot validate
+    }
+
+    const entitySchema = this.schema[entity];
+
+    if (!entitySchema) {
+      return { claimIndex, type: 'unknown_entity', message: `Entity "${entity}" not found in schema` };
+    }
+
+    // Support both old format (with 'fields' key) and new format (direct properties)
+    const schemaFields = entitySchema.fields || Object.keys(entitySchema).filter(k => k !== 'methods' && k !== 'fields' && k !== 'types');
+
+    if (!schemaFields.includes(field)) {
+      return { claimIndex, type: 'unknown_field', message: `Field "${field}" does not exist on entity "${entity}"` };
+    }
+
+    return null;
+  }
+
+  /**
+   * Check an API claim in simplified test format: {endpoint}
+   * @param {object} claim - { endpoint }
+   * @param {number} claimIndex
+   * @returns {object|null}
+   */
+  _checkAPISimple(claim, claimIndex) {
+    const { endpoint } = claim;
+
+    if (!endpoint) {
+      return { claimIndex, type: 'invalid_api', message: 'API claim missing endpoint' };
+    }
+
+    if (this.knownAPIs.length === 0) {
+      return null; // No API list provided
+    }
+
+    const matched = this.knownAPIs.some(known => {
+      if (known === endpoint) return true;
+      // Support simple wildcard matching
+      const pattern = known.replace(/\*/g, '.*');
+      return new RegExp(`^${pattern}$`).test(endpoint);
+    });
+
+    if (!matched) {
+      return { claimIndex, type: 'unknown_api', message: `API "${endpoint}" not found in known API list` };
     }
 
     return null;

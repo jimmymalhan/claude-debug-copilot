@@ -25,10 +25,16 @@ export class ConfidenceScorer {
    * @param {EvidenceVerifier}     [options.evidenceVerifier]     - Verifier instance
    * @param {HallucinationDetector} [options.hallucinationDetector] - Detector instance
    * @param {string}               [options.repoRoot]             - Repo root passed to sub-skills
+   * @param {object}               [options.schema]               - Schema for hallucination detection
+   * @param {Array<string>}        [options.knownAPIs]            - Known APIs for hallucination detection
    */
   constructor(options = {}) {
     this.evidenceVerifier = options.evidenceVerifier || new EvidenceVerifier({ repoRoot: options.repoRoot });
-    this.hallucinationDetector = options.hallucinationDetector || new HallucinationDetector({ repoRoot: options.repoRoot });
+    this.hallucinationDetector = options.hallucinationDetector || new HallucinationDetector({
+      repoRoot: options.repoRoot,
+      schema: options.schema,
+      knownAPIs: options.knownAPIs
+    });
   }
 
   /**
@@ -36,8 +42,10 @@ export class ConfidenceScorer {
    *
    * @param {object} input
    * @param {number}        input.baseScore        - Verifier base score (0.0 - 1.0)
-   * @param {Array<object>} input.claims           - Evidence claims for verification
+   * @param {Array<string|object>} input.claims   - Evidence claims for verification
    * @param {Array<object>} [input.contradictions] - Array of { description, resolved }
+   * @param {object}        [input.schema]         - Optional schema for this scoring call
+   * @param {Array<string>} [input.knownAPIs]     - Optional APIs for this scoring call
    * @returns {object} Scoring result
    *   - `confidence`         {number}   Final score 0.0 - 1.0
    *   - `baseScore`          {number}
@@ -56,6 +64,14 @@ export class ConfidenceScorer {
     const baseScore = this._clamp(input.baseScore ?? 0.5, 0, 1);
     const claims = input.claims || [];
     const contradictions = input.contradictions || [];
+
+    // Update schema/APIs if provided in input (allows per-call customization)
+    if (input.schema) {
+      this.hallucinationDetector.schema = input.schema;
+    }
+    if (input.knownAPIs) {
+      this.hallucinationDetector.knownAPIs = input.knownAPIs;
+    }
 
     // Run evidence verification
     const evidenceReport = this.evidenceVerifier.verify(claims);

@@ -11,6 +11,7 @@ import { resolve } from 'path';
 
 /**
  * Pattern that matches file:line citations such as "src/app.js:42"
+ * Also matches file:timestamp such as "logs/app.log:2024-03-09T15:30:00Z"
  */
 const FILE_LINE_PATTERN = /^(.+):(\d+)$/;
 
@@ -18,6 +19,11 @@ const FILE_LINE_PATTERN = /^(.+):(\d+)$/;
  * ISO-8601 timestamp pattern (full or date-only)
  */
 const TIMESTAMP_PATTERN = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})?)?$/;
+
+/**
+ * Pattern that matches file:timestamp citations such as "logs/app.log:2024-03-09T15:30:00Z"
+ */
+const FILE_TIMESTAMP_PATTERN = /^(.+):(\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})?)?)$/;
 
 export class EvidenceVerifier {
   /**
@@ -31,11 +37,14 @@ export class EvidenceVerifier {
 
   /**
    * Run the full verification suite against a list of claims.
+   * Supports both string format ("src/run.js:1") and object format ({text, citation, timestamp}).
    *
-   * @param {Array<object>} claims - Each claim must have at minimum:
-   *   - `text`      {string}  The claim statement
-   *   - `citation`  {string}  A file:line reference (e.g. "src/run.js:12")
-   *   - `timestamp` {string}  ISO-8601 formatted timestamp (optional)
+   * @param {Array<string|object>} claims - Each claim can be:
+   *   - A string: "src/run.js:1" (file:line citation)
+   *   - An object with:
+   *     - `text`      {string}  The claim statement
+   *     - `citation`  {string}  A file:line reference (e.g. "src/run.js:12")
+   *     - `timestamp` {string}  ISO-8601 formatted timestamp (optional)
    * @returns {object} Validation report
    *   - `valid`       {boolean}  True when every claim passed all checks
    *   - `totalClaims` {number}
@@ -49,9 +58,16 @@ export class EvidenceVerifier {
     const issues = [];
 
     claims.forEach((claim, index) => {
-      // 1. Check that claim is an object
+      // Support string format: "src/run.js:1"
+      if (typeof claim === 'string') {
+        const citationIssues = this._validateCitation(claim, index);
+        issues.push(...citationIssues);
+        return;
+      }
+
+      // Support object format: {text, citation, timestamp}
       if (!claim || typeof claim !== 'object') {
-        issues.push({ claimIndex: index, field: 'claim', message: 'Claim must be a non-null object' });
+        issues.push({ claimIndex: index, field: 'claim', message: 'Claim must be a string or object' });
         return;
       }
 
@@ -88,22 +104,39 @@ export class EvidenceVerifier {
   }
 
   /**
-   * Validate a single file:line citation.
+   * Validate a single file:line or file:timestamp citation.
    * Returns an array of issue objects (empty if valid).
    *
-   * @param {string} citation
+   * @param {string} citation - Either "file.js:42" or "file.log:2024-03-09T15:30:00Z"
    * @param {number} claimIndex
    * @returns {Array<object>}
    */
   _validateCitation(citation, claimIndex) {
     const issues = [];
-    const match = FILE_LINE_PATTERN.exec(citation);
 
+    // Try to match file:timestamp pattern first
+    let match = FILE_TIMESTAMP_PATTERN.exec(citation);
+    if (match) {
+      const filePath = match[1];
+      // For timestamps, just validate the file exists
+      const absolutePath = resolve(this.repoRoot, filePath);
+      if (!existsSync(absolutePath)) {
+        issues.push({
+          claimIndex,
+          field: 'citation',
+          message: `Referenced file does not exist: ${filePath}`
+        });
+      }
+      return issues;
+    }
+
+    // Try to match file:line pattern
+    match = FILE_LINE_PATTERN.exec(citation);
     if (!match) {
       issues.push({
         claimIndex,
         field: 'citation',
-        message: `Citation "${citation}" does not match file:line format`
+        message: `Citation "${citation}" does not match file:line or file:timestamp format`
       });
       return issues;
     }
