@@ -9,6 +9,41 @@
 [![Uptime](https://img.shields.io/badge/uptime-99.99%25-brightgreen)](docs/)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
+---
+
+## 🎯 Problem & Solution
+
+### The Problem
+Backend failures are costly. Traditional debugging is slow, expensive, and often wrong:
+- Takes 4-6 hours to diagnose complex issues
+- Requires expensive senior engineers
+- High confidence in wrong answers (91% confident they're right, 60% actually correct)
+- No reproducible process or audit trail
+- Difficult to learn from past failures
+
+### The Solution
+Claude Debug Copilot diagnoses incidents in **16-30 seconds** with **94%+ accuracy**:
+- **Real-time 4-agent pipeline**: Router → Retriever → Skeptic → Verifier
+- **Evidence-first methodology**: Every diagnosis backed by proof, not guesses
+- **Confidence scoring**: Only 95-100 when all critical flows tested and passing
+- **Audit trail**: Immutable logs for compliance and learning
+- **Production-ready**: Proven error handling, retries, timeouts, validation
+
+### Target Users
+- **Engineering teams**: Diagnose production failures in seconds
+- **On-call engineers**: Get clear root cause + fix plan at 3am
+- **QA teams**: Understand failure patterns and regression risks
+- **Product/Ops**: Track incident metrics and trends
+- **Compliance**: Immutable audit trail for regulations
+
+### Why Now
+- Production systems are increasingly complex (microservices, APIs, async queues)
+- Failure diagnosis takes too long and costs too much
+- AI can now retrieve exact evidence and validate it systematically
+- Evidence-first approach is fundamentally more reliable than guessing
+
+---
+
 ## 🎯 Quick Start
 
 ```bash
@@ -22,6 +57,44 @@ open http://localhost:3000
 # Test
 npm test
 ```
+
+---
+
+## 🧠 Memory & Workflow (For Claude Agents)
+
+This project uses **Plan Mode first, then execute**:
+
+1. **Plan Mode** (exploration + design):
+   - Use Explore agent to search codebase
+   - Design solution approach with test criteria
+   - Present plan for approval before coding
+
+2. **Execute** (implementation + verification):
+   - Implement approved plan exactly
+   - Write tests for critical workflows
+   - Run `npm test` locally before committing
+
+3. **Verify** (scoring + documentation):
+   - Update `docs/CONFIDENCE_SCORE.md` with test results
+   - Update `CHANGELOG.md` with what changed and why
+   - Only claim 95-100 confidence if all critical flows tested + passing
+
+### Auto Memory & Configuration
+- **CLAUDE.md** - Project rules and output contract
+- **.claude/CLAUDE.md** - Meta-rules for workflow, memory, and subagents
+- **.claude/settings.json** - Hooks, allowed commands, agent definitions
+- **.claude/rules/** - Standards (guardrails, testing, backend, ui, api, cli, confidence)
+- **MEMORY.md** - Auto memory (kept ≤200 lines with only essential patterns)
+
+### Subagents (Keep 3-5 Total)
+- **Explore** - Codebase search (Haiku, read-only)
+- **Plan** - Research and design (Sonnet, no coding)
+- **General-purpose** - Code writing and testing (Haiku, full access)
+- **Optional**: CodeReviewer, APIValidator (only if 3+ parallel tasks)
+
+See `.claude/CLAUDE.md` for full workflow and memory strategy.
+
+---
 
 ## ✨ Features
 

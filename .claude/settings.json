@@ -1,8 +1,8 @@
 {
-  "hooks": {},
   "version": "1.0",
   "projectName": "Claude Debug Copilot",
   "description": "Evidence-first diagnostic system with production-grade reliability",
+
   "environment": {
     "NODE_ENV": "development",
     "PORT": "3000",
@@ -10,110 +10,163 @@
     "MAX_RETRIES": "2",
     "COVERAGE_THRESHOLD": "60"
   },
-  "commands": {
-    "build": "npm install",
-    "start": "node src/server.js",
-    "test": "npm test",
-    "test:ci": "npm run test:ci",
-    "test:watch": "npm run test:watch",
-    "test:e2e": "npm run test:e2e"
+
+  "hooks": {
+    "PreToolUse": {
+      "description": "Prevent edits to protected files and enforce test runs before commits",
+      "deniedPaths": [
+        ".env", ".env.local", ".env.production",
+        "secrets.json", "credentials.json",
+        "node_modules/", "coverage/", "dist/", "build/",
+        "CLAUDE.md", ".claude/CLAUDE.md", ".claude/settings.json"
+      ],
+      "blockedTools": {
+        "Edit": "Cannot edit .env files, secrets, or configuration",
+        "Write": "Cannot create files in .env, secrets directories"
+      },
+      "warnings": {
+        "before_commit": "Run 'npm test' before committing code changes",
+        "before_push": "Verify all tests pass and no console.logs in production code"
+      }
+    },
+    "OnSessionEnd": {
+      "description": "Reinject critical context after compaction",
+      "actions": [
+        "Preserve CLAUDE.md and .claude/CLAUDE.md",
+        "Keep docs/CONFIDENCE_SCORE.md in context",
+        "Reload memory from ~/.claude/projects/.../memory/MEMORY.md"
+      ]
+    },
+    "Notification": {
+      "description": "Alert when Claude needs user input",
+      "triggers": [
+        "When blocked and need clarification",
+        "When confidence cannot be scored without evidence",
+        "When code change requires user approval",
+        "When test failure needs investigation"
+      ]
+    }
   },
+
+  "subagents": {
+    "description": "Core agents (keep to 3-5 total for efficiency)",
+    "core": [
+      {
+        "name": "Explore",
+        "model": "haiku",
+        "role": "Codebase search and discovery (read-only)",
+        "tools": ["Glob", "Grep", "Read"],
+        "capabilities": [
+          "Find files by pattern (e.g., 'src/**/*.js')",
+          "Search code for keywords (e.g., 'API endpoints')",
+          "Answer questions about codebase structure"
+        ],
+        "constraints": ["Cannot edit files", "Cannot run commands", "Cannot execute code"]
+      },
+      {
+        "name": "Plan",
+        "model": "sonnet",
+        "role": "Research and plan design approaches",
+        "tools": ["Glob", "Grep", "Read", "WebFetch", "WebSearch"],
+        "capabilities": [
+          "Explore codebase during Plan Mode",
+          "Design implementation approaches",
+          "Identify risks and unknowns",
+          "Create detailed work breakdowns"
+        ],
+        "constraints": ["Cannot edit code", "Cannot commit", "Cannot approve own work"]
+      },
+      {
+        "name": "General-Purpose",
+        "model": "haiku",
+        "role": "Code writing and test execution",
+        "tools": ["All"],
+        "capabilities": [
+          "Implement approved plans",
+          "Write and run tests",
+          "Commit changes with messages",
+          "Verify critical workflows"
+        ],
+        "constraints": ["Must work from approved plan", "Cannot skip tests", "Cannot self-approve"]
+      }
+    ],
+    "optional": [
+      {
+        "name": "CodeReviewer",
+        "model": "sonnet",
+        "role": "Code quality, security, performance review",
+        "tools": ["Read", "Grep", "Glob"],
+        "use_when": "Need parallel code review while coding"
+      },
+      {
+        "name": "APIValidator",
+        "model": "haiku",
+        "role": "API contract testing and endpoint verification",
+        "tools": ["Bash", "Read", "Grep"],
+        "use_when": "Testing API integrations in parallel"
+      }
+    ],
+    "guidance": "Spawn optional agents only with 3+ independent parallel tasks. Core agents are sufficient for most work."
+  },
+
   "allowedCommands": [
-    "npm install",
-    "npm test",
-    "npm run test:ci",
-    "npm run test:watch",
-    "npm run test:e2e",
-    "npm start",
-    "npm run diagnose",
-    "git status",
-    "git diff",
-    "git log",
-    "git add",
-    "git commit",
-    "node src/local-pipeline.js",
-    "node src/run.js"
+    "npm install", "npm test", "npm run test:ci", "npm run test:watch",
+    "npm run test:e2e", "npm start", "npm run diagnose",
+    "git status", "git diff", "git log", "git add", "git commit",
+    "node src/local-pipeline.js", "node src/run.js"
   ],
-  "deniedPaths": [
-    ".env",
-    ".env.local",
-    ".env.production",
-    "secrets.json",
-    "credentials.json",
-    ".aws/credentials",
-    ".ssh/id_rsa",
-    "node_modules/",
-    "coverage/",
-    "dist/",
-    "build/"
-  ],
+
   "criticalFiles": [
-    "CLAUDE.md",
-    "package.json",
-    "src/server.js",
-    "src/local-pipeline.js",
-    ".claude/rules/",
-    "docs/CONFIDENCE_SCORE.md",
-    "docs/LOCAL_TESTING.md",
-    "docs/GITHUB_TESTING.md"
+    "CLAUDE.md", ".claude/CLAUDE.md", ".claude/settings.json",
+    "package.json", "src/server.js", "src/local-pipeline.js",
+    "docs/CONFIDENCE_SCORE.md", ".claude/rules/"
   ],
+
   "mcp": {
     "enabled": true,
     "servers": [
       {
-        "name": "claude-ai-context7",
+        "name": "claude-ai-context",
         "type": "library-docs",
-        "description": "Fetch up-to-date documentation for libraries"
+        "description": "Fetch documentation for libraries"
       }
     ]
   },
+
   "coverage": {
     "global": 60,
     "branches": 60,
     "functions": 60,
     "lines": 60,
     "statements": 60,
-    "exclusions": [
-      "node_modules/",
-      "coverage/",
-      "dist/",
-      "tests/"
-    ]
+    "exclusions": ["node_modules/", "coverage/", "dist/", "tests/"]
   },
+
   "rules": [
-    "CLAUDE.md - project standards",
-    ".claude/rules/guardrails.md - anti-hallucination",
-    ".claude/rules/confidence.md - scoring system",
-    ".claude/rules/testing.md - test requirements",
-    ".claude/rules/backend.md - reliability standards",
-    ".claude/rules/ui.md - design standards"
+    "CLAUDE.md - project non-negotiable rules",
+    ".claude/CLAUDE.md - meta-rules (workflow, memory, subagents)",
+    ".claude/rules/guardrails.md - anti-hallucination standards",
+    ".claude/rules/testing.md - test requirements and coverage",
+    ".claude/rules/confidence.md - confidence scoring rubric",
+    ".claude/rules/backend.md - reliability and error handling",
+    ".claude/rules/ui.md - design and UX standards"
   ],
+
   "documentation": {
-    "README.md": "Quick start and overview",
-    "CLAUDE.md": "Project standards and expectations",
-    "CHANGELOG.md": "Session-by-session record of changes",
-    "docs/CONFIDENCE_SCORE.md": "Truth ledger for all tasks",
-    "docs/LOCAL_TESTING.md": "Localhost testing guide",
-    "docs/GITHUB_TESTING.md": "GitHub Actions testing proof",
-    "ARCHITECTURE.md": "System design and data flow",
-    ".claude/rules/": "Reusable guardrails by concern"
+    "README.md": "Problem, quick start, features, integration",
+    "CLAUDE.md": "Project rules, workflow, output contract",
+    ".claude/CLAUDE.md": "Meta-rules, Plan Mode, memory, subagents",
+    "CHANGELOG.md": "Session-by-session change log",
+    "docs/CONFIDENCE_SCORE.md": "Truth ledger with evidence for all tasks",
+    "docs/FEEDBACK_LOG.md": "Stakeholder feedback and action items",
+    ".claude/rules/": "Standards for specific concerns"
   },
-  "enabledPlugins": {
-    "frontend-design@claude-plugins-official": true
-  },
+
   "branchPermissions": {
     "feature/integration-website": {
       "autoAcceptEdits": true,
       "noPermissionPrompts": true,
-      "allowedActions": [
-        "edit all files except .env and secrets",
-        "run tests and npm commands",
-        "commit changes with auto-message",
-        "create feature branches",
-        "update documentation",
-        "create tasks and PRs"
-      ],
-      "description": "Premium frontend upgrade execution branch - auto-accept all changes"
+      "description": "Feature branch - auto-accept edits during development"
     }
   }
 }
