@@ -698,6 +698,45 @@ app.get('/', (req, res) => {
       </pre>
     </div>
 
+    <h2>How This Website Helps You</h2>
+    <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 2px solid #64748b; border-radius: 10px; padding: 30px; margin: 30px 0; color: #e2e8f0;">
+      <h3 style="margin-top: 0; color: #60a5fa;">🎯 Stop Guessing. Start Proving.</h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+        <div>
+          <h4 style="color: #34d399; margin-bottom: 10px;">❌ Traditional Debugging (Broken)</h4>
+          <ul style="color: #cbd5e1; margin: 0;">
+            <li>"Database might be slow?" (no evidence)</li>
+            <li>"Try increasing pool size" (guessing)</li>
+            <li>Waste 2+ hours investigating wrong paths</li>
+            <li>Engineer loses confidence in answers</li>
+            <li>Same bugs appear again and again</li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="color: #34d399; margin-bottom: 10px;">✅ Evidence-First Debugging (This System)</h4>
+          <ul style="color: #cbd5e1; margin: 0;">
+            <li>"Pool exhausted at src/db/connection-pool.js:42" (file:line proof)</li>
+            <li>"Metrics show 50 connections, 10 max: logs/api.log:2024-03-09" (real data)</li>
+            <li>"Fix: increase to 50, rollback to 10, test pool acceptance" (exact steps)</li>
+            <li>"Confidence: 89% (backed by evidence, not feelings)" (verifiable)</li>
+            <li>"Problem solved in 2 minutes, not 2 hours" (proven effective)</li>
+          </ul>
+        </div>
+      </div>
+
+      <h4 style="color: #34d399; margin-top: 20px;">What You Get with Claude Debug Copilot:</h4>
+      <ul style="color: #cbd5e1; columns: 2; gap: 20px;">
+        <li><strong>🔍 Evidence Citations:</strong> Every claim includes file:line proof (not guesses)</li>
+        <li><strong>🚫 No Hallucinations:</strong> Blocked from inventing fields/APIs/tables that don't exist</li>
+        <li><strong>💡 Alternative Theories:</strong> Skeptic challenges first diagnosis with competing explanation</li>
+        <li><strong>✓ Verified Solutions:</strong> Verifier validates fix plan before approval</li>
+        <li><strong>📊 Confidence Scores:</strong> Know exactly how confident the diagnosis is (0.0 - 1.0)</li>
+        <li><strong>🔄 Rollback Plans:</strong> Know exactly how to undo the fix if needed</li>
+        <li><strong>🧪 Test Cases:</strong> Specific tests to validate the fix works</li>
+        <li><strong>⏱️ Fast Resolution:</strong> Diagnose in minutes, not hours (2-5 minute diagnosis time)</li>
+      </ul>
+    </div>
+
     <h2>Key Features</h2>
     <div class="grid">
       <div class="card">
@@ -734,6 +773,36 @@ app.get('/', (req, res) => {
         <h3>Documentation</h3>
         <p>Complete integration guides, custom skills API, and custom agents API. Learn how to extend the system with your own skills and agents.</p>
         <a href="/docs" class="button">Read Docs</a>
+      </div>
+    </div>
+
+    <h2>Use Cases: When You Need This Most</h2>
+    <div style="background: rgba(30, 41, 59, 0.6); border-left: 4px solid #f59e0b; padding: 20px; margin: 20px 0; border-radius: 5px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+        <div>
+          <h4 style="color: #f59e0b; margin-bottom: 8px;">🔥 Production Outage</h4>
+          <p style="color: #cbd5e1; font-size: 14px; margin: 0;">API throwing 50% errors at 2am. Which component? Database? Cache? Network? Get evidence-backed diagnosis in 3 minutes instead of 1 hour on-call debugging.</p>
+        </div>
+        <div>
+          <h4 style="color: #f59e0b; margin-bottom: 8px;">🔄 Recurring Bug</h4>
+          <p style="color: #cbd5e1; font-size: 14px; margin: 0;">Same error keeps happening after "fixes". Root cause wasn't found the first time. Get complete evidence trail showing exactly what changed.</p>
+        </div>
+        <div>
+          <h4 style="color: #f59e0b; margin-bottom: 8px;">📉 Slow Performance</h4>
+          <p style="color: #cbd5e1; font-size: 14px; margin: 0;">Response time degraded after latest deploy. Is it N+1 queries? Memory leak? Wrong database index? Evidence shows exactly which code to fix.</p>
+        </div>
+        <div>
+          <h4 style="color: #f59e0b; margin-bottom: 8px;">🔐 Security Issue</h4>
+          <p style="color: #cbd5e1; font-size: 14px; margin: 0;">Suspicious API calls detected. Are they attacks or legitimate? Evidence-first approach separates signal from noise with file:line proof.</p>
+        </div>
+        <div>
+          <h4 style="color: #f59e0b; margin-bottom: 8px;">🚀 Post-Deployment</h4>
+          <p style="color: #cbd5e1; font-size: 14px; margin: 0;">New deploy causing issues. Was it your code change? Database migration? Infrastructure? Complete rollback plan provided.</p>
+        </div>
+        <div>
+          <h4 style="color: #f59e0b; margin-bottom: 8px;">🤝 Team Confidence</h4>
+          <p style="color: #cbd5e1; font-size: 14px; margin: 0;">Lead engineer needs to approve fix. Confidence score + evidence + tests = informed decision instead of "trust me".</p>
+        </div>
       </div>
     </div>
 
