@@ -457,6 +457,91 @@ footer {
   color: #64748b;
   font-size: 16px;
 }
+
+/* Hamburger Menu Styles */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 8px;
+  line-height: 1;
+  z-index: 101;
+}
+
+.hamburger:hover {
+  opacity: 0.8;
+}
+
+.hamburger:focus {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.hamburger.active {
+  color: #60a5fa;
+}
+
+/* Mobile Navigation Menu */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.95);
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  padding-top: 80px;
+  overflow-y: auto;
+}
+
+.mobile-nav.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobile-nav a {
+  display: block;
+  padding: 16px 20px;
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 16px;
+  border-bottom: 1px solid rgba(96, 165, 250, 0.1);
+  transition: all 0.2s;
+}
+
+.mobile-nav a:hover,
+.mobile-nav a.active {
+  background: rgba(96, 165, 250, 0.1);
+  color: #60a5fa;
+  padding-left: 28px;
+}
+
+/* Show hamburger on mobile */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  header nav {
+    display: none;
+  }
+
+  .mobile-nav {
+    display: block;
+  }
+
+  header .container {
+    justify-content: space-between;
+  }
+}
 `;
 
 // ============================================
@@ -503,6 +588,7 @@ app.get('/', (req, res) => {
   <header>
     <div class="container">
       <div class="logo">Incident Commander</div>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileNav">☰</button>
       <nav>
         <a href="/" class="active">Home</a>
         <a href="/diagnose">Diagnose Issue</a>
@@ -513,6 +599,15 @@ app.get('/', (req, res) => {
       </nav>
     </div>
   </header>
+
+  <nav class="mobile-nav" id="mobileNav" role="navigation" aria-label="Mobile navigation">
+    <a href="/" class="active">Home</a>
+    <a href="/diagnose">Diagnose Issue</a>
+    <a href="/cases">Results</a>
+    <a href="/roi">ROI Calculator</a>
+    <a href="/pricing">Pricing</a>
+    <a href="mailto:contact@incidentcommander.com">Contact</a>
+  </nav>
 
   <main>
     <div class="container">

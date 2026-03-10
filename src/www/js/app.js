@@ -276,10 +276,29 @@
   };
 
   /* =========================================
+   * Keyboard Navigation Support
+   * ========================================= */
+  App.setupCardKeyboardNavigation = function () {
+    var cards = document.querySelectorAll('.card--link');
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          window.location = this.getAttribute('href');
+        } else if (event.key === 'Escape') {
+          event.preventDefault();
+          this.blur();
+        }
+      });
+    }
+  };
+
+  /* =========================================
    * Initialize
    * ========================================= */
   App.init = function () {
     App.initNav();
+    App.setupCardKeyboardNavigation();
   };
 
   // Auto-init on DOMContentLoaded
