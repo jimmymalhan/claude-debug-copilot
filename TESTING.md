@@ -10,7 +10,7 @@
 
 ## Test Coverage Report
 
-**285 total tests across 8 test suites -- 100% pass rate**
+**367 total tests across 11 test suites -- 100% pass rate**
 
 | # | Test Suite | File | Tests | Focus Area |
 |---|-----------|------|-------|------------|
@@ -22,6 +22,9 @@
 | 6 | Phase 4 Advanced | `phase-4.test.js` | 20 | Monitoring dashboard, performance optimizer (caching, metrics), extended agent framework (8 agents, plugins, custom agents), backward compatibility |
 | 7 | Orchestrator Client | `orchestrator-client.test.js` | 18 | Local orchestrator: initialization (8 modules), task CRUD, agent invocation, heartbeat, audit trail, budget status, module coordination |
 | 8 | Agent Wrapper | `agent-wrapper.test.js` | 14 | 10-step agent lifecycle: invoke 4 agents, input validation, output sanitization, concurrent lock, execution tracking, audit logging, error handling |
+| 9 | MCP Client | `mcp-client.test.js` | -- | MCP client lifecycle: connect/disconnect, provider registration, context fetching with timeout and caching, graceful degradation |
+| 10 | MCP Context Providers | `mcp-context-providers.test.js` | -- | Context providers: repo, logs, schema, metrics; file discovery, content retrieval, error handling |
+| 11 | MCP Integration | `mcp-integration.test.js` | -- | End-to-end MCP pipeline: createMcpClient factory, multi-provider fetch, cache invalidation |
 
 ## Coverage Metrics
 
@@ -29,10 +32,19 @@
 |--------|-----------|----------|-----------|-------|--------|--------|
 | **Global** | 89.87% | 83.07% | 85.07% | 89.9% | 60% | PASS |
 | approval-state-machine.js | 97.91% | 95.23% | 100% | 97.91% | 90% | PASS |
-| budget-enforcer.js | 96.15% | 90% | 100% | 96.15% | 90% | PASS |
+| budget-enforcer.js | 96.22% | 90% | 100% | 96.22% | 90% | PASS |
 | audit-logger.js | 95.23% | 89.47% | 100% | 94.59% | 85% | PASS |
-| heartbeat-monitor.js | 93.75% | 68.96% | 100% | 93.75% | -- | PASS |
 | task-manager.js | 100% | 97.91% | 100% | 100% | -- | PASS |
+| agent-wrapper.js | 95.23% | 76.47% | 100% | 95.23% | -- | PASS |
+| error-handler.js | 97.95% | 90.32% | 100% | 97.87% | -- | PASS |
+| heartbeat-monitor.js | 93.75% | 68.96% | 100% | 93.75% | -- | PASS |
+| input-validator.js | 91.17% | 87.09% | 100% | 91.04% | -- | PASS |
+| file-access-guard.js | 93.1% | 66.66% | 100% | 93.1% | -- | PASS |
+| log-sanitizer.js | 88.88% | 71.87% | 100% | 88.37% | -- | PASS |
+| orchestrator-client.js | 88.88% | 76.47% | 92.3% | 88.88% | -- | PASS |
+| extended-agent-framework.js | 94.44% | 66.66% | 100% | 97.14% | -- | PASS |
+| monitoring-dashboard.js | 81.08% | 53.33% | 68.75% | 82.85% | -- | PASS |
+| performance-optimizer.js | 81.48% | 75% | 100% | 88% | -- | PASS |
 
 Coverage thresholds are enforced in `jest.config.js`:
 - Global minimum: 60% (branches, functions, lines, statements)
@@ -66,6 +78,14 @@ The `integration-tests.test.js` suite covers the full 4-agent pipeline end-to-en
 8. Error/Failure Handling (7 tests)
 9. Concurrent Agent Isolation (4 tests)
 10. CLAUDE.md Contract Enforcement (7 tests)
+
+### MCP Integration Tests
+
+Three dedicated test suites validate the Model Context Protocol layer:
+
+- **mcp-client.test.js**: Client lifecycle (connect, disconnect, reconnect), provider registration/deregistration, context fetching with timeout enforcement, response caching and cache invalidation, graceful degradation when MCP server is unavailable
+- **mcp-context-providers.test.js**: All 4 context providers (repo, logs, schema, metrics), file discovery and content retrieval, directory scanning, error handling for missing files
+- **mcp-integration.test.js**: End-to-end `createMcpClient()` factory, multi-provider parallel fetch via `fetchMultiple()`, cache behavior across providers
 
 ### Error Scenario Tests
 
@@ -111,7 +131,7 @@ GitHub Actions runs on every push/PR to `main`:
 npm test
 ```
 
-This runs all 8 test suites with coverage reporting.
+This runs all 11 test suites with coverage reporting.
 
 ### Running Specific Test Files
 
@@ -124,6 +144,9 @@ npx jest --testPathPattern="security"
 
 # Run only file-access-guard tests
 npx jest tests/file-access-guard.test.js
+
+# Run MCP tests only
+npx jest tests/mcp-client.test.js tests/mcp-context-providers.test.js tests/mcp-integration.test.js
 ```
 
 Note: All commands require the `--experimental-vm-modules` flag for ES module support. The `npm test` script includes this automatically. For direct `npx jest` calls:
@@ -166,9 +189,8 @@ Produces text and lcov coverage reports suitable for CI pipelines.
 npm run test:e2e
 ```
 
-Requires staging environment variables:
-- `ORCHESTRATOR_API_URL` -- staging API endpoint
-- `ORCHESTRATOR_API_KEY` -- staging API key
+Requires environment variables:
+- `ANTHROPIC_API_KEY` -- Anthropic API key for live agent calls
 
 E2E tests are not run in CI by default (requires credentials).
 
@@ -184,10 +206,10 @@ Jest output shows:
 A passing run looks like:
 
 ```
-Test Suites:  8 passed, 8 total
-Tests:        285 passed, 285 total
+Test Suites:  11 passed, 11 total
+Tests:        367 passed, 367 total
 Snapshots:    0 total
-Time:         ~3s
+Time:         ~17s
 ```
 
 ### Debugging Test Failures
@@ -254,10 +276,10 @@ Expected output contract (from CLAUDE.md):
 
 | Metric | Value |
 |--------|-------|
-| Total tests | 285 |
-| Pass rate | 285/285 (100%) |
+| Total tests | 367 |
+| Pass rate | 367/367 (100%) |
 | Flake rate | 0% (all deterministic, no network calls) |
-| Test suites | 8 |
+| Test suites | 11 |
 | Statement coverage | 89.87% |
 | Branch coverage | 83.07% |
 | Function coverage | 85.07% |

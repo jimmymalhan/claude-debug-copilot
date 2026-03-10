@@ -19,7 +19,7 @@ describe('DebugOrchestrator: Local Orchestrator Tests', () => {
       expect(client.isInitialized).toBe(true);
     });
 
-    test('should have all 8 modules', () => {
+    test('should have all 11 modules (8 orchestrator + 3 skills)', () => {
       expect(client.auditLogger).toBeDefined();
       expect(client.taskManager).toBeDefined();
       expect(client.budgetEnforcer).toBeDefined();
@@ -27,6 +27,9 @@ describe('DebugOrchestrator: Local Orchestrator Tests', () => {
       expect(client.agentWrapper).toBeDefined();
       expect(client.errorHandler).toBeDefined();
       expect(client.approvalStateMachine).toBeDefined();
+      expect(client.evidenceVerifier).toBeDefined();
+      expect(client.hallucinationDetector).toBeDefined();
+      expect(client.confidenceScorer).toBeDefined();
     });
   });
 
