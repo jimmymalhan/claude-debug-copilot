@@ -318,17 +318,54 @@ Result: Actionable fix in 2 minutes, engineer is certain
 
 ---
 
-## Interactive Website
+## Integration Website (v2.1.0)
 
-Access the production-ready website at **http://localhost:3000** (run `npm start`):
+Claude Debug Copilot includes a full interactive website for exploring the debugging pipeline, skills, agents, and MCP integrations -- all running locally.
 
-- **Home** - Project overview and feature highlights
-- **Pipeline** - Interactive 5-agent flow with 6 incident scenarios
-- **Skills** - Evidence Verifier, Hallucination Detector, Confidence Scorer demos
-- **MCP** - Context provider integration showcase (4 providers)
-- **Agents** - All 9 agents with capabilities and constraints
-- **Tests** - 547+ tests passing, 90%+ coverage
-- **Docs** - Integration guide, custom skills/agents APIs
+### Quick Start
+
+```bash
+npm install
+npm run demo
+# Open http://localhost:3000
+```
+
+### Pages
+
+| Page | URL | Description |
+|------|-----|-------------|
+| Home | `/` | Project overview, 5-agent pipeline diagram, feature highlights |
+| Pipeline | `/pipeline` | Interactive pipeline visualizer with 6 real incident scenarios (play/pause/step/reset) |
+| Skills | `/skills` | Live demos: Evidence Verifier, Hallucination Detector, Confidence Scorer |
+| MCP | `/mcp` | Model Context Protocol dashboard with 4 context providers |
+| Agents | `/agents` | All 9 agent definitions with capabilities, constraints, and usage |
+| Tests | `/tests` | Test dashboard: 547+ tests passing, 94%+ coverage |
+| Docs | `/docs` | Integration guide, Custom Skills API, Custom Agents API |
+
+### API Endpoints
+
+```
+POST /api/diagnose              5-agent diagnosis pipeline
+POST /api/verify-evidence       Validate file:line citations
+POST /api/detect-hallucinations Detect invented entities
+POST /api/score-confidence      Calculate confidence score
+POST /api/critic-approval       Quality gate validation
+GET  /api/mcp-status            MCP provider status
+GET  /api/test-results          Test metrics and coverage
+```
+
+### Architecture
+
+```
+Browser (localhost:3000)
+  |
+  +-- Express Server (src/demo-server.js)
+        |
+        +-- DebugOrchestrator (14 modules)
+        +-- EvidenceVerifier / HallucinationDetector / ConfidenceScorer
+        +-- MCP Context Providers (repo, log, schema, metrics)
+        +-- Custom Skills (5) and Custom Agents (4)
+```
 
 ## Repository Structure
 
@@ -380,7 +417,12 @@ src/
 │   └── critic.js        # Quality gate enforcer
 └── demo-server.js       # Interactive website + API server
 
+assets/                  # Branding [NEW]
+├── logo.svg             # Project logo
+└── favicon.svg          # Browser favicon
+
 docs/                    # Documentation [NEW]
+├── WEBSITE_GUIDE.md     # Interactive website user guide
 ├── INTEGRATION_GUIDE.md # Complete user guide
 ├── CUSTOM_SKILLS_API.md # Skills development guide
 └── CUSTOM_AGENTS_API.md # Agents development guide
@@ -438,6 +480,10 @@ Issues and PRs welcome. Ensure:
 ## Technical Documentation
 
 - `CLAUDE.md` - Non-negotiable project rules and output contracts
+- `docs/WEBSITE_GUIDE.md` - Interactive website user guide
+- `docs/INTEGRATION_GUIDE.md` - Complete setup and usage guide
+- `docs/CUSTOM_SKILLS_API.md` - Custom skills development guide
+- `docs/CUSTOM_AGENTS_API.md` - Custom agents development guide
 
 ## License
 

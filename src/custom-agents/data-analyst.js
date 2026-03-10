@@ -1,38 +1,86 @@
 /**
  * DataAnalyst Agent
  *
- * Explores and analyzes data patterns, identifies anomalies,
- * and provides insights backed by evidence.
+ * Read-only agent that explores and analyzes data patterns, identifies
+ * anomalies, and provides insights backed by statistical evidence.
+ *
+ * Safety: This agent is strictly read-only. It never modifies input data.
+ * All analysis methods return new objects without mutating the source.
  */
 
-import { MetricsAnalyzer } from '../custom-skills/metrics-analyzer.js';
-import { DataValidator } from '../custom-skills/data-validator.js';
+import { BaseAgent } from './base-agent.js';
 
-export class DataAnalystAgent {
+export class DataAnalystAgent extends BaseAgent {
   constructor(options = {}) {
-    this.metricsAnalyzer = new MetricsAnalyzer();
-    this.dataValidator = new DataValidator();
+    super({
+      name: 'DataAnalyst',
+      description: 'Analyzes data patterns, detects anomalies, and identifies trends with statistical evidence',
+      version: '1.0.0',
+      capabilities: ['file-analysis', 'metric-analysis', 'log-analysis', 'schema-analysis', 'anomaly-detection', 'trend-analysis', 'correlation-analysis'],
+      inputSchema: {
+        required: ['data'],
+        properties: {
+          data: { type: 'object' },
+          analysisType: { type: 'string', enum: ['structure', 'anomalies', 'correlation', 'trends'] },
+          context: { type: 'string' }
+        }
+      },
+      outputSchema: {
+        properties: {
+          insights: { type: 'array' },
+          anomalies: { type: 'array' },
+          suggestions: { type: 'array' },
+          confidence: { type: 'number' }
+        }
+      },
+      readOnly: true,
+      ...options
+    });
   }
 
   /**
-   * Analyze data and provide insights.
+   * Validate input with agent-specific rules.
+   *
+   * @param {*} input - Input to validate
+   * @returns {{ valid: boolean, errors: string[] }}
+   */
+  validate(input) {
+    const errors = [];
+
+    if (input === null || input === undefined) {
+      return { valid: false, errors: ['Input is required'] };
+    }
+
+    if (typeof input !== 'object' || Array.isArray(input)) {
+      return { valid: false, errors: ['Input must be a plain object'] };
+    }
+
+    if (input.data === undefined || input.data === null) {
+      errors.push("Required field 'data' is missing");
+    }
+
+    if (input.analysisType !== undefined && typeof input.analysisType !== 'string') {
+      errors.push("Field 'analysisType' must be of type 'string'");
+    }
+
+    if (input.analysisType !== undefined && !['structure', 'anomalies', 'correlation', 'trends'].includes(input.analysisType)) {
+      errors.push("Field 'analysisType' must be one of: structure, anomalies, correlation, trends");
+    }
+
+    return { valid: errors.length === 0, errors };
+  }
+
+  /**
+   * Execute data analysis. This is the core read-only analysis engine.
    *
    * @param {object} input
    * @param {*} input.data - Data to analyze
-   * @param {string} input.analysisType - 'structure|anomalies|correlation|trends'
+   * @param {string} [input.analysisType='structure'] - Analysis type
    * @param {string} [input.context] - Background context
-   * @returns {object} Analysis results with insights and evidence
+   * @returns {Promise<object>} Analysis results with insights and evidence
    */
-  async analyze(input) {
-    if (!input || typeof input !== 'object') {
-      throw new Error('Input must be a valid object');
-    }
-
-    const { data, analysisType, context } = input;
-
-    if (!data) {
-      throw new Error('Data is required');
-    }
+  async _execute(input) {
+    const { data, analysisType = 'structure', context } = input;
 
     const analysis = {
       insights: [],
@@ -55,6 +103,33 @@ export class DataAnalystAgent {
     }
   }
 
+  /**
+   * Backward-compatible analyze method.
+   *
+   * @param {object} input
+   * @returns {Promise<object>}
+   */
+  async analyze(input) {
+    if (!input || typeof input !== 'object') {
+      throw new Error('Input must be a valid object');
+    }
+
+    if (!input.data) {
+      throw new Error('Data is required');
+    }
+
+    return this._execute(input);
+  }
+
+  /**
+   * Analyze the structure of data.
+   *
+   * @param {*} data - Data to analyze
+   * @param {object} analysis - Accumulator for results
+   * @param {string} [context] - Optional context
+   * @returns {object} Structure analysis
+   * @private
+   */
   _analyzeStructure(data, analysis, context) {
     if (Array.isArray(data)) {
       analysis.insights.push({
@@ -92,6 +167,15 @@ export class DataAnalystAgent {
     return analysis;
   }
 
+  /**
+   * Detect anomalies using the IQR method.
+   *
+   * @param {*} data - Data to analyze
+   * @param {object} analysis - Accumulator
+   * @param {string} [context] - Optional context
+   * @returns {object} Anomaly analysis
+   * @private
+   */
   _analyzeAnomalies(data, analysis, context) {
     if (!Array.isArray(data)) {
       analysis.confidence = 0;
@@ -114,7 +198,6 @@ export class DataAnalystAgent {
     const lowerBound = q1 - 1.5 * iqr;
     const upperBound = q3 + 1.5 * iqr;
 
-    // Find anomalies
     data.forEach((value, index) => {
       if (typeof value === 'number') {
         if (value < lowerBound || value > upperBound) {
@@ -122,7 +205,7 @@ export class DataAnalystAgent {
             value,
             index,
             severity: Math.abs(value - median) > 3 * iqr ? 'high' : 'medium',
-            reason: value < lowerBound ? 'Below Q1-1.5×IQR' : 'Above Q3+1.5×IQR'
+            reason: value < lowerBound ? 'Below Q1-1.5xIQR' : 'Above Q3+1.5xIQR'
           });
         }
       }
@@ -140,6 +223,15 @@ export class DataAnalystAgent {
     return analysis;
   }
 
+  /**
+   * Analyze correlation between numeric fields.
+   *
+   * @param {*} data - Data to analyze
+   * @param {object} analysis - Accumulator
+   * @param {string} [context] - Optional context
+   * @returns {object} Correlation analysis
+   * @private
+   */
   _analyzeCorrelation(data, analysis, context) {
     if (!Array.isArray(data) || data.length === 0) {
       analysis.confidence = 0;
@@ -171,6 +263,15 @@ export class DataAnalystAgent {
     return analysis;
   }
 
+  /**
+   * Analyze data trends over time.
+   *
+   * @param {*} data - Data to analyze
+   * @param {object} analysis - Accumulator
+   * @param {string} [context] - Optional context
+   * @returns {object} Trend analysis
+   * @private
+   */
   _analyzeTrends(data, analysis, context) {
     if (!Array.isArray(data) || data.length < 2) {
       analysis.confidence = 0;

@@ -27,7 +27,32 @@ const PORT = 3000;
 const repoRoot = process.cwd();
 
 app.use(express.json());
-app.use(express.static('public'));
+
+// Production optimizations: compression and caching
+import zlib from 'zlib';
+app.use((req, res, next) => {
+  const acceptEncoding = req.headers['accept-encoding'] || '';
+  if (acceptEncoding.includes('gzip')) {
+    const originalSend = res.send.bind(res);
+    res.send = function(body) {
+      if (typeof body === 'string' && body.length > 1024) {
+        res.setHeader('Content-Encoding', 'gzip');
+        res.setHeader('Vary', 'Accept-Encoding');
+        zlib.gzip(Buffer.from(body), (err, compressed) => {
+          if (err) return originalSend(body);
+          originalSend(compressed);
+        });
+      } else {
+        originalSend(body);
+      }
+    };
+  }
+  next();
+});
+
+// Cache static assets for 1 hour
+app.use(express.static('public', { maxAge: '1h' }));
+app.use('/assets', express.static('assets', { maxAge: '1h' }));
 
 // Initialize services
 const orchestrator = new DebugOrchestrator();
@@ -656,7 +681,10 @@ app.get('/', (req, res) => {
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Claude Debug Copilot - Production Website</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <style>${globalStyles}</style>
 </head>
 <body>
@@ -912,7 +940,10 @@ app.get('/pipeline', (req, res) => {
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Interactive Pipeline Visualizer</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <style>${globalStyles}
     .state-flow {
       display: flex;
@@ -1060,7 +1091,10 @@ app.get('/skills', (req, res) => {
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Skills Demo - Evidence Verifier, Hallucination Detector, Confidence Scorer</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <style>${globalStyles}
     .skill-section { margin: 32px 0; }
     .form-group { margin: 16px 0; }
@@ -1238,7 +1272,10 @@ app.get('/mcp', (req, res) => {
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MCP Integration Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <style>${globalStyles}</style>
 </head>
 <body>
@@ -1366,7 +1403,10 @@ app.get('/agents', (req, res) => {
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agent Capabilities</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <style>${globalStyles}
     .agent-card {
       background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
@@ -1502,7 +1542,10 @@ app.get('/tests', (req, res) => {
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Test Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <style>${globalStyles}</style>
 </head>
 <body>
@@ -1651,7 +1694,10 @@ app.get('/docs', (req, res) => {
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Documentation</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <style>${globalStyles}</style>
 </head>
 <body>
@@ -1783,7 +1829,7 @@ orchestrator.initialize().then(() => {
     const stats = getRepoStats();
     console.log('\n');
     console.log('═'.repeat(70));
-    console.log('  Claude Debug Copilot v2.0.0 - Production Website');
+    console.log('  Claude Debug Copilot v2.1.0 - Production Website');
     console.log('═'.repeat(70));
     console.log(`\n  Open in browser: http://localhost:${PORT}`);
     console.log('\n  Available Pages:');

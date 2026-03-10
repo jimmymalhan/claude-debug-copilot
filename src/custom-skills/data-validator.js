@@ -1,17 +1,78 @@
 /**
  * DataValidator Skill
  *
- * Validates data types, ranges, formats, and structures.
- * Used across the pipeline for input/output validation.
+ * Validates data against type constraints, format patterns, numeric ranges,
+ * and structural schemas. Supports primitive types, string patterns, enums,
+ * required fields, and nested object validation.
+ *
+ * @extends BaseSkill
  */
 
-export class DataValidator {
+import { BaseSkill } from './base-skill.js';
+
+export class DataValidator extends BaseSkill {
   /**
-   * @param {object} options
-   * @param {object} [options.schema] - Type definitions and constraints
+   * @param {object} [options]
+   * @param {object} [options.schema] - Default schema for validateObject calls
    */
   constructor(options = {}) {
+    super({
+      name: 'DataValidator',
+      description: 'Validates data types, formats, constraints, and structural schemas',
+      version: '1.0.0',
+      ...options
+    });
     this.schema = options.schema || {};
+  }
+
+  /**
+   * Validate input before execution.
+   *
+   * @param {object} input - Must contain { data, rules } or { object, schema }
+   * @returns {object} { valid, errors }
+   */
+  validate(input) {
+    const errors = [];
+
+    if (input === null || input === undefined) {
+      errors.push({ field: 'input', message: 'Input is required' });
+      return { valid: false, errors };
+    }
+
+    // Support legacy direct-call signature: validate(data, rules)
+    if (arguments.length === 2) {
+      if (!Array.isArray(arguments[1])) {
+        throw new Error('Rules must be an array');
+      }
+      return this._validateData(arguments[0], arguments[1]);
+    }
+
+    // Structured input for execute()
+    if (typeof input === 'object' && input.rules) {
+      if (!Array.isArray(input.rules)) {
+        errors.push({ field: 'rules', message: 'Rules must be an array' });
+      }
+    } else if (typeof input === 'object' && input.schema) {
+      if (typeof input.schema !== 'object') {
+        errors.push({ field: 'schema', message: 'Schema must be an object' });
+      }
+    }
+
+    return { valid: errors.length === 0, errors };
+  }
+
+  /**
+   * Execute the validator.
+   *
+   * @param {object} input - { data, rules } for primitive validation or { object, schema } for structural
+   * @param {object} [context] - Execution context
+   * @returns {object} Validation result
+   */
+  _execute(input, context) {
+    if (input.schema && input.object !== undefined) {
+      return this.validateObject(input.object, input.schema);
+    }
+    return this._validateData(input.data, input.rules);
   }
 
   /**
@@ -20,13 +81,14 @@ export class DataValidator {
    * @param {*} data - Data to validate
    * @param {Array<object>} rules - Validation rules
    *   - { type: 'string|number|boolean|object|array' }
-   *   - { min, max } for ranges
-   *   - { pattern: RegExp } for strings
-   *   - { required: true } for mandatory fields
+   *   - { min, max } for numeric ranges
+   *   - { minLength, maxLength } for string length
+   *   - { pattern: RegExp|string } for string matching
+   *   - { required: true } for mandatory values
    *   - { enum: [values] } for allowed values
-   * @returns {object} { valid, errors }
+   * @returns {object} { valid, errors, errorCount }
    */
-  validate(data, rules) {
+  _validateData(data, rules) {
     if (!Array.isArray(rules)) {
       throw new Error('Rules must be an array');
     }
@@ -39,7 +101,6 @@ export class DataValidator {
         return;
       }
 
-      // Type validation
       if (rule.type) {
         const actualType = Array.isArray(data) ? 'array' : typeof data;
         if (actualType !== rule.type) {
@@ -52,7 +113,6 @@ export class DataValidator {
         }
       }
 
-      // Range validation (min/max)
       if (rule.min !== undefined && typeof data === 'number') {
         if (data < rule.min) {
           errors.push({
@@ -73,7 +133,6 @@ export class DataValidator {
         }
       }
 
-      // String length validation
       if (rule.minLength !== undefined && typeof data === 'string') {
         if (data.length < rule.minLength) {
           errors.push({
@@ -94,7 +153,6 @@ export class DataValidator {
         }
       }
 
-      // Pattern validation
       if (rule.pattern && typeof data === 'string') {
         const pattern = rule.pattern instanceof RegExp ? rule.pattern : new RegExp(rule.pattern);
         if (!pattern.test(data)) {
@@ -106,7 +164,6 @@ export class DataValidator {
         }
       }
 
-      // Enum validation
       if (rule.enum && Array.isArray(rule.enum)) {
         if (!rule.enum.includes(data)) {
           errors.push({
@@ -117,7 +174,6 @@ export class DataValidator {
         }
       }
 
-      // Required validation
       if (rule.required && (data === null || data === undefined || data === '')) {
         errors.push({
           ruleIndex: index,
@@ -135,10 +191,10 @@ export class DataValidator {
   }
 
   /**
-   * Validate object structure.
+   * Validate an object against a structural schema.
    *
    * @param {object} obj - Object to validate
-   * @param {object} schema - Schema with {fieldName: rules}
+   * @param {object} schema - Map of { fieldName: rulesArray }
    * @returns {object} { valid, fieldErrors }
    */
   validateObject(obj, schema) {
@@ -153,7 +209,7 @@ export class DataValidator {
 
     Object.entries(schema).forEach(([field, rules]) => {
       const value = obj[field];
-      const result = this.validate(value, rules);
+      const result = this._validateData(value, rules);
 
       if (!result.valid) {
         result.errors.forEach(error => {
@@ -168,6 +224,32 @@ export class DataValidator {
     return {
       valid: fieldErrors.length === 0,
       fieldErrors
+    };
+  }
+
+  /** @returns {object} Input schema descriptor */
+  getInputSchema() {
+    return {
+      type: 'object',
+      properties: {
+        data: { type: 'any', description: 'Data to validate' },
+        rules: { type: 'array', description: 'Array of validation rule objects' },
+        object: { type: 'object', description: 'Object for structural validation' },
+        schema: { type: 'object', description: 'Schema map of { fieldName: rulesArray }' }
+      }
+    };
+  }
+
+  /** @returns {object} Output schema descriptor */
+  getOutputSchema() {
+    return {
+      type: 'object',
+      properties: {
+        valid: 'boolean',
+        errors: 'array',
+        errorCount: 'number',
+        fieldErrors: 'array'
+      }
     };
   }
 }

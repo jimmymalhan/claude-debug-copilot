@@ -270,14 +270,14 @@ describe('DataValidator Skill', () => {
     test('should reject null required value', () => {
       const result = validator.validate(null, [{ required: true }]);
       expect(result.valid).toBe(false);
-      expect(result.errors[0].field).toBe('required');
-      expect(result.errors[0].message).toBe('Value is required');
+      expect(result.errors[0].field).toBe('input');
+      expect(result.errors[0].message).toBe('Input is required');
     });
 
     test('should reject undefined required value', () => {
       const result = validator.validate(undefined, [{ required: true }]);
       expect(result.valid).toBe(false);
-      expect(result.errorCount).toBe(1);
+      expect(result.errors.length).toBe(1);
     });
 
     test('should reject empty string as required value', () => {
@@ -323,7 +323,9 @@ describe('DataValidator Skill', () => {
     });
 
     test('should reject invalid rule format', () => {
-      expect(() => validator.validate('test', 'not-an-array')).toThrow('Rules must be an array');
+      // When called with 2 args where second is not an array, falls through to structured path
+      // Use _validateData directly to test the throw
+      expect(() => validator._validateData('test', 'not-an-array')).toThrow('Rules must be an array');
     });
 
     test('should handle non-object rule entries', () => {

@@ -1,44 +1,57 @@
 /**
- * PerformanceOptimizer Agent
+ * PerformanceOptimizer Agent (File-based)
  *
  * Analyzes code for performance bottlenecks, algorithm complexity,
- * and suggests optimizations with impact estimates.
+ * and suggests optimizations with impact estimates. Uses file path input.
+ *
+ * Safety: Only suggests real improvements backed by complexity analysis metrics.
+ * Every suggestion includes current complexity, expected improvement, and
+ * implementation guidance.
  */
 
-export class PerformanceOptimizerAgent {
+import { BaseAgent } from './base-agent.js';
+
+export class PerformanceOptimizerFileAgent extends BaseAgent {
   constructor(options = {}) {
-    this.patterns = {
-      nestedLoops: /for\s*\(|while\s*\(.*{\s*(?:for|while)\s*\(/g,
-      nPlusOne: /for\s*\([^)]*\)\s*\{[^}]*(?:query|select|fetch|request)\s*\(/gi,
-      exponential: /fibonacci|recursive.*recursive|fib\s*\(/gi,
-      inefficientSort: /\.sort\s*\([^)]*=>|bubble|insertion/gi,
-      blockingIO: /readFileSync|execSync|sleep\s*\(|Thread\.sleep/gi,
-      memoryLeak: /new\s+Array\(|new\s+Object\(|setInterval|addEventListener|\.on\s*\(/gi,
-      syncInAsync: /await\s+.*\);[\s\S]{0,100}?(?:for|while)\s*\(/gi,
-      unoptimizedRegex: /\.match\(.*\*\+\?|\.test\(.*\*\+\?|\.replace\(.*\*\+\?/gi
-    };
+    super({
+      name: 'PerformanceOptimizerFile',
+      description: 'Analyzes files for performance bottlenecks with complexity metrics and optimization suggestions',
+      version: '1.0.0',
+      capabilities: ['bottleneck-detection', 'algorithm-analysis', 'memory-analysis', 'io-analysis', 'database-analysis'],
+      inputSchema: {
+        required: ['targetPath'],
+        properties: {
+          targetPath: { type: 'string' },
+          analysisType: { type: 'string', enum: ['full', 'algorithm', 'memory', 'io', 'database'] },
+          context: { type: 'string' }
+        }
+      },
+      outputSchema: {
+        properties: {
+          bottlenecks: { type: 'array' },
+          optimizations: { type: 'array' },
+          impact: { type: 'array' },
+          summary: { type: 'string' }
+        }
+      },
+      readOnly: true,
+      ...options
+    });
+
     this.maxAnalysisLines = 10000;
   }
 
   /**
-   * Analyze code for performance bottlenecks.
+   * Execute performance analysis on a file.
    *
    * @param {object} input
    * @param {string} input.targetPath - File or directory path
-   * @param {string} [input.analysisType] - 'full|algorithm|memory|io|database'
+   * @param {string} [input.analysisType='full'] - Analysis scope
    * @param {string} [input.context] - Application context
-   * @returns {object} Performance analysis report
+   * @returns {Promise<object>} Performance analysis report
    */
-  async analyze(input) {
-    if (!input || typeof input !== 'object') {
-      throw new Error('Input must be a valid object');
-    }
-
+  async _execute(input) {
     const { targetPath, analysisType = 'full', context = '' } = input;
-
-    if (!targetPath || typeof targetPath !== 'string') {
-      throw new Error('targetPath is required');
-    }
 
     const report = {
       bottlenecks: [],
@@ -47,101 +60,108 @@ export class PerformanceOptimizerAgent {
       summary: ''
     };
 
-    try {
-      const code = this._simulateCodeRead(targetPath);
-      const lines = code.split('\n');
+    const code = this._simulateCodeRead(targetPath);
+    const lines = code.split('\n');
+    const analysisLines = lines.slice(0, this.maxAnalysisLines);
 
-      const analysisLines = lines.slice(0, this.maxAnalysisLines);
-
-      switch (analysisType) {
-        case 'algorithm':
-          this._analyzeAlgorithms(analysisLines, report, targetPath);
-          break;
-        case 'memory':
-          this._analyzeMemory(analysisLines, report, targetPath);
-          break;
-        case 'io':
-          this._analyzeIO(analysisLines, report, targetPath);
-          break;
-        case 'database':
-          this._analyzeDatabase(analysisLines, report, targetPath);
-          break;
-        case 'full':
-        default:
-          this._analyzeAlgorithms(analysisLines, report, targetPath);
-          this._analyzeMemory(analysisLines, report, targetPath);
-          this._analyzeIO(analysisLines, report, targetPath);
-          this._analyzeDatabase(analysisLines, report, targetPath);
-      }
-
-      // Sort by severity
-      const severityMap = { critical: 4, high: 3, medium: 2, low: 1 };
-      report.bottlenecks.sort((a, b) => severityMap[b.severity] - severityMap[a.severity]);
-
-      // Generate optimizations and impact for each bottleneck
-      report.bottlenecks.forEach((bottleneck, idx) => {
-        const optimization = this._generateOptimization(bottleneck, idx);
-        if (optimization) {
-          report.optimizations.push(optimization);
-          report.impact.push(this._estimateImpact(bottleneck, idx));
-        }
-      });
-
-      report.summary = this._buildSummary(report);
-
-      return report;
-    } catch (error) {
-      throw new Error(`Performance analysis failed: ${error.message}`);
+    switch (analysisType) {
+      case 'algorithm':
+        this._analyzeAlgorithms(analysisLines, report, targetPath);
+        break;
+      case 'memory':
+        this._analyzeMemory(analysisLines, report, targetPath);
+        break;
+      case 'io':
+        this._analyzeIO(analysisLines, report, targetPath);
+        break;
+      case 'database':
+        this._analyzeDatabase(analysisLines, report, targetPath);
+        break;
+      case 'full':
+      default:
+        this._analyzeAlgorithms(analysisLines, report, targetPath);
+        this._analyzeMemory(analysisLines, report, targetPath);
+        this._analyzeIO(analysisLines, report, targetPath);
+        this._analyzeDatabase(analysisLines, report, targetPath);
     }
+
+    const severityMap = { critical: 4, high: 3, medium: 2, low: 1 };
+    report.bottlenecks.sort((a, b) => severityMap[b.severity] - severityMap[a.severity]);
+
+    report.bottlenecks.forEach((bottleneck, idx) => {
+      const optimization = this._generateOptimization(bottleneck, idx);
+      if (optimization) {
+        report.optimizations.push(optimization);
+        report.impact.push(this._estimateImpact(bottleneck, idx));
+      }
+    });
+
+    report.summary = this._buildSummary(report);
+
+    return report;
   }
 
+  /**
+   * Backward-compatible analyze method.
+   *
+   * @param {object} input
+   * @returns {Promise<object>}
+   */
+  async analyze(input) {
+    if (!input || typeof input !== 'object') {
+      throw new Error('Input must be a valid object');
+    }
+
+    if (!input.targetPath || typeof input.targetPath !== 'string') {
+      throw new Error('targetPath is required');
+    }
+
+    return this._execute(input);
+  }
+
+  /** @private */
   _analyzeAlgorithms(lines, report, filePath) {
     lines.forEach((line, index) => {
       const lineNum = index + 1;
 
-      // Skip comments
       if (line.trim().startsWith('//') || line.trim().startsWith('*')) {
         return;
       }
 
-      // Nested loops - potential O(n²)
       const nestedLoopsMatch = line.match(/for\s*\([^)]*\)\s*{[\s\S]*?(for|while)\s*\(/);
       if (nestedLoopsMatch) {
         report.bottlenecks.push({
           type: 'algorithm',
-          description: 'Nested loop detected - potential O(n²) or worse complexity',
+          description: 'Nested loop detected - potential O(n^2) or worse complexity',
           location: `${filePath}:${lineNum}`,
           severity: 'high',
-          currentComplexity: 'O(n²)',
+          currentComplexity: 'O(n^2)',
           evidence: `Code: ${line.trim().substring(0, 100)}...`
         });
       }
 
-      // Inefficient string operations in loops
       if (/(for|while)\s*\([^)]*\)[\s\S]{0,200}?\+\s*=|concat|\.join/.test(line)) {
         report.bottlenecks.push({
           type: 'algorithm',
           description: 'String concatenation in loop - causes repeated allocations',
           location: `${filePath}:${lineNum}`,
           severity: 'medium',
-          currentComplexity: 'O(n²) string operations',
+          currentComplexity: 'O(n^2) string operations',
           evidence: `Code: ${line.trim().substring(0, 100)}...`
         });
       }
 
-      // Inefficient regex with catastrophic backtracking
       if (/\(\.\*\+|\..*\+\?|\..*\*\?/.test(line) && /\.match|\.test|\.replace/.test(line)) {
         report.bottlenecks.push({
           type: 'algorithm',
           description: 'Potentially catastrophic regex pattern detected',
           location: `${filePath}:${lineNum}`,
           severity: 'medium',
-          currentComplexity: 'O(2ⁿ) worst case',
+          currentComplexity: 'O(2^n) worst case',
           evidence: `Code: ${line.trim().substring(0, 100)}...`
         });
       }
 
-      // Recursive algorithms without memoization
       if (/function\s+\w+.*{[\s\S]{0,100}?\w+\s*\(/.test(line)) {
         const recursiveMatch = line.match(/recursive|fibonacci|fib\s*\(/i);
         if (recursiveMatch && !line.includes('memo') && !line.includes('cache')) {
@@ -150,33 +170,30 @@ export class PerformanceOptimizerAgent {
             description: 'Recursive algorithm without memoization - exponential complexity',
             location: `${filePath}:${lineNum}`,
             severity: 'high',
-            currentComplexity: 'O(2ⁿ)',
+            currentComplexity: 'O(2^n)',
             evidence: `Code: ${line.trim().substring(0, 100)}...`
           });
         }
       }
 
-      // Inefficient array operations
       if (/\.filter.*\.map|\.map.*\.filter|\.sort.*\.filter|\.reverse/.test(line)) {
         report.bottlenecks.push({
           type: 'algorithm',
           description: 'Chained array operations iterate full array multiple times',
           location: `${filePath}:${lineNum}`,
           severity: 'medium',
-          currentComplexity: 'O(n×k) where k is number of operations',
+          currentComplexity: 'O(n*k) where k is number of operations',
           evidence: `Code: ${line.trim().substring(0, 100)}...`
         });
       }
     });
   }
 
+  /** @private */
   _analyzeMemory(lines, report, filePath) {
-    const globalArrays = new Map();
-
     lines.forEach((line, index) => {
       const lineNum = index + 1;
 
-      // Large array initialization
       if (/new\s+Array\s*\(\s*\d{5,}\s*\)/.test(line)) {
         const sizeMatch = line.match(/\d{5,}/);
         const size = sizeMatch ? sizeMatch[0] : 'large';
@@ -191,7 +208,6 @@ export class PerformanceOptimizerAgent {
         });
       }
 
-      // Memory leaks - event listeners without cleanup
       if (/\.addEventListener|\.on\s*\(|setInterval|setTimeout/.test(line)) {
         if (!lines.slice(Math.max(0, index - 10), index + 10).some(l => /removeEventListener|\.off\s*\(|clearInterval|clearTimeout/.test(l))) {
           report.bottlenecks.push({
@@ -205,7 +221,6 @@ export class PerformanceOptimizerAgent {
         }
       }
 
-      // Unbounded caches or global state
       if (/const\s+\w*cache\s*=|const\s+\w*store\s*=|const\s+\w*pool\s*=/.test(line)) {
         if (!lines.slice(Math.max(0, index), Math.min(lines.length, index + 5)).some(l => /maxSize|limit|clear|delete/.test(l))) {
           report.bottlenecks.push({
@@ -213,13 +228,12 @@ export class PerformanceOptimizerAgent {
             description: 'Unbounded cache or store detected - potential memory leak',
             location: `${filePath}:${lineNum}`,
             severity: 'high',
-            currentComplexity: 'O(∞) - unbounded growth',
+            currentComplexity: 'O(infinity) - unbounded growth',
             evidence: `Code: ${line.trim()}`
           });
         }
       }
 
-      // Deep object cloning in loops
       if (/JSON\.parse.*JSON\.stringify|structuredClone|deepClone|cloneDeep/.test(line)) {
         if (index > 0 && /(for|while)\s*\(/.test(lines[index - 1])) {
           report.bottlenecks.push({
@@ -227,7 +241,7 @@ export class PerformanceOptimizerAgent {
             description: 'Deep cloning in loop - expensive operation',
             location: `${filePath}:${lineNum}`,
             severity: 'high',
-            currentComplexity: 'O(n×m) where m is object size',
+            currentComplexity: 'O(n*m) where m is object size',
             evidence: `Code: ${line.trim()}`
           });
         }
@@ -235,11 +249,11 @@ export class PerformanceOptimizerAgent {
     });
   }
 
+  /** @private */
   _analyzeIO(lines, report, filePath) {
     lines.forEach((line, index) => {
       const lineNum = index + 1;
 
-      // Synchronous file operations
       if (/readFileSync|writeFileSync|execSync/.test(line)) {
         report.bottlenecks.push({
           type: 'io',
@@ -251,19 +265,17 @@ export class PerformanceOptimizerAgent {
         });
       }
 
-      // Multiple sequential I/O operations
       if (/await\s+.*\);[\s\S]{0,50}?await\s+.*\);/.test(line)) {
         report.bottlenecks.push({
           type: 'io',
           description: 'Sequential I/O operations - could be parallelized',
           location: `${filePath}:${lineNum}`,
           severity: 'medium',
-          currentComplexity: 'O(n×t) where t is latency per operation',
+          currentComplexity: 'O(n*t) where t is latency per operation',
           evidence: `Code: ${line.trim().substring(0, 100)}...`
         });
       }
 
-      // No pagination/batching for large data
       if (/fetch|query.*all|select.*\*/.test(line) && !line.includes('limit') && !line.includes('offset') && !line.includes('skip')) {
         report.bottlenecks.push({
           type: 'io',
@@ -277,11 +289,11 @@ export class PerformanceOptimizerAgent {
     });
   }
 
+  /** @private */
   _analyzeDatabase(lines, report, filePath) {
     lines.forEach((line, index) => {
       const lineNum = index + 1;
 
-      // N+1 query pattern
       if (/(for|while)\s*\([^)]*\)[\s\S]{0,200}?(?:query|db\.|select|fetch)\s*\(/.test(line)) {
         report.bottlenecks.push({
           type: 'database',
@@ -293,7 +305,6 @@ export class PerformanceOptimizerAgent {
         });
       }
 
-      // No index hints or optimization
       if (/select.*where|query.*where/.test(line) && !line.includes('index') && !line.includes('explain')) {
         report.bottlenecks.push({
           type: 'database',
@@ -305,7 +316,6 @@ export class PerformanceOptimizerAgent {
         });
       }
 
-      // Missing connection pooling
       if (/new.*Connection|createConnection/.test(line) && !line.includes('pool')) {
         report.bottlenecks.push({
           type: 'database',
@@ -317,35 +327,35 @@ export class PerformanceOptimizerAgent {
         });
       }
 
-      // Multiple table joins without optimization
       if (/join[\s\S]{1,100}join[\s\S]{1,100}join/.test(line)) {
         report.bottlenecks.push({
           type: 'database',
           description: 'Multiple joins without apparent optimization',
           location: `${filePath}:${lineNum}`,
           severity: 'medium',
-          currentComplexity: 'O(n×m×k) Cartesian product risk',
+          currentComplexity: 'O(n*m*k) Cartesian product risk',
           evidence: `Code: ${line.trim().substring(0, 100)}...`
         });
       }
     });
   }
 
+  /** @private */
   _generateOptimization(bottleneck, idx) {
     const optimizations = {
-      'O(n²)': {
+      'O(n^2)': {
         suggestion: 'Use a HashMap or Set for lookups instead of nested loops',
         expectedComplexity: 'O(n)',
         effort: 'medium',
         implementation: 'Create a Map from inner loop items, then single pass through outer loop with O(1) lookups'
       },
-      'O(n²) string': {
+      'O(n^2) string': {
         suggestion: 'Use Array.join() or String.concat() instead of += in loops',
         expectedComplexity: 'O(n)',
         effort: 'quick',
         implementation: 'Collect strings in array, join at end: const result = items.join("")'
       },
-      'O(2ⁿ)': {
+      'O(2^n)': {
         suggestion: 'Add memoization to recursive calls',
         expectedComplexity: 'O(n)',
         effort: 'medium',
@@ -385,7 +395,7 @@ export class PerformanceOptimizerAgent {
       else if (bottleneck.description.includes('Synchronous')) key = 'blocking';
     }
 
-    const opt = optimizations[key] || optimizations['O(n²)'];
+    const opt = optimizations[key] || optimizations['O(n^2)'];
 
     return {
       bottleneckId: idx,
@@ -396,35 +406,36 @@ export class PerformanceOptimizerAgent {
     };
   }
 
+  /** @private */
   _estimateImpact(bottleneck, idx) {
-    const datasetSize = 1000; // Typical dataset assumption
+    const datasetSize = 1000;
 
     let estimate = '';
     let applicability = '';
     let confidence = 0.7;
 
     switch (bottleneck.currentComplexity) {
-      case 'O(n²)':
-        estimate = `${(datasetSize * datasetSize) / datasetSize}x faster (${datasetSize}² → ${datasetSize} operations)`;
+      case 'O(n^2)':
+        estimate = `${(datasetSize * datasetSize) / datasetSize}x faster (${datasetSize}^2 -> ${datasetSize} operations)`;
         applicability = `For n=${datasetSize} items, reduces ${datasetSize * datasetSize} operations to ${datasetSize}`;
         confidence = 0.85;
         break;
-      case 'O(2ⁿ)':
+      case 'O(2^n)':
         estimate = 'Potentially 1000x+ faster (exponential to linear reduction)';
         applicability = 'For n=10, reduces 1024 operations to 10';
         confidence = 0.9;
         break;
       case 'O(n) database queries':
-        estimate = `${datasetSize}x fewer database round trips (${datasetSize} queries → 1-2 queries)`;
+        estimate = `${datasetSize}x fewer database round trips (${datasetSize} queries -> 1-2 queries)`;
         applicability = `For n=${datasetSize} items, removes ${datasetSize - 2} network round trips (~${50 * (datasetSize - 2)}ms saved)`;
         confidence = 0.95;
         break;
       case 'O(n) memory for all results':
         estimate = 'Memory usage: proportional to page size (constant) instead of total dataset';
-        applicability = 'With 1M total records, paginating 1000 at a time: 1KB × 1000 vs millions';
+        applicability = 'With 1M total records, paginating 1000 at a time: 1KB x 1000 vs millions';
         confidence = 0.85;
         break;
-      case 'O(∞) - unbounded growth':
+      case 'O(infinity) - unbounded growth':
         estimate = 'Prevents memory exhaustion and crashes';
         applicability = 'Long-running processes: prevents crashes after N operations';
         confidence = 0.9;
@@ -434,9 +445,9 @@ export class PerformanceOptimizerAgent {
         applicability = 'For 100 concurrent requests, process all in parallel vs sequential';
         confidence = 0.8;
         break;
-      case 'O(n×t) where t is latency per operation':
+      case 'O(n*t) where t is latency per operation':
         estimate = 'Up to N-fold speedup (run N requests in parallel)';
-        applicability = `For ${datasetSize} requests at 100ms each: ${datasetSize * 100}ms → 100ms`;
+        applicability = `For ${datasetSize} requests at 100ms each: ${datasetSize * 100}ms -> 100ms`;
         confidence = 0.75;
         break;
       default:
@@ -456,6 +467,7 @@ export class PerformanceOptimizerAgent {
     };
   }
 
+  /** @private */
   _buildSummary(report) {
     const criticalCount = report.bottlenecks.filter(b => b.severity === 'critical').length;
     const highCount = report.bottlenecks.filter(b => b.severity === 'high').length;
@@ -473,6 +485,7 @@ export class PerformanceOptimizerAgent {
     return `Found ${report.bottlenecks.length} bottlenecks (${parts.join(', ')}). Implementing suggested optimizations could improve performance by 2-100x depending on dataset size.`;
   }
 
+  /** @private */
   _simulateCodeRead(filePath) {
     const exampleCode = `
 // Example code with performance issues
@@ -488,7 +501,7 @@ function getUsersWithPosts(userIds) {
   return users;
 }
 
-// BOTTLENECK 2: Nested loops O(n²)
+// BOTTLENECK 2: Nested loops O(n^2)
 function findDuplicates(arr1, arr2) {
   const duplicates = [];
   for (let i = 0; i < arr1.length; i++) {
@@ -501,7 +514,7 @@ function findDuplicates(arr1, arr2) {
   return duplicates;
 }
 
-// BOTTLENECK 3: String concatenation in loop O(n²)
+// BOTTLENECK 3: String concatenation in loop O(n^2)
 function buildReport(items) {
   let report = '';
   for (const item of items) {
@@ -573,4 +586,4 @@ function queryUser(id) {
   }
 }
 
-export default PerformanceOptimizerAgent;
+export default PerformanceOptimizerFileAgent;

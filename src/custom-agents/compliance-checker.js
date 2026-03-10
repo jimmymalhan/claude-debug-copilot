@@ -1,12 +1,44 @@
 /**
  * ComplianceChecker Agent
  *
- * Verifies compliance with GDPR, HIPAA, PCI-DSS, and SOC 2 standards.
- * Identifies gaps and suggests remediation.
+ * Verifies compliance with OWASP, CIS, PCI-DSS, GDPR, HIPAA, and SOC 2 standards.
+ * Identifies gaps and suggests remediation with actual standard references.
+ *
+ * Safety: All findings reference actual published standards with specific
+ * article/requirement IDs. No synthetic or fabricated compliance references.
  */
 
-export class ComplianceCheckerAgent {
+import { BaseAgent } from './base-agent.js';
+
+export class ComplianceCheckerAgent extends BaseAgent {
   constructor(options = {}) {
+    super({
+      name: 'ComplianceChecker',
+      description: 'Checks compliance with OWASP/CIS/PCI-DSS/GDPR/HIPAA/SOC2 standards with real references',
+      version: '1.0.0',
+      capabilities: ['gdpr-compliance', 'hipaa-compliance', 'pci-dss-compliance', 'soc2-compliance', 'owasp-compliance', 'gap-analysis'],
+      inputSchema: {
+        required: ['targetPath'],
+        properties: {
+          targetPath: { type: 'string' },
+          standards: { type: 'array' },
+          dataTypes: { type: 'array' },
+          context: { type: 'string' }
+        }
+      },
+      outputSchema: {
+        properties: {
+          standards: { type: 'array' },
+          gaps: { type: 'array' },
+          evidence: { type: 'array' },
+          references: { type: 'array' },
+          summary: { type: 'string' }
+        }
+      },
+      readOnly: true,
+      ...options
+    });
+
     this.standards = {
       gdpr: {
         name: 'GDPR',

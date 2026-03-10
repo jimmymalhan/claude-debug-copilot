@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Claude Debug Copilot - Evidence-first diagnostic system for backend failures">
+  <title>Claude Debug Copilot - Evidence-First Debugging System</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header>
+    <div class="container">
+      <nav aria-label="Main navigation">
+        <a href="/" class="nav-logo">Claude Debug Copilot</a>
+        <button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">&#9776;</button>
+        <ul id="nav-links" class="nav-links" role="menubar">
+          <li role="none"><a href="/" role="menuitem" aria-current="page">Home</a></li>
+          <li role="none"><a href="/pipeline" role="menuitem">Pipeline</a></li>
+          <li role="none"><a href="/skills" role="menuitem">Skills</a></li>
+          <li role="none"><a href="/mcp" role="menuitem">MCP</a></li>
+          <li role="none"><a href="/agents" role="menuitem">Agents</a></li>
+          <li role="none"><a href="/tests" role="menuitem">Tests</a></li>
+          <li role="none"><a href="/docs" role="menuitem">Docs</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="container">
+    <h1>Evidence-First Debugging System</h1>
+    <p class="subtitle">Diagnose recurring backend failures using evidence, not guesses</p>
+
+    <div class="diagram">
+      <pre aria-label="5-Agent Pipeline Architecture diagram">
++===========================================================================+
+|          5-AGENT PIPELINE ARCHITECTURE                                    |
++===========================================================================+
+|                                                                           |
+|  [INCIDENT] --&gt; Router --&gt; Retriever --&gt; Skeptic --&gt; Verifier --&gt; Critic  |
+|                   |          |            |           |           |       |
+|                Classify    Gather      Challenge   Validate    Approve    |
+|                 Type       Evidence     Theory     Evidence      Gate     |
+|                                                                           |
+|  Output Contract:                                                         |
+|  * Root Cause        * Evidence Citations    * Tests                      |
+|  * Fix Plan          * Rollback Plan         * Confidence                 |
+|                                                                           |
++===========================================================================+</pre>
+    </div>
+
+    <h2>Key Features</h2>
+    <div class="grid" id="feature-cards">
+      <div class="card card--clickable" role="link" tabindex="0" onclick="window.location='/pipeline'" onkeydown="if(event.key==='Enter')window.location='/pipeline'">
+        <h3>Interactive Pipeline</h3>
+        <p>Visualize the 5-agent diagnosis process with 6 real incident scenarios. Play, pause, step through, or reset the pipeline flow with SVG animations.</p>
+        <a href="/pipeline" class="btn btn--primary">Explore Pipeline</a>
+      </div>
+
+      <div class="card card--clickable" role="link" tabindex="0" onclick="window.location='/skills'" onkeydown="if(event.key==='Enter')window.location='/skills'">
+        <h3>Skill Demonstrations</h3>
+        <p>Test Evidence Verifier, Hallucination Detector, and Confidence Scorer with interactive forms and real-time validation against repository data.</p>
+        <a href="/skills" class="btn btn--primary">Try Skills</a>
+      </div>
+
+      <div class="card card--clickable" role="link" tabindex="0" onclick="window.location='/mcp'" onkeydown="if(event.key==='Enter')window.location='/mcp'">
+        <h3>MCP Integration</h3>
+        <p>Model Context Protocol with 4 context providers: Repo, Log, Schema, and Metrics. Switch between providers and see real data from your repository.</p>
+        <a href="/mcp" class="btn btn--primary">View MCP</a>
+      </div>
+
+      <div class="card card--clickable" role="link" tabindex="0" onclick="window.location='/agents'" onkeydown="if(event.key==='Enter')window.location='/agents'">
+        <h3>Agent Capabilities</h3>
+        <p>Explore all 5 core agents and their constraints. Understand which skills each agent uses and what inputs they require.</p>
+        <a href="/agents" class="btn btn--primary">See Agents</a>
+      </div>
+
+      <div class="card card--clickable" role="link" tabindex="0" onclick="window.location='/tests'" onkeydown="if(event.key==='Enter')window.location='/tests'">
+        <h3>Test Dashboard</h3>
+        <p>View test results, coverage metrics, and test suite breakdown with real-time data from the test runner.</p>
+        <a href="/tests" class="btn btn--primary">View Tests</a>
+      </div>
+
+      <div class="card card--clickable" role="link" tabindex="0" onclick="window.location='/docs'" onkeydown="if(event.key==='Enter')window.location='/docs'">
+        <h3>Documentation</h3>
+        <p>Complete integration guides, custom skills API, and custom agents API. Learn how to extend the system.</p>
+        <a href="/docs" class="btn btn--primary">Read Docs</a>
+      </div>
+    </div>
+
+    <h2>Repository Statistics</h2>
+    <div class="grid-3" id="repo-stats">
+      <div class="stat-box">
+        <div class="stat-value" id="stat-files">--</div>
+        <div class="stat-label">JavaScript Source Files</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" id="stat-lines">--</div>
+        <div class="stat-label">Lines of Code</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" id="stat-agents">--</div>
+        <div class="stat-label">Agent Implementations</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" id="stat-skills">--</div>
+        <div class="stat-label">Skill Implementations</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" id="stat-tests">--</div>
+        <div class="stat-label">Total Tests</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" id="stat-coverage">--</div>
+        <div class="stat-label">Code Coverage</div>
+      </div>
+    </div>
+
+    <h2>Project Goals</h2>
+    <ol style="color: var(--text-secondary); margin: 20px 0; padding-left: 24px; line-height: 2;">
+      <li>Diagnose recurring backend failures using evidence first</li>
+      <li>Produce complete output contracts: root cause, evidence, fix plan, rollback, tests, confidence</li>
+      <li>Never invent fields, tables, APIs, regions, or files - retrieve before explaining</li>
+      <li>Use verifier to block unsupported nouns and skeptic for materially different theories</li>
+      <li>Ensure all edits are approved before deployment with confidence gates (&gt;= 0.70)</li>
+    </ol>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/js/app.js"></script>
+  <script>
+  (function () {
+    App.api('/api/repo-stats').then(function (data) {
+      document.getElementById('stat-files').textContent = data.totalFiles || 0;
+      document.getElementById('stat-lines').textContent = (data.totalLines || 0).toLocaleString();
+      document.getElementById('stat-agents').textContent = data.agents || 0;
+      document.getElementById('stat-skills').textContent = data.skills || 0;
+    }).catch(function () {});
+
+    App.api('/api/test-results').then(function (data) {
+      document.getElementById('stat-tests').textContent = data.tests ? data.tests.total : 0;
+      document.getElementById('stat-coverage').textContent = data.coverage ? data.coverage.statements : '--';
+    }).catch(function () {});
+  })();
+  </script>
+</body>
+</html>

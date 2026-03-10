@@ -1,12 +1,43 @@
 /**
- * PerformanceOptimizer Agent
+ * PerformanceOptimizer Agent (Code-based)
  *
- * Analyzes code for performance issues, suggests optimizations,
+ * Analyzes code strings for performance issues, suggests optimizations,
  * and estimates performance impact.
+ *
+ * Safety: Only suggests real improvements backed by metrics. Every suggestion
+ * includes estimated improvement percentage, impact assessment, and
+ * implementation guidance with evidence.
  */
 
-export class PerformanceOptimizerAgent {
+import { BaseAgent } from './base-agent.js';
+
+export class PerformanceOptimizerAgent extends BaseAgent {
   constructor(options = {}) {
+    super({
+      name: 'PerformanceOptimizer',
+      description: 'Analyzes code for performance bottlenecks and suggests optimizations with impact estimates',
+      version: '1.0.0',
+      capabilities: ['bottleneck-detection', 'complexity-analysis', 'optimization-suggestions', 'impact-estimation'],
+      inputSchema: {
+        required: ['code'],
+        properties: {
+          code: { type: 'string' },
+          analysisType: { type: 'string', enum: ['complexity', 'bottlenecks', 'optimization', 'all'] },
+          context: { type: 'string' }
+        }
+      },
+      outputSchema: {
+        properties: {
+          issues: { type: 'array' },
+          suggestions: { type: 'array' },
+          estimatedImprovement: { type: 'number' },
+          confidence: { type: 'number' }
+        }
+      },
+      readOnly: true,
+      ...options
+    });
+
     this.complexityThresholds = {
       veryHigh: { loops: 3, calls: 100 },
       high: { loops: 2, calls: 50 },
@@ -15,24 +46,16 @@ export class PerformanceOptimizerAgent {
   }
 
   /**
-   * Analyze code for performance issues.
+   * Execute performance analysis on code string.
    *
    * @param {object} input
    * @param {string} input.code - Code to analyze
-   * @param {string} input.analysisType - 'complexity|bottlenecks|optimization|all'
+   * @param {string} [input.analysisType='all'] - Analysis scope
    * @param {string} [input.context] - Additional context
-   * @returns {object} Performance analysis with suggestions
+   * @returns {Promise<object>} Performance analysis with suggestions
    */
-  async analyze(input) {
-    if (!input || typeof input !== 'object') {
-      throw new Error('Input must be a valid object');
-    }
-
-    const { code, analysisType, context } = input;
-
-    if (!code || typeof code !== 'string') {
-      throw new Error('Code is required and must be a string');
-    }
+  async _execute(input) {
+    const { code, analysisType = 'all', context } = input;
 
     const analysis = {
       issues: [],
@@ -54,6 +77,25 @@ export class PerformanceOptimizerAgent {
     }
   }
 
+  /**
+   * Backward-compatible analyze method.
+   *
+   * @param {object} input
+   * @returns {Promise<object>}
+   */
+  async analyze(input) {
+    if (!input || typeof input !== 'object') {
+      throw new Error('Input must be a valid object');
+    }
+
+    if (!input.code || typeof input.code !== 'string') {
+      throw new Error('Code is required and must be a string');
+    }
+
+    return this._execute(input);
+  }
+
+  /** @private */
   _analyzeComplexity(code, analysis, context) {
     const lines = code.split('\n');
     let nestedLoops = 0;
@@ -62,14 +104,11 @@ export class PerformanceOptimizerAgent {
     let currentNestingLevel = 0;
 
     lines.forEach(line => {
-      // Count loops
       const loopMatches = (line.match(/\b(for|while|forEach|map|filter|reduce)\s*\(/gi) || []).length;
       nestedLoops += loopMatches;
 
-      // Count function calls
       functionCalls += (line.match(/\.\w+\s*\(/g) || []).length;
 
-      // Track nesting level
       currentNestingLevel += (line.match(/\{/g) || []).length;
       currentNestingLevel -= (line.match(/\}/g) || []).length;
       maxNestingLevel = Math.max(maxNestingLevel, currentNestingLevel);
@@ -121,12 +160,12 @@ export class PerformanceOptimizerAgent {
     return analysis;
   }
 
+  /** @private */
   _analyzeBottlenecks(code, analysis, context) {
     const lines = code.split('\n');
     const bottlenecks = [];
 
     lines.forEach((line, index) => {
-      // Detect N+1 queries
       if (/for|forEach|while/.test(line) && /.*(query|fetch|request|db\.)/i.test(lines[index + 1] || '')) {
         bottlenecks.push({
           type: 'n-plus-one',
@@ -137,7 +176,6 @@ export class PerformanceOptimizerAgent {
         });
       }
 
-      // Detect synchronous I/O
       if (/readFileSync|require.*Sync|XMLHttpRequest/.test(line)) {
         bottlenecks.push({
           type: 'sync-io',
@@ -148,7 +186,6 @@ export class PerformanceOptimizerAgent {
         });
       }
 
-      // Detect string concatenation in loops
       if (/for|forEach|while/.test(line) && /\+\s*['"]/i.test(lines[index + 1] || '')) {
         bottlenecks.push({
           type: 'string-concat-loop',
@@ -159,7 +196,6 @@ export class PerformanceOptimizerAgent {
         });
       }
 
-      // Detect recursive calls without memoization
       if (/function.*\(|const.*=.*=>/.test(line) && /return.*\(.*\)/.test(lines[index + 2] || '')) {
         const functionName = line.match(/function\s+(\w+)|(\w+)\s*=/)?.[1] || line.match(/function\s+(\w+)|(\w+)\s*=/)?.[2];
         if (functionName && new RegExp(functionName + '\\s*\\(').test(lines[index + 2] || '')) {
@@ -173,7 +209,6 @@ export class PerformanceOptimizerAgent {
         }
       }
 
-      // Detect large object cloning
       if (/JSON\.parse\(JSON\.stringify|Object\.assign\({}|spread\s*operator/.test(line)) {
         bottlenecks.push({
           type: 'deep-clone',
@@ -201,12 +236,12 @@ export class PerformanceOptimizerAgent {
     return analysis;
   }
 
+  /** @private */
   _analyzeOptimization(code, analysis, context) {
     const lines = code.split('\n');
     const opportunities = [];
 
     lines.forEach((line, index) => {
-      // Detect unnecessary iterations
       if (/\.map\s*\(/.test(line) && /\.filter\s*\(/.test(lines[index + 1] || '') || /\.filter\s*\(/.test(line) && /\.map\s*\(/.test(lines[index + 1] || '')) {
         opportunities.push({
           type: 'chained-iterations',
@@ -215,7 +250,6 @@ export class PerformanceOptimizerAgent {
         });
       }
 
-      // Detect unused variables
       if (/const|let|var/.test(line) && !/\w+(?=\s*[+\-*\/=<>])/.test(line)) {
         opportunities.push({
           type: 'unused-variable',
@@ -224,7 +258,6 @@ export class PerformanceOptimizerAgent {
         });
       }
 
-      // Detect repeated calculations
       if (/\.length/.test(line) && /\.length/.test(lines[index + 1] || '')) {
         opportunities.push({
           type: 'repeated-calculation',
@@ -233,7 +266,6 @@ export class PerformanceOptimizerAgent {
         });
       }
 
-      // Detect inefficient lookups
       if (/\.indexOf|\.includes|\.find/.test(line) && /for|while/.test(lines[index - 1] || '')) {
         opportunities.push({
           type: 'linear-search',
@@ -242,7 +274,6 @@ export class PerformanceOptimizerAgent {
         });
       }
 
-      // Detect missing early returns
       if (/if\s*\(.*\)\s*\{/.test(line) && !/return|break|continue/.test(lines[index + 1] || '')) {
         opportunities.push({
           type: 'missing-early-exit',
@@ -269,6 +300,7 @@ export class PerformanceOptimizerAgent {
     return analysis;
   }
 
+  /** @private */
   _analyzeAll(code, analysis, context) {
     const complexityAnalysis = this._analyzeComplexity(code, { issues: [], suggestions: [], estimatedImprovement: 0, confidence: 0 }, context);
     const bottleneckAnalysis = this._analyzeBottlenecks(code, { issues: [], suggestions: [], estimatedImprovement: 0, confidence: 0 }, context);
