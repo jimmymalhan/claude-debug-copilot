@@ -99,11 +99,12 @@ docs/private/**
 docs/**/*.local.md
 docs/**/PROJECT_STATUS*.md
 docs/**/TEST_PLAN*.md
-docs/**/CONFIDENCE_SCORE*.md
 docs/**/FEEDBACK_LOG*.md
 docs/**/REVIEW_NOTES*.md
 docs/**/EXECUTION_PLAN*.md
 docs/Phase-B-Design-Tokens/*.md
+# NOTE: docs/CONFIDENCE_SCORE.md is intentionally NOT ignored.
+# It is the project truth ledger referenced by settings.json, CLAUDE.md, and all sessions.
 
 # Local-only testing and coverage reports
 tests/testing-coverage-report.md

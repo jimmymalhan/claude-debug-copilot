@@ -149,20 +149,18 @@ if is_feature_branch; then
   # All other branches, including staging/develop/hotfix, follow the protected-path logic below.
   exit 0
 else
-  # MAIN/MASTER: Ask for approval on state-changing operations
-
-  # Always block dangerous commands on main
+  # PROTECTED BRANCH (main, master, staging, develop, etc.):
+  # Block dangerous commands unconditionally.
   if is_dangerous_command "$TOOL" "$COMMAND"; then
     exit 1
   fi
 
-  # Ask for approval on any state-changing operations
-  # Only auto-allow read-only operations
-  if [[ "$TOOL" == "Bash" && ("$COMMAND" == *"git status"* || "$COMMAND" == *"git diff"* || "$COMMAND" == *"git log"* || "$COMMAND" == *"ls"* || "$COMMAND" == *"cat"*) ]]; then
-    # Safe read-only on main - allow
+  # Allow commands that pass the safe-command whitelist (read-only tools,
+  # npm test/run, linting, safe git ops, and doc/src/test file edits).
+  if is_safe_command "$TOOL" "$COMMAND"; then
     exit 0
-  else
-    # Everything else on main: ask for approval
-    exit 1
   fi
+
+  # Everything else on a protected branch: ask for approval.
+  exit 1
 fi
