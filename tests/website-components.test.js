@@ -1,6 +1,6 @@
 /**
  * Website Component Tests
- * Unit tests for Phase C React components
+ * Unit tests for website React components
  */
 
 import { describe, it, expect, beforeEach } from '@jest/globals';

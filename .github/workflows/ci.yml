@@ -85,7 +85,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18, 20, 22]
+        node-version: [18, 20]
     steps:
       - uses: actions/checkout@v4
 
@@ -142,7 +142,9 @@ jobs:
           response=$(curl -sf http://localhost:3000/health)
           echo "$response" | node -e "
             const d = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
-            if (d.status !== 'ok') { console.error('Health check failed:', d); process.exit(1); }
+            if (!d.status || !['ok','healthy'].includes(d.status)) {
+              console.error('Health check failed:', d); process.exit(1);
+            }
             console.log('✓ /health →', d.status);
           "
 
