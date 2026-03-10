@@ -22,17 +22,253 @@
       background: #ffffff;
       color: #1d1d1f;
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
-    /* Header */
+    /* ===== ADVANCED KEYFRAME ANIMATIONS ===== */
+    @keyframes zoomInFade {
+      0% {
+        opacity: 0;
+        transform: scale(0.92);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes zoomInFadeDown {
+      0% {
+        opacity: 0;
+        transform: scale(0.88) translateY(-30px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @keyframes zoomInFadeUp {
+      0% {
+        opacity: 0;
+        transform: scale(0.88) translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @keyframes slideInFromBottom {
+      0% {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInFromTop {
+      0% {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInFromLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInFromRight {
+      0% {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes floatingAnimation {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    @keyframes floatingRotate {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-15px) rotate(5deg);
+      }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(0, 113, 227, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 0 10px rgba(0, 113, 227, 0);
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+      100% {
+        background-position: 1000px 0;
+      }
+    }
+
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    @keyframes textReveal {
+      0% {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes morphShape {
+      0% {
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      }
+      50% {
+        border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+      }
+      100% {
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes rotateBounce {
+      0% { transform: rotate(-45deg) scale(0.8); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: rotate(315deg) scale(1); opacity: 0; }
+    }
+
+    @keyframes waveAnimation {
+      0%, 100% {
+        transform: translateX(0) translateY(0);
+      }
+      25% {
+        transform: translateX(10px) translateY(-10px);
+      }
+      50% {
+        transform: translateX(0) translateY(0);
+      }
+      75% {
+        transform: translateX(-10px) translateY(10px);
+      }
+    }
+
+    @keyframes blurIn {
+      0% {
+        opacity: 0;
+        filter: blur(10px);
+      }
+      100% {
+        opacity: 1;
+        filter: blur(0px);
+      }
+    }
+
+    /* ===== DYNAMIC BACKGROUND ===== */
+    .dynamic-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #ffffff 0%, #f5f5f7 25%, #ffffff 50%, #f9f9fb 75%, #ffffff 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
+      z-index: -1;
+    }
+
+    .blob-animation {
+      position: fixed;
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      opacity: 0.05;
+      animation: morphShape 8s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    .blob-1 {
+      width: 400px;
+      height: 400px;
+      background: linear-gradient(135deg, #0071e3, #00d4ff);
+      top: -100px;
+      left: -100px;
+      animation: morphShape 10s ease-in-out infinite, floatingAnimation 6s ease-in-out infinite;
+    }
+
+    .blob-2 {
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, #0071e3, #7c3aed);
+      bottom: 100px;
+      right: -50px;
+      animation: morphShape 9s ease-in-out infinite, floatingAnimation 7s ease-in-out infinite 1s;
+    }
+
+    /* ===== HEADER ===== */
     header {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid #e5e5e5;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(30px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       padding: 16px 0;
       position: sticky;
       top: 0;
       z-index: 100;
+      animation: slideInFromTop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    header:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
     }
 
     .container {
@@ -54,6 +290,17 @@
       color: #1d1d1f;
       text-decoration: none;
       letter-spacing: -0.5px;
+      animation: zoomInFade 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      opacity: 0;
+      animation-fill-mode: forwards;
+      animation-delay: 0.05s;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .logo:hover {
+      color: #0071e3;
+      transform: scale(1.05);
     }
 
     .nav-links {
@@ -63,16 +310,43 @@
       flex: 1;
     }
 
+    .nav-links li {
+      position: relative;
+    }
+
     .nav-links a {
       color: #1d1d1f;
       text-decoration: none;
       font-size: 0.95rem;
-      transition: color 0.2s;
       font-weight: 500;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: zoomInFade 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      opacity: 0;
+      position: relative;
+    }
+
+    .nav-links li:nth-child(1) a { animation-delay: 0.08s; }
+    .nav-links li:nth-child(2) a { animation-delay: 0.1s; }
+    .nav-links li:nth-child(3) a { animation-delay: 0.12s; }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #0071e3;
+      transition: width 0.3s ease;
     }
 
     .nav-links a:hover {
       color: #0071e3;
+      transform: translateY(-3px);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
     }
 
     .nav-right {
@@ -80,20 +354,29 @@
       gap: 16px;
     }
 
-    /* Hero Section */
+    /* ===== HERO SECTION ===== */
     .hero {
-      padding: 100px 0;
+      padding: 120px 0;
       text-align: center;
+      position: relative;
+      z-index: 1;
     }
 
     h1 {
-      font-size: clamp(2.5rem, 8vw, 3.5rem);
+      font-size: clamp(2.5rem, 8vw, 3.8rem);
       font-weight: 700;
-      letter-spacing: -1px;
+      letter-spacing: -1.5px;
       margin-bottom: 24px;
       max-width: 900px;
       margin-left: auto;
       margin-right: auto;
+      line-height: 1.2;
+      animation: zoomInFadeDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
+      opacity: 0;
+      background: linear-gradient(135deg, #1d1d1f 0%, #0071e3 50%, #1d1d1f 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .tagline {
@@ -101,34 +384,56 @@
       color: #666;
       max-width: 700px;
       margin: 0 auto 48px;
-      line-height: 1.6;
+      line-height: 1.8;
       font-weight: 400;
+      animation: blurIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+      opacity: 0;
     }
 
-    /* Buttons */
+    /* ===== BUTTONS ===== */
     .btn {
       display: inline-block;
       padding: 14px 32px;
       background: #0071e3;
       color: white;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.3s;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       font-family: inherit;
+      animation: zoomInFadeUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
+      opacity: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
     }
 
     .btn:hover {
-      background: #0066cc;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 113, 227, 0.25);
+      background: linear-gradient(135deg, #0071e3 0%, #0066cc 100%);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0, 113, 227, 0.3);
+      animation: pulseGlow 2s infinite;
     }
 
     .btn:active {
-      transform: translateY(0);
+      transform: translateY(-1px);
     }
 
     .btn-secondary {
@@ -139,6 +444,8 @@
 
     .btn-secondary:hover {
       background: #f5f5f7;
+      border-color: #0066cc;
+      transform: translateY(-4px);
     }
 
     .btn-group {
@@ -149,33 +456,59 @@
       margin-top: 32px;
     }
 
-    /* Diagnosis Section */
+    /* ===== DIAGNOSIS SECTION ===== */
     .diagnosis-section {
       padding: 120px 0;
-      background: linear-gradient(180deg, #f5f5f7 0%, #ffffff 100%);
+      background: linear-gradient(180deg, transparent 0%, rgba(0, 113, 227, 0.03) 50%, transparent 100%);
+      position: relative;
+      z-index: 1;
     }
 
     .section-title {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       font-weight: 700;
       text-align: center;
       margin-bottom: 60px;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.8px;
+      animation: slideInFromBottom 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      opacity: 0;
+      background: linear-gradient(135deg, #1d1d1f 0%, #0071e3 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .diagnosis-card {
       max-width: 700px;
       margin: 0 auto;
-      background: white;
-      border: 1px solid #e5e5e5;
-      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 24px;
       padding: 48px;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-      transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: zoomInFade 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
+      opacity: 0;
+      backdrop-filter: blur(10px);
+      will-change: transform, box-shadow;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .diagnosis-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 113, 227, 0.3), transparent);
     }
 
     .diagnosis-card:hover {
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 16px 50px rgba(0, 113, 227, 0.15);
+      transform: translateY(-8px);
+      border-color: rgba(0, 113, 227, 0.2);
     }
 
     .form-label {
@@ -184,6 +517,8 @@
       font-weight: 600;
       color: #1d1d1f;
       margin-bottom: 12px;
+      animation: textReveal 0.6s ease 0.4s forwards;
+      opacity: 0;
     }
 
     .char-count {
@@ -191,27 +526,32 @@
       font-size: 0.9rem;
       margin-top: 8px;
       text-align: right;
+      animation: textReveal 0.6s ease 0.45s forwards;
+      opacity: 0;
     }
 
     .form-input {
       width: 100%;
       padding: 16px 18px;
-      background: #f5f5f7;
+      background: linear-gradient(135deg, #f9f9fb 0%, #f5f5f7 100%);
       border: 2px solid #e5e5e5;
-      border-radius: 10px;
+      border-radius: 12px;
       font-size: 1rem;
       font-family: inherit;
       color: #1d1d1f;
-      transition: all 0.3s;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       resize: vertical;
       min-height: 130px;
+      animation: slideInFromBottom 0.6s ease 0.35s forwards;
+      opacity: 0;
     }
 
     .form-input:focus {
       outline: none;
       border-color: #0071e3;
       background: white;
-      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+      transform: translateY(-2px);
     }
 
     .form-input::placeholder {
@@ -221,12 +561,15 @@
     .submit-btn {
       width: 100%;
       margin-top: 24px;
+      animation: slideInFromBottom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s forwards;
+      opacity: 0;
     }
 
-    /* Results Section */
+    /* ===== RESULTS SECTION ===== */
     .results-section {
       display: none;
       padding: 40px;
+      animation: slideInFromBottom 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
     .results-section.show {
@@ -236,7 +579,8 @@
     .loading {
       display: none;
       text-align: center;
-      padding: 40px;
+      padding: 60px 40px;
+      animation: zoomInFade 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
     .loading.show {
@@ -244,31 +588,30 @@
     }
 
     .spinner {
-      width: 48px;
-      height: 48px;
-      border: 3px solid #e5e5e5;
-      border-top: 3px solid #0071e3;
+      width: 64px;
+      height: 64px;
+      border: 4px solid #e5e5e5;
+      border-top: 4px solid #0071e3;
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin: 0 auto 24px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+      box-shadow: 0 0 30px rgba(0, 113, 227, 0.2);
     }
 
     .loading-text {
       color: #666;
       font-size: 1.1rem;
+      animation: textReveal 0.8s ease infinite;
     }
 
     .error-box {
-      background: #fef2f2;
+      background: linear-gradient(135deg, #fef2f2 0%, #ffe8e8 100%);
       border: 2px solid #ff3b30;
-      border-radius: 12px;
+      border-radius: 16px;
       padding: 24px;
       color: #ff3b30;
       margin-bottom: 24px;
+      animation: slideInFromTop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .error-title {
@@ -277,20 +620,37 @@
     }
 
     .success-box {
-      background: #f0fdf4;
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
       border: 2px solid #34c759;
-      border-radius: 12px;
+      border-radius: 16px;
       padding: 24px;
       color: #34c759;
       margin-bottom: 24px;
       font-weight: 600;
+      animation: slideInFromTop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .result-item {
-      background: #f5f5f7;
-      border-radius: 12px;
+      background: linear-gradient(135deg, #f5f5f7 0%, #efefef 100%);
+      border-radius: 16px;
       padding: 28px;
       margin-bottom: 20px;
+      animation: slideInFromBottom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      opacity: 0;
+      border-left: 4px solid #0071e3;
+      transition: all 0.3s ease;
+    }
+
+    .result-item:nth-child(1) { animation-delay: 0.1s; }
+    .result-item:nth-child(2) { animation-delay: 0.2s; }
+    .result-item:nth-child(3) { animation-delay: 0.3s; }
+    .result-item:nth-child(4) { animation-delay: 0.4s; }
+    .result-item:nth-child(5) { animation-delay: 0.5s; }
+    .result-item:nth-child(6) { animation-delay: 0.6s; }
+
+    .result-item:hover {
+      transform: translateX(4px);
+      box-shadow: 0 8px 30px rgba(0, 113, 227, 0.15);
     }
 
     .result-title {
@@ -308,12 +668,14 @@
     .confidence-badge {
       display: inline-block;
       padding: 8px 16px;
-      background: #d4edda;
+      background: linear-gradient(135deg, #d4edda 0%, #bbf7d0 100%);
       color: #155724;
-      border-radius: 6px;
+      border-radius: 8px;
       font-weight: 600;
       font-size: 0.9rem;
       margin-bottom: 16px;
+      animation: zoomInFadeUp 0.6s ease 0.1s forwards;
+      opacity: 0;
     }
 
     .export-buttons {
@@ -330,9 +692,11 @@
       min-width: 150px;
     }
 
-    /* Products Grid */
+    /* ===== PRODUCTS GRID ===== */
     .products-section {
       padding: 120px 0;
+      position: relative;
+      z-index: 1;
     }
 
     .products-grid {
@@ -345,21 +709,58 @@
     .product-card {
       text-align: center;
       padding: 40px 24px;
-      border-radius: 18px;
-      background: #f5f5f7;
-      transition: all 0.3s;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #f5f5f7 0%, #efefef 100%);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       cursor: pointer;
+      animation: slideInFromBottom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      opacity: 0;
+      will-change: transform, box-shadow, background;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
     }
 
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, transparent, rgba(0, 113, 227, 0.05));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .products-grid > :nth-child(1) { animation-delay: 0.1s; }
+    .products-grid > :nth-child(2) { animation-delay: 0.15s; }
+    .products-grid > :nth-child(3) { animation-delay: 0.2s; }
+    .products-grid > :nth-child(4) { animation-delay: 0.25s; }
+    .products-grid > :nth-child(5) { animation-delay: 0.3s; }
+    .products-grid > :nth-child(6) { animation-delay: 0.35s; }
+
     .product-card:hover {
-      background: #efefef;
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(135deg, #efefef 0%, #e8e8eb 100%);
+      transform: translateY(-12px);
+      box-shadow: 0 20px 60px rgba(0, 113, 227, 0.15);
+    }
+
+    .product-card:hover::before {
+      opacity: 1;
     }
 
     .product-icon {
-      font-size: 3rem;
-      margin-bottom: 20px;
+      font-size: 3.5rem;
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
+      animation: floatingAnimation 3s ease-in-out infinite;
+    }
+
+    .product-card:hover .product-icon {
+      transform: scale(1.15) rotate(10deg);
+      animation: rotateBounce 0.6s ease;
     }
 
     .product-name {
@@ -371,14 +772,16 @@
 
     .product-description {
       color: #666;
-      line-height: 1.7;
       font-size: 0.95rem;
+      line-height: 1.6;
     }
 
-    /* Stats */
+    /* ===== STATS SECTION ===== */
     .stats-section {
       padding: 120px 0;
-      background: #f5f5f7;
+      background: linear-gradient(135deg, rgba(0, 113, 227, 0.08) 0%, rgba(124, 58, 237, 0.08) 100%);
+      position: relative;
+      z-index: 1;
     }
 
     .stats-grid {
@@ -390,61 +793,87 @@
 
     .stat {
       text-align: center;
+      animation: zoomInFadeUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      opacity: 0;
+      padding: 40px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 113, 227, 0.1);
+      transition: all 0.3s ease;
     }
+
+    .stat:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 40px rgba(0, 113, 227, 0.1);
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .stat:nth-child(1) { animation-delay: 0.1s; }
+    .stat:nth-child(2) { animation-delay: 0.2s; }
+    .stat:nth-child(3) { animation-delay: 0.3s; }
+    .stat:nth-child(4) { animation-delay: 0.4s; }
 
     .stat-value {
       font-size: 2.5rem;
       font-weight: 700;
-      color: #0071e3;
-      margin-bottom: 12px;
+      background: linear-gradient(135deg, #0071e3 0%, #7c3aed 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
     }
 
     .stat-label {
-      font-size: 1rem;
       color: #666;
+      font-size: 0.95rem;
       font-weight: 500;
     }
 
-    /* Footer */
+    /* ===== FOOTER ===== */
     footer {
       background: #1d1d1f;
-      color: white;
-      padding: 60px 0;
-      margin-top: 120px;
-    }
-
-    footer p {
-      color: #a1a1a6;
-      font-size: 0.9rem;
+      color: #f5f5f7;
+      padding: 60px 0 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     footer .container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 40px;
     }
 
     footer h3 {
-      color: white;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
+      font-size: 1.1rem;
     }
 
-    footer a {
+    footer a, footer p {
       color: #a1a1a6;
       text-decoration: none;
-      display: block;
       margin-bottom: 12px;
-      transition: color 0.2s;
-      font-size: 0.9rem;
+      display: block;
+      transition: color 0.3s ease;
     }
 
     footer a:hover {
-      color: white;
+      color: #0071e3;
     }
 
-    /* Responsive */
+    /* ===== SCROLL ANIMATIONS ===== */
+    .scroll-animate {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .scroll-animate.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
       h1 {
         font-size: 2rem;
@@ -454,53 +883,59 @@
         font-size: 1.8rem;
       }
 
-      .nav-links {
-        gap: 16px;
-      }
-
       .diagnosis-card {
-        padding: 32px 24px;
+        padding: 32px 20px;
       }
 
-      .btn-group {
-        flex-direction: column;
+      .nav-links {
+        gap: 20px;
       }
 
-      .btn {
-        width: 100%;
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .blob-1, .blob-2 {
+        opacity: 0.02;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Navigation -->
+  <!-- Dynamic Background -->
+  <div class="dynamic-bg"></div>
+  <div class="blob-animation blob-1"></div>
+  <div class="blob-animation blob-2"></div>
+
+  <!-- Header -->
   <header>
     <div class="container">
       <nav>
-        <a href="/" class="logo">Claude Debug Copilot</a>
+        <a href="#" class="logo" onclick="scrollToTop()">🔍 Claude Debug Copilot</a>
         <ul class="nav-links">
           <li><a href="#diagnose">Diagnose</a></li>
           <li><a href="#products">Features</a></li>
-          <li><a href="#stats">Results</a></li>
+          <li><a href="/api-reference.html">API</a></li>
         </ul>
         <div class="nav-right">
-          <a href="/api-reference.html" class="btn btn-secondary" style="padding: 10px 20px; font-size: 0.9rem;">API Docs</a>
+          <a href="/api-reference.html" class="btn btn-secondary" style="animation-delay: 0.14s;">Documentation</a>
         </div>
       </nav>
     </div>
   </header>
 
-  <!-- Hero -->
+  <!-- Hero Section -->
   <section class="hero">
     <div class="container">
       <h1>Diagnose Incidents Instantly</h1>
-      <p class="tagline">
-        Get root cause analysis, fix plans, and recovery steps in seconds—not hours.
-        Evidence-backed diagnostics you can trust.
-      </p>
+      <p class="tagline">AI-powered root cause analysis with 94% accuracy. 4-agent pipeline → evidence-first diagnosis → fix plan → tests. 16-30 seconds.</p>
       <div class="btn-group">
-        <button class="btn" onclick="scrollToDiagnose()">Start Diagnosis</button>
-        <a href="/api-reference.html" class="btn btn-secondary">View API Reference</a>
+        <button onclick="scrollToDiagnose()" class="btn">Start Diagnosis</button>
+        <a href="/api-reference.html" class="btn btn-secondary">Learn More</a>
       </div>
     </div>
   </section>
@@ -508,117 +943,81 @@
   <!-- Diagnosis Section -->
   <section class="diagnosis-section" id="diagnose">
     <div class="container">
-      <h2 class="section-title">Describe Your Problem</h2>
+      <h2 class="section-title">Describe Your Incident</h2>
 
       <div class="diagnosis-card">
-        <form id="diagnosis-form" onsubmit="submitDiagnosis(event)">
-          <label for="incident" class="form-label">What's happening with your system?</label>
+        <form onsubmit="submitDiagnosis(event)">
+          <label for="incident" class="form-label">What's happening?</label>
           <textarea
             id="incident"
             class="form-input"
-            placeholder="Example: Database queries are timing out. API response times went from 2 seconds to 45 seconds. Error rate is at 15%."
-            minlength="10"
-            maxlength="2000"
-            required
+            placeholder="Database query takes 45 seconds... API returns 500 on login... Payment processing failing..."
             oninput="updateCharCount()"
           ></textarea>
-          <div class="char-count"><span id="char-count">0</span> / 2000</div>
+          <div class="char-count">
+            <span id="char-count">0</span>/2000
+          </div>
 
-          <button type="submit" class="btn submit-btn" id="submit-btn">
-            <span id="btn-text">Analyze Now</span>
-          </button>
+          <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div class="loading-text">Analyzing your incident...</div>
+          </div>
+
+          <div class="results-section" id="results">
+            <div id="error" class="error-box" style="display:none;"></div>
+            <div id="success" class="success-box" style="display:none;"></div>
+            <div id="confidence-badge"></div>
+            <div id="result-content"></div>
+            <div class="export-buttons">
+              <button type="button" class="btn btn-small" onclick="copyToClipboard()">📋 Copy</button>
+              <button type="button" class="btn btn-small" onclick="exportJSON()">📥 Export JSON</button>
+              <button type="button" class="btn btn-small" onclick="newDiagnosis()">🔄 New Diagnosis</button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn submit-btn" id="submit-btn">Diagnose</button>
         </form>
-
-        <!-- Loading State -->
-        <div class="loading" id="loading">
-          <div class="spinner"></div>
-          <div class="loading-text">Analyzing your incident...</div>
-        </div>
-
-        <!-- Results State -->
-        <div class="results-section" id="results">
-          <div class="success-box">✓ Analysis Complete</div>
-
-          <div class="result-item">
-            <div class="confidence-badge" id="confidence"></div>
-            <div class="result-title">Root Cause</div>
-            <div class="result-content" id="root-cause"></div>
-          </div>
-
-          <div class="result-item">
-            <div class="result-title">Evidence Found</div>
-            <div class="result-content" id="evidence"></div>
-          </div>
-
-          <div class="result-item">
-            <div class="result-title">Fix Plan</div>
-            <div class="result-content" id="fix-plan"></div>
-          </div>
-
-          <div class="result-item">
-            <div class="result-title">How to Rollback</div>
-            <div class="result-content" id="rollback"></div>
-          </div>
-
-          <div class="result-item">
-            <div class="result-title">Recommended Tests</div>
-            <div class="result-content" id="tests"></div>
-          </div>
-
-          <div class="export-buttons">
-            <button class="btn btn-small" onclick="exportJSON()" title="Export results as JSON">📥 Export JSON</button>
-            <button class="btn btn-small" onclick="copyResults()" title="Copy results to clipboard">📋 Copy</button>
-            <button class="btn btn-small" onclick="startNew()" title="Start a new diagnosis">🔄 New Diagnosis</button>
-          </div>
-        </div>
-
-        <!-- Error State -->
-        <div class="error-box" id="error-box" style="display: none;">
-          <div class="error-title">⚠️ Something went wrong</div>
-          <div id="error-message"></div>
-          <button type="button" class="btn" onclick="startNew()" style="margin-top: 12px;">Try Again</button>
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- Products / Features -->
+  <!-- Products Section -->
   <section class="products-section" id="products">
     <div class="container">
-      <h2 class="section-title">How It Works</h2>
+      <h2 class="section-title">Powerful Features</h2>
 
       <div class="products-grid">
-        <div class="product-card">
+        <div class="product-card scroll-animate">
           <div class="product-icon">🔍</div>
-          <div class="product-name">Instant Diagnosis</div>
-          <div class="product-description">Get root cause analysis in just 16-30 seconds. No more waiting hours for manual debugging.</div>
+          <div class="product-name">4-Agent Pipeline</div>
+          <div class="product-description">Router → Retriever → Skeptic → Verifier. Real-time orchestration with evidence-first analysis.</div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card scroll-animate">
           <div class="product-icon">📊</div>
-          <div class="product-name">Confidence Score</div>
-          <div class="product-description">Every diagnosis includes a confidence percentage backed by real evidence. Know how much you can trust the results.</div>
+          <div class="product-name">Confidence Scoring</div>
+          <div class="product-description">Every diagnosis includes a confidence score (0-100) backed by evidence and verified workflows.</div>
         </div>
 
-        <div class="product-card">
-          <div class="product-icon">🎯</div>
+        <div class="product-card scroll-animate">
+          <div class="product-icon">🛠️</div>
           <div class="product-name">Fix Plans</div>
-          <div class="product-description">Step-by-step instructions on exactly what to do, plus rollback procedures if things don't go as planned.</div>
+          <div class="product-description">Step-by-step implementation guide with specific code changes, testing strategy, and rollback procedure.</div>
         </div>
 
-        <div class="product-card">
-          <div class="product-icon">📝</div>
+        <div class="product-card scroll-animate">
+          <div class="product-icon">✅</div>
           <div class="product-name">Test Cases</div>
           <div class="product-description">Get recommended test cases to verify the fix works and prevent the issue from happening again.</div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card scroll-animate">
           <div class="product-icon">📥</div>
           <div class="product-name">Export & Share</div>
           <div class="product-description">Export results as JSON or copy to clipboard. Share findings with your team instantly.</div>
         </div>
 
-        <div class="product-card">
+        <div class="product-card scroll-animate">
           <div class="product-icon">🚀</div>
           <div class="product-name">Scale Easily</div>
           <div class="product-description">Process up to 100 incidents at once with batch API. Built for teams of any size.</div>
@@ -633,19 +1032,19 @@
       <h2 class="section-title">By The Numbers</h2>
 
       <div class="stats-grid">
-        <div class="stat">
+        <div class="stat scroll-animate">
           <div class="stat-value">16-30s</div>
           <div class="stat-label">Diagnosis Time</div>
         </div>
-        <div class="stat">
+        <div class="stat scroll-animate">
           <div class="stat-value">94%</div>
           <div class="stat-label">Accuracy</div>
         </div>
-        <div class="stat">
+        <div class="stat scroll-animate">
           <div class="stat-value">949</div>
           <div class="stat-label">Tests Passing</div>
         </div>
-        <div class="stat">
+        <div class="stat scroll-animate">
           <div class="stat-value">89%+</div>
           <div class="stat-label">Code Coverage</div>
         </div>
@@ -676,19 +1075,82 @@
   </footer>
 
   <script>
-    // Character counter
+    // ===== INITIALIZATION =====
+    document.addEventListener('DOMContentLoaded', () => {
+      setupScrollObserver();
+      setupParallaxOnScroll();
+      setupMouseTracking();
+    });
+
+    // ===== SCROLL-TRIGGERED ANIMATIONS =====
+    function setupScrollObserver() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+      });
+
+      document.querySelectorAll('.scroll-animate').forEach(el => {
+        observer.observe(el);
+      });
+    }
+
+    // ===== PARALLAX EFFECT ON SCROLL =====
+    function setupParallaxOnScroll() {
+      window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const blobs = document.querySelectorAll('.blob-animation');
+
+        blobs.forEach((blob, index) => {
+          const speed = 0.5 + (index * 0.1);
+          blob.style.transform = `translateY(${scrolled * speed}px)`;
+        });
+      });
+    }
+
+    // ===== MOUSE TRACKING EFFECT =====
+    function setupMouseTracking() {
+      document.addEventListener('mousemove', (e) => {
+        const diagnosisCard = document.querySelector('.diagnosis-card');
+        if (!diagnosisCard) return;
+
+        const rect = diagnosisCard.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+
+        const rotateX = (y / rect.height) * 5;
+        const rotateY = (x / rect.width) * 5;
+
+        diagnosisCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+      document.addEventListener('mouseleave', () => {
+        document.querySelector('.diagnosis-card').style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+      });
+    }
+
+    // ===== CHARACTER COUNTER =====
     function updateCharCount() {
       const count = document.getElementById('incident').value.length;
       document.getElementById('char-count').textContent = count;
     }
 
-    // Scroll to diagnose
+    // ===== SCROLL FUNCTIONS =====
     function scrollToDiagnose() {
       document.getElementById('diagnose').scrollIntoView({ behavior: 'smooth' });
       document.getElementById('incident').focus();
     }
 
-    // Submit diagnosis
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ===== DIAGNOSIS SUBMISSION =====
     async function submitDiagnosis(event) {
       event.preventDefault();
 
@@ -722,86 +1184,122 @@
       }
     }
 
-    function displayResults(data) {
-      const result = data.result;
-      const confidence = (result.verifier.confidence * 100).toFixed(0);
-
-      document.getElementById('confidence').textContent = `${confidence}% Confidence`;
-
-      document.getElementById('root-cause').innerHTML = `
-        <strong>${result.verifier.rootCause}</strong>
-      `;
-
-      const evidenceList = result.retriever.evidence
-        .map(e => `<li>${e}</li>`)
-        .join('');
-      document.getElementById('evidence').innerHTML = `<ul style="margin-left: 20px;">${evidenceList}</ul>`;
-
-      const fixList = result.verifier.fixPlan
-        .map(f => `<li>${f}</li>`)
-        .join('');
-      document.getElementById('fix-plan').innerHTML = `<ol style="margin-left: 20px;">${fixList}</ol>`;
-
-      document.getElementById('rollback').textContent = result.verifier.rollback;
-
-      const testList = result.verifier.tests
-        .map(t => `<li>${t}</li>`)
-        .join('');
-      document.getElementById('tests').innerHTML = `<ul style="margin-left: 20px;">${testList}</ul>`;
-
-      window.lastResult = data;
-      showResults();
-    }
-
-    function showResults() {
-      document.getElementById('results').classList.add('show');
-      document.getElementById('error-box').style.display = 'none';
-    }
-
-    function hideResults() {
-      document.getElementById('results').classList.remove('show');
-    }
-
+    // ===== UI FUNCTIONS =====
     function showLoading() {
       document.getElementById('loading').classList.add('show');
+      document.getElementById('submit-btn').disabled = true;
     }
 
     function hideLoading() {
       document.getElementById('loading').classList.remove('show');
+      document.getElementById('submit-btn').disabled = false;
     }
 
     function showError(message) {
-      document.getElementById('error-message').textContent = message;
-      document.getElementById('error-box').style.display = 'block';
+      const errorEl = document.getElementById('error');
+      errorEl.innerHTML = `<div class="error-title">⚠️ Error</div>${message}`;
+      errorEl.style.display = 'block';
+      document.getElementById('results').classList.add('show');
+    }
+
+    function hideResults() {
       document.getElementById('results').classList.remove('show');
+      document.getElementById('error').style.display = 'none';
+      document.getElementById('success').style.display = 'none';
+    }
+
+    function displayResults(data) {
+      const verifier = data.verifier || {};
+      const resultContent = document.getElementById('result-content');
+
+      let html = '';
+
+      // Confidence Badge
+      const confidence = verifier.confidence || 0;
+      const confidenceClass = confidence > 85 ? 'high' : 'medium';
+      document.getElementById('confidence-badge').innerHTML = `
+        <div class="confidence-badge">🎯 Confidence: ${confidence}%</div>
+      `;
+
+      // Root Cause
+      html += `
+        <div class="result-item">
+          <div class="result-title">🔍 Root Cause</div>
+          <div class="result-content">${verifier.rootCause || 'No root cause found'}</div>
+        </div>
+      `;
+
+      // Evidence
+      if (verifier.evidence) {
+        html += `
+          <div class="result-item">
+            <div class="result-title">📋 Evidence</div>
+            <div class="result-content">${verifier.evidence}</div>
+          </div>
+        `;
+      }
+
+      // Fix Plan
+      if (verifier.fixPlan) {
+        const fixPlan = Array.isArray(verifier.fixPlan) ? verifier.fixPlan.join('<br>') : verifier.fixPlan;
+        html += `
+          <div class="result-item">
+            <div class="result-title">🛠️ Fix Plan</div>
+            <div class="result-content">${fixPlan}</div>
+          </div>
+        `;
+      }
+
+      // Tests
+      if (verifier.tests) {
+        const tests = Array.isArray(verifier.tests) ? verifier.tests.join('<br>') : verifier.tests;
+        html += `
+          <div class="result-item">
+            <div class="result-title">✅ Tests</div>
+            <div class="result-content">${tests}</div>
+          </div>
+        `;
+      }
+
+      // Rollback
+      if (verifier.rollback) {
+        html += `
+          <div class="result-item">
+            <div class="result-title">↩️ Rollback</div>
+            <div class="result-content">${verifier.rollback}</div>
+          </div>
+        `;
+      }
+
+      resultContent.innerHTML = html;
+      document.getElementById('results').classList.add('show');
+
+      // Store for export
+      window.lastDiagnosis = data;
+    }
+
+    function copyToClipboard() {
+      const resultContent = document.getElementById('result-content').innerText;
+      navigator.clipboard.writeText(resultContent).then(() => {
+        alert('Results copied to clipboard!');
+      });
     }
 
     function exportJSON() {
-      if (!window.lastResult) return;
-      const json = JSON.stringify(window.lastResult, null, 2);
+      if (!window.lastDiagnosis) return;
+      const json = JSON.stringify(window.lastDiagnosis, null, 2);
       const blob = new Blob([json], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `diagnosis-${Date.now()}.json`;
+      a.download = 'diagnosis.json';
       a.click();
-      alert('✓ Results exported as JSON');
     }
 
-    function copyResults() {
-      if (!window.lastResult) return;
-      const json = JSON.stringify(window.lastResult, null, 2);
-      navigator.clipboard.writeText(json).then(() => {
-        alert('✓ Results copied to clipboard');
-      });
-    }
-
-    function startNew() {
-      document.getElementById('diagnosis-form').reset();
+    function newDiagnosis() {
+      document.getElementById('incident').value = '';
       document.getElementById('char-count').textContent = '0';
       hideResults();
-      hideLoading();
-      document.getElementById('error-box').style.display = 'none';
       document.getElementById('incident').focus();
     }
   </script>
