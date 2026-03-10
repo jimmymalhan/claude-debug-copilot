@@ -16,19 +16,19 @@ export default {
       lines: 60,
       statements: 60
     },
-    './src/orchestrator/approval-state-machine.js': {
+    './src/paperclip/approval-state-machine.js': {
       branches: 90,
       functions: 90,
       lines: 90,
       statements: 90
     },
-    './src/orchestrator/budget-enforcer.js': {
+    './src/paperclip/budget-enforcer.js': {
       branches: 90,
       functions: 90,
       lines: 90,
       statements: 90
     },
-    './src/orchestrator/audit-logger.js': {
+    './src/paperclip/audit-logger.js': {
       branches: 85,
       functions: 85,
       lines: 85,
