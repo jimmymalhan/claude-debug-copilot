@@ -2,6 +2,7 @@ import express from 'express'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import 'dotenv/config'
+import { DebugOrchestrator } from './orchestrator/orchestrator-client.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const app = express()
@@ -11,6 +12,18 @@ const PORT = process.env.PORT || 3000
 const diagnostics = new Map()
 const auditLog = []
 const webhooks = new Map()
+
+// Orchestrator initialization (lazy, in-memory only)
+let orchestratorPromise = null
+const getOrchestrator = async () => {
+  if (!orchestratorPromise) {
+    const orchestrator = new DebugOrchestrator({
+      repoRoot: join(__dirname, '..')
+    })
+    orchestratorPromise = orchestrator.initialize().then(() => orchestrator)
+  }
+  return orchestratorPromise
+}
 
 // Middleware
 app.use(express.json({ limit: '10mb' }))
@@ -140,12 +153,41 @@ app.post('/api/diagnose', validateIncident, async (req, res) => {
   const { incident, webhook } = req.body
 
   try {
+    // Create an orchestration task for this diagnosis (Paperclip-style seam)
+    let orchestration = null
+    try {
+      const orchestrator = await getOrchestrator()
+      const taskInput = {
+        type: 'debug',
+        incident,
+        source: 'http_api',
+        metadata: {
+          ip: req.ip,
+          userAgent: req.get('user-agent') || 'unknown'
+        }
+      }
+      const submitResult = await orchestrator.submitTask(taskInput)
+      if (submitResult?.success && submitResult.task) {
+        orchestration = {
+          taskId: submitResult.task.id || submitResult.task.taskId || null,
+          status: submitResult.task.status || 'pending'
+        }
+      }
+    } catch (orchestratorError) {
+      // Orchestrator is best-effort; diagnosis must still succeed
+      logAudit('orchestration_error', {
+        message: orchestratorError.message,
+        errorCode: orchestratorError.code || 'ORCHESTRATION_INIT_FAILED'
+      })
+    }
+
     const diagnosis = {
       id: `diag-${Date.now()}`,
       incident,
       result: await runDiagnosisPipeline(incident),
       timestamp: new Date().toISOString(),
-      status: 'completed'
+      status: 'completed',
+      orchestration
     }
 
     diagnostics.set(diagnosis.id, diagnosis)
@@ -331,13 +373,15 @@ app.get('/api/dashboard', (req, res) => {
         .reduce((sum, d) => sum + (d.result?.verifier?.confidence || 0), 0) / total
     : 0
 
-  res.json({
-    overview: {
-      totalDiagnoses: total,
-      diagnosesLast24h: last24h,
-      averageConfidence: (avgConfidence * 100).toFixed(1) + '%',
-      successRate: '94%'
-    },
+  const overview = {
+    totalDiagnoses: total,
+    diagnosesLast24h: last24h,
+    averageConfidence: (avgConfidence * 100).toFixed(1) + '%',
+    successRate: '94%'
+  }
+
+  const basePayload = {
+    overview,
     severity: severityMap,
     recentDiagnoses: Array.from(diagnostics.values())
       .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
@@ -348,7 +392,20 @@ app.get('/api/dashboard', (req, res) => {
         confidence: (d.result?.verifier?.confidence * 100).toFixed(0) + '%',
         timestamp: d.timestamp
       }))
-  })
+  }
+
+  // Best-effort orchestrator stats for dashboard (do not block on failure)
+  getOrchestrator()
+    .then(orchestrator => {
+      const orchestrationStats = orchestrator.getOrchestrationStats()
+      res.json({
+        ...basePayload,
+        orchestration: orchestrationStats
+      })
+    })
+    .catch(() => {
+      res.json(basePayload)
+    })
 })
 
 // 404 handler

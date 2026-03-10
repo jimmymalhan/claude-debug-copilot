@@ -2,6 +2,35 @@
 
 All notable changes to Claude Debug Copilot are documented in this file.
 
+## [3.2.0] - 2026-03-10
+
+### Paperclip-Style Orchestration Integration
+
+**Backend – Orchestrator seams wired into HTTP API**
+- `src/server.js`: Lazily initializes `DebugOrchestrator` in-process on first request.
+- `POST /api/diagnose`: Best-effort creates a `TaskManager` task per diagnosis and attaches
+  an `orchestration` block (`taskId`, `status`) to every response without changing the existing
+  4-stage pipeline output shape.
+- `GET /api/dashboard`: Enriches the existing analytics payload with an `orchestration` object
+  sourced from `getOrchestrationStats()` (task count, budget status, agent stats, heartbeat
+  status) while preserving the `overview`, `severity`, and `recentDiagnoses` fields consumed
+  by the UI.
+
+**Docs – Integration plan, guardrails, and stakeholder feedback**
+- `PAPERCLIP_INTEGRATION_PLAN.md`: Current vs target state, gaps, phases, affected files,
+  rollback and cleanup rules for Paperclip-style orchestration.
+- `EXECUTION_GUARDRAILS.md`: Hard constraints for this integration branch (no weakening of
+  the 4/5-agent pipeline, no fake orchestration claims, tests and docs required for every
+  change, keep changes scoped to shipped behavior).
+- `docs/STAKEHOLDER_FEEDBACK_ORCHESTRATION.md`: Feedback from SRE, product, backend, QA,
+  security, business, and DevEx stakeholders and the actions taken in this branch.
+
+**Quality**
+- All 1056 tests passing, 0 failed, 2 skipped.
+- test:ci green with coverage maintained.
+- Localhost verified: `/health`, `/api/dashboard` (with orchestration stats), `/api/diagnose`
+  (with orchestration metadata) all returning correct data.
+
 ## [3.1.0] - 2026-03-10
 
 ### Phase F: Comprehensive Test Suite (80+ Tests Complete)
