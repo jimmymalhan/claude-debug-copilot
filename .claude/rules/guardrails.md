@@ -2,6 +2,7 @@
 
 ## Hard Rules (Branch Workflow)
 - **All changes through branches** — Never commit directly to main. If on main, run `git checkout -b feature/<name>` first. All commits go to feature/*. Merge to main only via PR. No exceptions.
+- **Do NOT rush to merge** — Reviewers comment, push back, recommend tests. Iterate. Merge only when reviewers recommend + CI + recommended tests pass. If not recommended → create new branch, work harder. Production house: business-level code only.
 
 ## Proof Requirements
 - **Never invent files** - only read/edit files that exist or are explicitly requested

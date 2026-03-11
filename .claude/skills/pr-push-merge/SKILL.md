@@ -44,9 +44,14 @@ argument-hint: [branch or ""]
 - **Output**: `{ ci_status, localhost_ok: boolean, pr_url }`
 - **Gate**: CI green AND localhost works
 
+## Phase 4.5: REVIEWERS (pr-reviewers)
+### Sub-Agent: `ReviewerGate` (invoke pr-reviewers)
+- **Prompt**: Run pr-reviewers. Reviewers comment, push back, recommend additional tests. Iterate on feedback. Merge only when reviewers recommend merge + CI green + recommended tests pass. Do NOT rush. If reviewers do not recommend merge → create new branch, work harder.
+- **Gate**: reviewers recommend merge AND all checks pass
+
 ## Phase 5: DELIVER
 ### Sub-Agent: `PRPublisher` (model: haiku)
-- **Prompt**: Output REAL PR link only (never invent). Output localhost URL only if verified. Merge when CI green (auto-merge). Notify user of server status.
+- **Prompt**: Output REAL PR link only (never invent). Output localhost URL only if verified. Merge only when reviewers recommend AND CI green. Do NOT rush to merge. Notify user of server status.
 - **Output**: `{ pr_url, localhost_url, server_status, merge_status: "awaiting_approval" }`
 - **Gate**: links are real
 
