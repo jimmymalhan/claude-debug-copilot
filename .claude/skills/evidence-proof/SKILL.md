@@ -6,7 +6,7 @@ description: Run npm test, capture output, score confidence, document unknowns. 
 ## Execution Standard (Apply to Every Skill)
 
 - **Phases**: Create sub-agents in **four to five different phases** in every skill.
-- **Auto-execute**: Do NOT wait for user to accept changes. Proceed automatically. Pausing for approval does not guarantee execution will run.
+- **Auto-execute**: NEVER wait for user. Proceed automatically. No "run?", "accept?", "approve?". Execute; report. Pausing does not guarantee execution.
 
 # Evidence-Proof Skill
 

@@ -14,6 +14,7 @@ description: Maximum determinism, minimal ambiguity. Dumb checklists over agenti
 1. **Smallest possible task** — Avoid broad agentic reasoning. Prefer simple deterministic steps.
 2. **Enforced checkpoints** — Replace memory or guesswork with scripts or functions that enforce required arguments.
 3. **Fail before continuing** — If something can fail programmatically, it must fail and stop before proceeding.
+4. **Never wait for user** — Execute; report. No "shall I run?", "accept?", "update?". Proceed automatically.
 
 ---
 

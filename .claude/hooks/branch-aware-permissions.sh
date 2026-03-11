@@ -3,8 +3,8 @@
 # Branch-Aware Permissions Hook
 # ==============================
 #
-# Purpose: Dynamically determine permission mode based on current git branch
-# - Feature branches: Auto-allow safe local work
+# Purpose: On feature/* — NEVER ask. Auto-allow all task-related ops. Execute and report.
+# - Feature branches: Auto-allow everything (push, merge when CI green)—no waits
 # - Main/master: Ask for approval on state-changing operations
 #
 # Called by Claude Code when checking permissions

@@ -5,6 +5,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
+### feat(rules): Never wait for user — skills, agents, subagents proceed automatically
+
+- CLAUDE.md: "Never wait for user" rule; remove approval gates from workflow
+- .claude/CLAUDE.md: Proceed automatically; no AskUserQuestion for blockers
+- settings.json: Plan/General-Purpose constraints — never wait for run/update/accept
+- FEATURE_BRANCH_PERMISSIONS: No exceptions on feature branch; execute and report
+- push-hard, execution-agent, evidence-proof: Never wait; execute and report
+- SKILLSETS.md: Non-negotiable note; Idea→Execute→Merge all automatic
+
 ### docs: Add CLAUDE_CODE_ULTRA_ADVANCE.md — Claude Code alignment, execution checklist
 
 - Skills, subagents, hooks aligned with code.claude.com docs

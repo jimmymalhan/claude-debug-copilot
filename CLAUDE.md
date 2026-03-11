@@ -7,7 +7,7 @@
 2. **Retrieve before explaining** - evidence first, then conclusions
 3. **Verifier blocks unsupported claims** - no hand-waving, no "should work"
 4. **Skeptic produces competing theory** - materially different root cause
-5. **No edits until plan approved** - except run-the-business: proceed automatically with plan-and-execute
+5. **Never wait for user** - Skills, agents, subagents proceed automatically. No "run?", "update?", "accept?", "approve?", "shall I?". Execute; report.
 6. **Confidence score backed by proof** - 95-100 only with passing tests
 7. **Separate observed facts from assumptions** - mark unknowns clearly with [UNKNOWN]
 
@@ -33,7 +33,7 @@ Every diagnosis must include:
    - Explore codebase (Explore agent or Glob/Grep)
    - Design solution approach
    - Create work breakdown with test criteria
-   - Get approval before coding
+   - Proceed to code automatically—do NOT wait for approval
 
 2. **Code with Tests**:
    - Implement changes in separate commits
@@ -80,11 +80,11 @@ npm run test:e2e       # E2E tests (requires API credentials)
 1. Check `.claude/rules/guardrails.md` for constraints
 2. Read `docs/CONFIDENCE_SCORE.md` for prior assumptions/failures
 3. Run `npm test` to verify current state
-4. Create fresh plan before coding
-5. If stuck, ask for user clarification (use AskUserQuestion)
+4. Create fresh plan and proceed—do NOT wait for approval
+5. If truly ambiguous (e.g., which of two valid options), document both and pick one; do NOT pause for user
 
 ## Done Definition (For Every Task)
-- ✓ Code changes match approved plan exactly
+- ✓ Code changes match plan (proceed without approval gate)
 - ✓ Run `npm test` locally - all tests pass
 - ✓ No regressions in existing tests
 - ✓ `docs/CONFIDENCE_SCORE.md` updated with test results

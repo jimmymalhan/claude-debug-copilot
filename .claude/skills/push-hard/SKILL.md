@@ -72,6 +72,6 @@ IF on main → STOP immediately. Push-hard is feature/* only.
 
 ## Permissions (Feature Branch)
 
-- **Auto-accept end-to-end** – No permission prompts for task work
-- Auto-accept: edits, bash (npm, node, git add/commit/**push**)
-- Still ask for: merge main, reset --hard, rm -rf, secrets, deploy
+- **Auto-accept end-to-end** – No permission prompts. Execute; report. Never wait for user.
+- Auto-accept: edits, bash (npm, node, git add/commit/**push**), merge when CI green
+- Block only: reset --hard, secrets, deploy (unless FULL_AUTO)

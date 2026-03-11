@@ -2,6 +2,8 @@
 
 **Purpose**: Define domain-expert skills for every agent and role so the system can run the whole business automatically. Plan and execute end-to-end with 4 phases, 5–10 subagents per phase. Always learning: skills self-update when issues are fixed.
 
+**Non-negotiable**: Skills, agents, subagents NEVER wait for user to run, update, or accept. Execute automatically; report results. No approval gates.
+
 ---
 
 ## Project Instructions Only — Run the Whole Business (DEFAULT)
@@ -282,9 +284,9 @@ Use `idea-to-production` for full flow. Reference: [Claude Code Skills](https://
 | Stage | Who | Actions |
 |-------|-----|---------|
 | **Idea** | You | Provide idea, task |
-| **Execute** | Claude (auto on feature/*) | Plan → 4 phases → tests → push to feature branch |
-| **HANDOFF 1: Merge** | You approve | Say "merge now" → Claude merges to main |
-| **HANDOFF 2: Deploy** | You approve | Deploy only with explicit instruction |
+| **Execute** | Claude (auto) | Plan → 4 phases → tests → push to feature branch |
+| **Merge** | Claude (auto) | Merge when CI green—no "merge now" needed |
+| **Deploy** | Claude (if FULL_AUTO) | Deploy when merge succeeds |
 
 Cost: Least credits (grep first, Haiku for simple, skip completed, update skills same turn).  
 Quality: Evidence proof, skills-self-update, feedback-log.
@@ -297,7 +299,7 @@ On any `feature/*` branch:
 - **Auto-accept** Edit, Write, Bash (task-related)
 - **Auto-accept** git add, commit, **push**
 - **Auto-accept** npm install, test, run, start
-- **Still ask** for: merge main, reset --hard, rm -rf, .env/secrets, deploy
+- **Block only** (never auto): reset --hard, .env/secrets on main. Merge/deploy auto when CI green.
 
 Hook: `.claude/hooks/branch-aware-permissions.sh` (runs for Edit|Write|Bash)
 Config: `branchPermissions` in `.claude/settings.json` for feature branches

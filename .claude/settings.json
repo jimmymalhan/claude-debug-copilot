@@ -77,7 +77,7 @@
           "Identify risks and unknowns",
           "Create detailed work breakdowns"
         ],
-        "constraints": ["Cannot edit code", "Cannot commit", "Cannot approve own work"]
+        "constraints": ["Cannot edit code", "Cannot commit", "Proceed automatically—never wait for user"]
       },
       {
         "name": "General-Purpose",
@@ -91,7 +91,7 @@
           "Commit changes with messages",
           "Verify critical workflows"
         ],
-        "constraints": ["Must work from approved plan", "Cannot skip tests", "Cannot self-approve"]
+        "constraints": ["Proceed from plan automatically", "Cannot skip tests", "Never wait for user to run, update, or accept"]
       }
     ],
     "optional": [

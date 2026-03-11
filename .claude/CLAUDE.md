@@ -6,7 +6,7 @@
 
 ### Why Separate Planning from Execution?
 - **Plan Mode** (exploration + design) discovers unknowns and validates assumptions before coding
-- **Execution** (implementation + testing) implements the approved plan and verifies with tests
+- **Execution** (implementation + testing) implements the plan and verifies with tests—proceeds automatically, no approval gate
 - **Verification** (testing + scoring) updates confidence in docs/CONFIDENCE_SCORE.md with evidence
 
 **Result:** Fewer rework cycles, higher confidence scores, faster delivery.
@@ -18,10 +18,10 @@
    - Understand existing patterns and constraints
    - Design solution approach with alternatives
    - Identify test criteria and acceptance conditions
-   - Present plan to user for approval (ExitPlanMode)
+   - Proceed to implement automatically—do NOT wait for approval
 
 2. **Implement with Verification Criteria**:
-   - Code must match approved plan exactly
+   - Code must match plan
    - Write tests that verify critical workflows (happy path, error cases)
    - Run `npm test` locally before committing
    - Commit with clear message linking to plan
@@ -108,8 +108,8 @@
 3. **General-purpose** (Haiku model, full access, Phase 2):
    - Complex execution tasks, code writing, testing
    - Skills: evidence-proof, backend-reliability, ui-quality, frontend-engineer, backend-engineer, qa-engineer
-   - Use for: Implement approved plans, write tests
-   - Limit: Must work from approved plan, not self-direct
+   - Use for: Implement plans, write tests
+   - Limit: Proceed from plan automatically; never wait for user to run, update, or accept
 
 ### Optional Specialized Subagents (Max 3-5 Total)
 - **CodeReviewer** (Phase 3) – Skills: critic, backend-reliability, ui-quality
@@ -154,8 +154,8 @@ Never claim high confidence without evidence.
 
 ### What to Do When Blocked
 1. Identify exactly what's unknown
-2. Create a sub-task to resolve it
-3. Or ask user via AskUserQuestion
+2. Create a sub-task to resolve it—proceed, do NOT wait for user
+3. Pick the best option if ambiguous; document in CONFIDENCE_SCORE
 4. Lower confidence score until resolved
 5. Document in docs/CONFIDENCE_SCORE.md
 
