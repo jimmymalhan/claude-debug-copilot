@@ -5,6 +5,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
+### feat(skills): Extreme critique, thorough before merge, less context
+
+- **extreme-critique**: New skill — No rubber-stamp. BLOCK on real issues. Comments list what was verified. Thorough end-to-end before merge.
+- **five-agent-verification**: Be skeptical, look for fails. Input: diff + scope only. BLOCK when found.
+- **ten-pass-verification**: No rubber-stamp. Thorough checklist.
+- **consensus-gates**: Substance in comments, thorough end-to-end.
+- **handoff-protocol**: Compact schema. Less context. State ≤500 chars.
+- **token-budget**: Use less context. Agent input = scope + diff only.
+- **guardrails**: Critique rules — no rubber-stamp, thorough before merge.
+
 ### feat(skills): Full-cycle automation; all skills have agents; 4-5 phases with owners
 
 - **full-cycle-automation**: New skill — Branch cleanup → PR comments → Merge → Learn → Upgrade. Runs automatically. All skills have agents; all agents have 4-5 phases; every phase has sub-agent owner.

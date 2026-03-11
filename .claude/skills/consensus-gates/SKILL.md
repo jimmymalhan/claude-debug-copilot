@@ -20,11 +20,12 @@ description: PR merge requires multiple comments and 100% consensus. Idea, proje
 - **Convince before merge** — When agent BLOCKs, author fixes. Agent re-checks, posts follow-up (PASS or still BLOCK). No merge until all agents are convinced.
 
 ### Merge Checklist
+- [ ] **Thorough end-to-end** — All flows tested, edge cases considered. No shortcuts. See `extreme-critique`.
+- [ ] **Substance in comments** — No rubber-stamp. Each comment lists what was verified. BLOCK if issues found.
 - [ ] CI green (npm test, lint, etc.)
-- [ ] **10 ten-pass comments on PR** — All 10 passes have run `gh pr comment` with their result
+- [ ] **10 ten-pass comments on PR** — All 10 passes with substantive critique
 - [ ] Multiple comments on PR (2+ from agents, skills, or reviewers)
 - [ ] 100% consensus — all have approved; no outstanding objections
-- [ ] Ten-pass verification passed (where applicable)
 
 **Rule**: Never merge a PR without satisfying all of the above. **Merge only AFTER 10-pass critiques have commented.** Consensus overrides auto-merge.
 

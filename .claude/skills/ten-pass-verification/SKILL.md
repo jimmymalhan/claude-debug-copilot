@@ -12,6 +12,8 @@ Every change is verified by **10 distinct passes** (peers critiquing from differ
 - **Each pass MUST run** `gh pr comment --body "..."` with its result and any push-back/critique
 - **Merge blocked** until all 10 passes have posted a comment on the PR
 - **Push-back** — when a pass finds issues, the comment must list them so the author must address
+- **No rubber-stamp** — Every comment must list what was verified. Never "PASS" alone. See `extreme-critique` skill.
+- **Thorough before merge** — End-to-end checklist complete. Look for fails, edge cases. BLOCK on real issues.
 - **Do NOT merge before 10 comments** — if fewer than 10 ten-pass comments exist on the PR, block merge
 - **Per-agent GitHub identity** — Each pass uses its own GH token when posting. PR shows multiple contributors. See `github-agent-identities` skill.
 - **Run critiques in parallel** — Passes 1–5 (five-agent), 6+7+10 (REVIEW), 8+9 run in parallel where possible. Don't sequence unnecessarily. Fast completion = no PRs hanging.

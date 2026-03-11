@@ -118,6 +118,7 @@
 | **github-agent-identities** | Each agent has own GitHub identity; per-agent GH token for PR comments; convince in threads | ten-pass, five-agent, pr-comments-live, consensus-gates |
 | **full-cycle-automation** | Branch cleanup → PR comments → merge → learn → upgrade; all skills have agents; all agents 4-5 phases | run-the-business, default loop |
 | **branch-cleanup** | Delete merged branches, close stale PRs; 5 phases, sub-agent owners | full-cycle-automation, pr-push-merge |
+| **extreme-critique** | No rubber-stamp; BLOCK on real issues; thorough before merge; less context | ten-pass, five-agent, consensus-gates |
 
 ---
 
