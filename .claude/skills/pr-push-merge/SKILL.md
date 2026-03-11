@@ -15,6 +15,8 @@ argument-hint: [branch or ""]
 
 **Uses** `ten-pass-verification`: Before Phase 4, run 10-pass (REVIEW.md + five-agent + npm test + lint). All must pass.
 
+**Uses** `pr-reviewers`: Before Phase 5 (merge), reviewers comment, push back, recommend tests. Iterate on feedback. Do NOT rush. Merge only when reviewers recommend merge + CI + recommended tests pass. If not recommended → create new branch, work harder.
+
 ## Phase 1: DISCOVER
 ### Sub-Agent: `CommitScout` (model: haiku)
 - **Tools**: Bash, Read
