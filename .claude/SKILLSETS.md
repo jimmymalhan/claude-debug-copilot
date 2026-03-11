@@ -110,6 +110,8 @@
 | **repository-audit-to-skillset** | Check PRs, branches, commits; use data to update skills | Plan, General-Purpose; run before skill updates from repo evidence |
 | **confidence-score** | Evidence-backed scoring; ledger at .claude/CONFIDENCE_SCORE.md | guardrails, critic, evidence-proof |
 | **code-skill-mapping** | Skill→code map; skills drive implementation | Plan, General-Purpose |
+| **pr-comments-live** | Post PR comment at same time as every commit/push/update; never work in silence | pr-push-merge, all delivery flows |
+| **parallel-execution** | Do multiple things at once; not one thing at a time | pr-push-merge, Plan, General-Purpose |
 | **consensus-gates** | PR: multiple comments + 100% consensus; idea/project/task: stakeholder consensus | pr-push-merge, Plan, General-Purpose |
 
 ---
@@ -247,6 +249,8 @@ Invoke `/e2e-orchestrator` to run the whole business end-to-end.
 | Consensus gates | `consensus-gates` | PR: multiple comments + 100% consensus; idea/project/task: stakeholder consensus; merge only when all pass |
 | User feedback → skillset | `user-feedback-to-skillset` | All user input → update/create skills; never create new docs; everything is skillset |
 | Check PRs, branches, commits → update skills | `repository-audit-to-skillset` | Audit repo; use PR/branch/commit data to update skill set |
+| PR comments as work happens | `pr-comments-live` | Post PR comment at same time as every commit/push/update |
+| Parallel execution | `parallel-execution` | Do multiple things at once; not one thing at a time |
 | Ultra automation | `ultra-automation` | Max autonomy; no gates (opt-in) |
 | DAG executor | `dag-executor` | Parallel, dependency-ordered tasks |
 | Token budget | `token-budget` | Cap tokens per run |

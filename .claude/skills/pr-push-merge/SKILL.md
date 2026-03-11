@@ -15,6 +15,12 @@ argument-hint: [branch or ""]
 
 **Uses** `ten-pass-verification`: Before Phase 4, run 10-pass (REVIEW.md + five-agent + npm test + lint). All must pass.
 
+**Uses** `pr-comments-live`: Post PR comment at same time as every commit, push, or update. Never work in silence.
+**Uses** `parallel-execution`: Do multiple actions together (commit + push + comment); not one thing at a time.
+
+## PR Comments (Every Phase)
+After each phase: `gh pr comment --body "Phase N: <summary>"` — in parallel with the phase output. See `pr-comments-live` skill.
+
 ## Phase 1: DISCOVER
 ### Sub-Agent: `CommitScout` (model: haiku)
 - **Tools**: Bash, Read
@@ -74,10 +80,10 @@ Phase 4 MUST verify localhost. Phase 5 MUST tell user: "Server running at localh
 
 ## Flow
 
-1. **Commit** – Project-relevant only; conventional commits
-2. **Push** – To feature branch (never push direct to main)
-3. **Run CI** – `npm run test:ci`; fix failures
-4. **Open PR** – Or update existing PR
+1. **Commit** – Project-relevant only; conventional commits. **In parallel**: Post PR comment "Committed: <message>"
+2. **Push** – To feature branch (never push direct to main). **In parallel**: Post PR comment "Pushed to <branch>"
+3. **Run CI** – `npm run test:ci`; fix failures. **In parallel**: Post PR comment when CI status known
+4. **Open PR** – Or update existing PR. **In parallel**: Post PR comment describing changes
 5. **Provide** – Localhost URL (working) + PR link
 6. **Consensus gate** – Multiple comments required (2+ from skills, agents, sub-agents, reviewers). 100% consensus required. Do NOT merge without consensus. See `consensus-gates` skill.
 7. **Merge** – Only when multiple comments AND 100% consensus. Never merge without.
