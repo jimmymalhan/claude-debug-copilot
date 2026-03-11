@@ -499,8 +499,8 @@ describe('Phase F Integration Tests - Critical Workflows', () => {
       const action = 'api_call';
       const sensitiveData = {
         endpoint: '/api/diagnose',
-        apiKey: 'sk-ant-secret',
-        password: 'secret123',
+        apiKey: '[TEST_SENSITIVE_REDACTED]',
+        password: '[TEST_SENSITIVE_REDACTED]',
       };
 
       logAction(action, sensitiveData);

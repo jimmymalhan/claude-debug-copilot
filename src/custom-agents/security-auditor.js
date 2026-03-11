@@ -378,11 +378,11 @@ export class SecurityAuditorAgent extends BaseAgent {
 const express = require('express');
 const app = express();
 
-// VULNERABILITY: Hardcoded API key
-const API_KEY = "sk-1234567890abcdefghijklmnop";
+// VULNERABILITY: Hardcoded API key (use env var in real code)
+const API_KEY = "[HARDCODED_KEY_PLACEHOLDER]";
 
-// VULNERABILITY: Hardcoded password
-const dbPassword = "admin123";
+// VULNERABILITY: Hardcoded password (use env var in real code)
+const dbPassword = "[HARDCODED_PASSWORD_PLACEHOLDER]";
 
 // VULNERABILITY: Weak JWT secret
 const jwtSecret = "";

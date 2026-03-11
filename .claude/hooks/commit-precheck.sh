@@ -3,10 +3,12 @@
 # Commit Precheck Hook
 # Purpose: BLOCK commits with task breakdowns, progress docs, implementation reports.
 # Run before every git commit. Exit 1 = BLOCK (do not commit).
+# Allow: deletions (git rm) of forbidden files—we want to clean those from the repo.
 
 set -e
 
-STAGED=$(git diff --cached --name-only 2>/dev/null || true)
+# Only check ADDED or MODIFIED—allow DELETIONS (cleanup)
+STAGED=$(git diff --cached --name-only --diff-filter=AM 2>/dev/null || true)
 [ -z "$STAGED" ] && exit 0
 
 # Forbidden patterns (grep -E alternation)

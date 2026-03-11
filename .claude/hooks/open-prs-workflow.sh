@@ -53,4 +53,8 @@ if [ "$CURRENT" = "main" ]; then
 fi
 # Refresh README Project 1.0.0 status bar (keep progress current)
 npm run status 2>/dev/null || true
+# Run signed test agents when localhost is up (continuous-test-feedback)
+if curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/health 2>/dev/null | grep -q "200"; then
+  (cd "$REPO_ROOT" && npm run test:agents 2>/dev/null) || true
+fi
 exit 0

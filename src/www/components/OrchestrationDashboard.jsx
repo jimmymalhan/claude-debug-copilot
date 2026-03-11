@@ -1,13 +1,24 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { getClient } from '../api/client'
 import { classifyError } from '../api/errors'
+import Skeleton from './Skeleton'
 
 const apiClient = getClient()
+
+function SkeletonList({ count = 3 }) {
+  return (
+    <div className="skeleton-list" role="status" aria-live="polite" aria-label="Loading">
+      {Array.from({ length: count }).map((_, i) => (
+        <Skeleton key={i} height={24} className="skeleton-list-item" />
+      ))}
+    </div>
+  )
+}
 
 function LoadingState({ label }) {
   return (
     <div className="orch-section-loading" role="status" aria-live="polite">
-      <div className="orch-spinner" aria-hidden="true" />
+      <SkeletonList count={3} />
       <p>{label}</p>
     </div>
   )

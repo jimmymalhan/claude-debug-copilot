@@ -1,5 +1,32 @@
 # Repeatable Commands
 
+## /test-agents
+Run signed test agents: APIUseCaseTester, UIUseCaseTester, BackendUseCaseTester, LocalhostE2ETester. Tests localhost, API, UI, backend with use-case matrix. Critical feedback → .claude/local/test-feedback.log. Iterate without user. **Requires server running** (`npm start`).
+
+**Usage**: /test-agents [or run `npm run test:agents`]
+
+**Agents** (signed to skills):
+- **APIUseCaseTester** — API/latency, database, auth/5xx, payments, oncall-SRE, CI-flaky, microservices
+- **UIUseCaseTester** — /, /orchestration.html, /api-reference.html
+- **BackendUseCaseTester** — /health, validation, batch
+- **LocalhostE2ETester** — Chaos: invalid JSON, huge payload, timeout
+
+**Output**: Feedback log; BLOCK/HIGH on failures. Auto-iterate on feedback.
+
+## /stack-rank
+Run TeamLead + TeamCoordinator to cross-review work and stack rank open items (idea→production→GitHub). They make final calls on priorities. Requires stack-rank-priorities and sales skills.
+
+**Usage**: /stack-rank [or when prioritizing backlog]
+
+**Agents**: TeamLead (final call on delivery), TeamCoordinator (final call on scope/effort). Both use Haiku. Cross-review each other.
+
+## /market-research
+Run MarketResearchAgent: research market for the product, identify features needed from competition/trends, add to plan, implement automatically. Founder perspective—keep updating UI and backend based on market research.
+
+**Usage**: /market-research [or "what features from market", "founder wants updates"]
+
+**Flow**: ProductScout → MarketResearcher (WebSearch) → PlanInjector (checklist) → AutoExecutor (plan-and-execute). No wait. Implement automatically.
+
 ## /full-cycle-automation
 Run the complete automation loop: branch cleanup → PR comments → merge → learn from mistakes → upgrade skillset.
 
@@ -166,6 +193,24 @@ Verify all proof requirements before merge.
 - [ ] No unknowns without [UNKNOWN] mark
 - [ ] Rollback path documented
 - [ ] Ready to merge
+
+## /project-governance-template
+Apply the governance template to this or another project. Portable template from user prompts.
+
+**Usage**: /project-governance-template [apply | list | customize]
+
+**Apply**: Copy org-chart, org-feedback-loop, commit-precheck, backend-frontend-alignment, stakeholder-feedback, consensus-gates to target project. See `.claude/TEMPLATE_APPLY.md`.
+
+**List**: Show all template components (skills, hooks, rules).
+
+**Customize**: Show variables to replace (PROJECT_NAME, ROADMAP_FILE, TEAM_SIZE, CX_TEAM_SIZE, DONE_CONDITION).
+
+**User prompts captured**:
+1. Org chart 50+ roles, feedback, pushbacks, automate until roadmap done
+2. Clean PRs: no task breakdowns, commit-precheck, only feature files
+3. README: exact status, roadmap, What's Next, keep updating
+4. CX team 15: stakeholder yes on products, features, tasks, milestones, reviews, push; backend-frontend 1:1
+5. Template for other projects
 
 ## /rollback
 Safely revert changes.

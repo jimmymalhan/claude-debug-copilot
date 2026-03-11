@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import StepProgressBar from './StepProgressBar'
 
 const STAGES = [
   { name: 'Router', emoji: '🔍', description: 'Classifying failure type', duration: 5 },
@@ -76,14 +77,7 @@ export default function LoadingOverlay({ onCancel }) {
         </p>
 
         <div className="loading-progress">
-          <div className="progress-bar" role="progressbar" aria-valuenow={activeStage} aria-valuemin={0} aria-valuemax={STAGES.length}>
-            <div
-              className="progress-fill"
-              style={{
-                width: `${(activeStage / STAGES.length) * 100}%`
-              }}
-            ></div>
-          </div>
+          <StepProgressBar steps={STAGES.map(s => s.name)} currentStep={activeStage} ariaLabel="Analysis stages" />
           <div className="progress-details">
             <span className="progress-text">
               {activeStage}/{STAGES.length} stages

@@ -41,6 +41,7 @@ argument-hint: [task or instructions]
 5. **On error** → `error-detector` → `fix-pr-creator` → `self-fix` → `skills-self-update` (learn) → `repository-audit-to-skillset` (upgrade)
 6. **Market research** (founder-driven): Spawn MarketResearchAgent → research → features_needed → add to plan → plan-and-execute → implement automatically
 7. **Project 1.0.0 incomplete** — If `grep -c ",pending," FRONTEND_TASK_BREAKDOWN.csv 2>/dev/null || echo 0` > 0: invoke `org-chart` + `org-feedback-loop` → spawn org-role agents → collect critique/pushbacks → resolve conflicts → plan-and-execute → repeat until pending = 0. CSV excluded from repo; use milestones if missing. Fully automated; no user approval
+8. **Run 24/7** — `run-24-7` skill: internal stakeholders (PRs, branches, roadmap, tests, skillset self-update). External users: relevant + irrelevant use cases → critical/upset feedback → iterate. Read `.claude/ROADMAP_TODO.md`; keep applying.
 
 ---
 
@@ -81,3 +82,4 @@ argument-hint: [task or instructions]
 - `repository-audit-to-skillset` — Upgrade skills from repo evidence
 - `org-chart` — 50 roles from Junior to Founder; responsibilities, critique styles, agent mapping
 - `org-feedback-loop` — Spawn org roles → critique → pushbacks → resolve → implement → repeat until 1.0.0
+- `run-24-7` — Continuous automation; ROADMAP_TODO; external test feedback (critical/upset)

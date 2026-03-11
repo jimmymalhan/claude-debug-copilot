@@ -28,6 +28,11 @@
 - **Never invent screenshots** - only reference files on disk
 - **Never assume passing checks** - verify in GitHub Actions before claiming success
 
+## Backend–Frontend 1:1 (No Hallucination)
+- **UI shows only backend data** — One-to-one relationship. Every field displayed in the UI must exist in the API response or backend contract. No invented fields. No fabricated data.
+- **Keep testing** — Run `npm test`, `npm run test:agents`. Verify backend and UI behavior. CX team (Director of CX, Senior CX) BLOCK on mismatch.
+- See `backend-frontend-alignment` skill.
+
 ## Observed vs Inferred vs Assumed
 - **Observed**: "I ran `npm test` and saw 319 tests pass"
 - **Inferred**: "Based on the passing tests, the retry logic works"

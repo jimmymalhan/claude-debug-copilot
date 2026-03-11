@@ -84,7 +84,7 @@
         "model": "sonnet",
         "role": "Research and plan design approaches",
         "tools": ["Glob", "Grep", "Read", "WebFetch", "WebSearch"],
-        "skills": ["project-guardrails", "evidence-proof", "e2e-orchestrator", "plan-and-execute", "execution-agent", "agent-task-assignment", "github-agent-identities", "full-cycle-automation", "branch-cleanup", "ultra-automation", "auto-merge", "dag-executor", "token-budget", "consensus-resolver", "consensus-gates", "user-feedback-to-skillset", "repository-audit-to-skillset", "pr-comments-live", "parallel-execution", "naming-convention-product", "handoff-protocol", "failure-taxonomy", "explainability", "graceful-degradation", "time-bounded-run", "heartbeat-monitor", "dead-man-switch", "cron-awareness", "feedback-loop", "structured-logging", "audit-trail", "project-structure", "idea-to-production", "run-the-business", "multi-pr-coordinator", "cost-guardrails"],
+        "skills": ["project-guardrails", "evidence-proof", "e2e-orchestrator", "plan-and-execute", "execution-agent", "agent-task-assignment", "github-agent-identities", "full-cycle-automation", "branch-cleanup", "ultra-automation", "auto-merge", "dag-executor", "token-budget", "consensus-resolver", "consensus-gates", "user-feedback-to-skillset", "repository-audit-to-skillset", "pr-comments-live", "parallel-execution", "naming-convention-product", "handoff-protocol", "failure-taxonomy", "explainability", "graceful-degradation", "time-bounded-run", "heartbeat-monitor", "dead-man-switch", "cron-awareness", "feedback-loop", "structured-logging", "audit-trail", "project-structure", "idea-to-production", "run-the-business", "multi-pr-coordinator", "stack-rank-priorities", "sales", "stakeholder-feedback", "market-research", "org-chart", "org-feedback-loop", "cost-guardrails"],
         "capabilities": [
           "Explore codebase during Plan Mode",
           "Design implementation approaches",
@@ -98,7 +98,7 @@
         "model": "haiku",
         "role": "Code writing and test execution",
         "tools": ["All"],
-        "skills": ["evidence-proof", "backend-reliability", "ui-quality", "frontend-engineer", "backend-engineer", "qa-engineer", "pr-push-merge", "execution-agent", "agent-task-assignment", "github-agent-identities", "extreme-critique", "full-cycle-automation", "branch-cleanup", "dag-executor", "token-budget", "handoff-protocol", "failure-taxonomy", "explainability", "graceful-degradation", "property-based-testing", "secrets-scan", "reversibility", "circuit-breaker", "retry-with-backoff", "time-bounded-run", "heartbeat-monitor", "dead-man-switch", "feedback-loop", "feedback-log", "structured-logging", "audit-trail", "auto-merge", "skills-self-update", "five-agent-verification", "ten-pass-verification", "consensus-resolver", "consensus-gates", "user-feedback-to-skillset", "repository-audit-to-skillset", "pr-comments-live", "parallel-execution", "naming-convention-product", "self-fix", "conflict-resolution", "multi-pr-coordinator", "cost-guardrails"],
+        "skills": ["evidence-proof", "backend-reliability", "ui-quality", "frontend-engineer", "backend-engineer", "qa-engineer", "continuous-test-feedback", "pr-push-merge", "execution-agent", "agent-task-assignment", "github-agent-identities", "extreme-critique", "full-cycle-automation", "branch-cleanup", "dag-executor", "token-budget", "handoff-protocol", "failure-taxonomy", "explainability", "graceful-degradation", "property-based-testing", "secrets-scan", "reversibility", "circuit-breaker", "retry-with-backoff", "time-bounded-run", "heartbeat-monitor", "dead-man-switch", "feedback-loop", "feedback-log", "structured-logging", "audit-trail", "auto-merge", "skills-self-update", "five-agent-verification", "ten-pass-verification", "consensus-resolver", "consensus-gates", "user-feedback-to-skillset", "repository-audit-to-skillset", "pr-comments-live", "parallel-execution", "naming-convention-product", "self-fix", "conflict-resolution", "multi-pr-coordinator", "sales", "stakeholder-feedback", "org-chart", "org-feedback-loop", "cost-guardrails"],
         "capabilities": [
           "Implement approved plans",
           "Write and run tests",
@@ -198,9 +198,72 @@
         "skills": ["chaos-tester", "evidence-proof", "error-detector", "time-bounded-run", "heartbeat-monitor", "cost-guardrails"],
         "use_when": "Testing UI + backend with random/fuzz tests; finding errors before release",
         "phase": 3
+      },
+      {
+        "name": "APIUseCaseTester",
+        "model": "haiku",
+        "role": "Test API with use cases: API/latency, database, auth/5xx, payments, oncall-SRE, CI-flaky, microservices. Give critical feedback.",
+        "tools": ["Bash", "Read", "Grep"],
+        "skills": ["backend-reliability", "evidence-proof", "verifier", "continuous-test-feedback"],
+        "use_when": "continuous-test-feedback; run npm run test:agents; BLOCK on 5xx, validation bypass",
+        "phase": 3
+      },
+      {
+        "name": "UIUseCaseTester",
+        "model": "haiku",
+        "role": "Test UI: form submit, loading/error/success, Try It, orchestration page. Give critical feedback.",
+        "tools": ["Bash", "Read", "Grep"],
+        "skills": ["ui-quality", "evidence-proof", "frontend-engineer", "continuous-test-feedback"],
+        "use_when": "continuous-test-feedback; curl /, /orchestration.html; BLOCK on blank page",
+        "phase": 3
+      },
+      {
+        "name": "BackendUseCaseTester",
+        "model": "haiku",
+        "role": "Test backend: health, diagnose, batch, validation, rate-limit. Give critical feedback.",
+        "tools": ["Bash", "Read", "Grep"],
+        "skills": ["backend-reliability", "evidence-proof", "continuous-test-feedback"],
+        "use_when": "continuous-test-feedback; run test matrix; BLOCK on crash, 5xx",
+        "phase": 3
+      },
+      {
+        "name": "LocalhostE2ETester",
+        "model": "haiku",
+        "role": "E2E on localhost: end-user flow, batch, malformed input, concurrent. Chaos patterns.",
+        "tools": ["Bash", "Read", "Grep"],
+        "skills": ["chaos-tester", "evidence-proof", "continuous-test-feedback"],
+        "use_when": "continuous-test-feedback; invalid JSON, huge payload, timeout; iterate on feedback",
+        "phase": 3
+      },
+      {
+        "name": "TeamLead",
+        "model": "haiku",
+        "role": "Check and review TeamCoordinator output. Stack rank open work idea→production→GitHub. Final call on delivery order.",
+        "tools": ["Read", "Grep", "Glob", "Bash"],
+        "skills": ["stack-rank-priorities", "sales", "cost-guardrails", "evidence-proof", "idea-to-production", "consensus-resolver"],
+        "use_when": "Prioritizing backlog; reviewing coordinator output; pushing priorities to GitHub",
+        "phase": 1
+      },
+      {
+        "name": "TeamCoordinator",
+        "model": "haiku",
+        "role": "Check and review TeamLead output. Stack rank scope/effort. Final call on scope tradeoffs. Cross-review with TeamLead.",
+        "tools": ["Read", "Grep", "Glob", "Bash"],
+        "skills": ["stack-rank-priorities", "sales", "cost-guardrails", "evidence-proof", "multi-pr-coordinator", "consensus-resolver"],
+        "use_when": "Coordinating multi-PR; reviewing lead output; scope/effort decisions",
+        "phase": 1
+      },
+      {
+        "name": "MarketResearchAgent",
+        "model": "haiku",
+        "role": "Research market for product; identify features needed from competition, trends. Add to plan; implement automatically.",
+        "tools": ["Read", "Grep", "Glob", "WebSearch"],
+        "skills": ["market-research", "plan-and-execute", "idea-to-production", "cost-guardrails", "evidence-proof"],
+        "use_when": "Founder wants market-driven updates; run-the-business needs feature backlog; market research requested",
+        "phase": 1
       }
     ],
-    "guidance": "Assign every task to an agent. Spawn optional agents when their phase runs—run in parallel. No minimum task count. Nothing left unassigned or hanging. See agent-task-assignment skill."
+    "guidance": "Assign every task to an agent. Spawn optional agents when their phase runs—run in parallel. TeamLead and TeamCoordinator cross-review and stack rank; they make final calls. No minimum task count. Nothing left unassigned or hanging. See agent-task-assignment skill."
   },
 
   "allowedCommands": [
@@ -209,7 +272,8 @@
     "git status", "git diff", "git log", "git add", "git commit", "git branch", "git push", "git checkout", "git merge",
     "node src/local-pipeline.js", "node src/run.js",
     "gh pr list", "gh pr view", "gh pr create", "gh pr comment", "gh pr merge", "gh pr close",
-    "gh run list", "gh run view"
+    "gh run list", "gh run view",
+    "npm run test:agents"
   ],
 
   "criticalFiles": [

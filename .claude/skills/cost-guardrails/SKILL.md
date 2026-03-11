@@ -114,6 +114,8 @@ All rate-limited → STOP, save state, ask user
 6. **Compact between tasks** — `/clear` or `/compact` when switching
 7. **Specific prompts** — "Add validation to login" beats "improve codebase"
 8. **Delegate verbose ops** — test output, logs stay in subagent context
+9. **Script over AI** — If a script can do it (test matrix, branch list, PR list), run the script. No AI for deterministic ops.
+10. **Always less credits** — Every run should use fewer credits than the previous for similar tasks. Prefer `npm run test:agents`, `gh pr list`, `node scripts/*` over spawning agents for trivia.
 
 ---
 
