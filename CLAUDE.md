@@ -87,6 +87,7 @@ npm run test:e2e       # E2E tests (requires API credentials)
 
 ## Branch Rules (HARD)
 - **All changes through branches** — Never commit directly to main. Create `feature/*` first. Commit there. Merge to main only via PR.
+- **Reviewers must recommend merge** — Reviewers (docs/reviewers.md) comment, push back, recommend tests. Iterate on feedback. Do NOT rush to merge. Merge only when reviewers recommend + CI + recommended tests pass. If not recommended → create new branch, work harder. Production house: business-level, production-level code only.
 - `main` - production; no direct commits. Changes land via PR from feature/*.
 - `feature/*` - all work happens here; auto-accept edits; push to branch; open PR
 - `.claude/worktrees/` - temporary isolation for risky changes
