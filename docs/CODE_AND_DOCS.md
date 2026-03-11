@@ -36,6 +36,7 @@
 
 - **Never ask permission to run tests** — Run `npm test` (and test:ci, test:e2e when needed); report results. Do not ask "Can I run tests?"
 - **Docs and code go hand in hand** — Never push them separately.
+- **Lower tokens** — Read(offset,limit); Grep over full Read; compact skills (<500 lines); filter-test-output for npm test; prefer Haiku.
 
 ## Commit Rule
 
