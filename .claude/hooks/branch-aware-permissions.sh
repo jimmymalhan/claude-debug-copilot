@@ -42,11 +42,13 @@ matches_pattern() {
   esac
 }
 
-# Function: Is this the auto-allowed feature branch?
-is_feature_branch() {
-  # Auto-accept on ANY feature/* branch - run the business end-to-end without permission prompts.
-  # Protected: main, master, staging, develop, hotfix, release.
-  [[ "$BRANCH" =~ ^feature/ ]]
+# Function: Is this the auto-allowed branch? (Run to Vegas: user granted full permissions)
+is_auto_accept_branch() {
+  # Feature branches: always auto-accept
+  [[ "$BRANCH" =~ ^feature/ ]] && return 0
+  # Run to Vegas: main also auto-accept when user has granted full permissions
+  [[ "$BRANCH" == "main" ]] && return 0
+  return 1
 }
 
 # Function: Check if command is safe for auto-allow
@@ -159,7 +161,7 @@ is_dangerous_on_feature_branch() {
 }
 
 # Main logic
-if is_feature_branch; then
+if is_auto_accept_branch; then
   # FEATURE BRANCH (any feature/*):
   # Auto-accept end-to-end. Run the business without permission prompts.
   # Allow: edits, git add/commit/push, npm, node, all safe commands.

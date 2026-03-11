@@ -5,6 +5,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
+### feat(run-to-vegas): Full autonomy, ten-pass verification, no permission prompts
+
+- **Run to Vegas**: User granted full permissions. Everything allow list. Execute and report; never ask.
+- **ten-pass-verification**: 10 checks (REVIEW.md + five-agent + npm test + lint) so user doesn't need to supervise
+- **main branch**: Auto-accept same as feature/* (RUN_TO_VEGAS=true in settings)
+- **branch-aware-permissions**: is_auto_accept_branch includes main
+- **REVIEW.md**: Added to rules; wired into ten-pass
+- **pr-push-merge, e2e-orchestrator**: Use ten-pass before deliver
+- **FEATURE_BRANCH_PERMISSIONS**: Updated for Run to Vegas; main + feature/* full auto
+
 ### docs: YouTube-derived skill upgrades — YOUTUBE_SKILL_UPGRADES, six-step audit
 
 - **docs/YOUTUBE_SKILL_UPGRADES.md**: Extracted patterns from FE/BE, Anthropic deep dive, Nate Herk, Claude official

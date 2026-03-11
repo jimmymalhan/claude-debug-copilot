@@ -20,8 +20,10 @@ Every diagnosis must include:
 - **Tests** - unit, integration, and E2E proof of fix
 - **Confidence** - backed by passing tests with evidence
 
-## Run-the-Business & Live Monitoring (DEFAULT)
+## Run-to-Vegas & Run-the-Business (DEFAULT)
 
+- **Permissions**: Everything is allow list. User granted full permissions. Execute and report; never ask.
+- **Ten-pass verification**: REVIEW.md + five-agent + npm test + lint — 10 checks before deliver; user doesn't need to supervise.
 - **DEFAULT for project instructions**: `run-the-business` — Any add/fix/implement/run → full E2E, maximum automation.
 - **Auto-merge**: ON by default — Merge when CI green; no "merge now" required.
 - **Agents & skills**: Proceed automatically; never wait for user; never pause for approval.

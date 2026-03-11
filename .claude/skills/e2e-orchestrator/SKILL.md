@@ -73,9 +73,9 @@ Phase 4 MUST check server. Phase 5 MUST report server status to user. If laptop 
 4. **Backend Implementer** – Build API (use `backend-engineer`)
 5. **Verifier** – Validate claims, score confidence
 
-### Phase 3: Review & Critique – 5-Agent Verification (Required)
+### Phase 3: Review & Critique – Ten-Pass Verification (Required)
 
-Run these 5 agents in parallel. **Accept only when all 5 pass.**
+Run `ten-pass-verification`: 10 distinct checks (REVIEW.md + five-agent + npm test + lint). **Accept only when all 10 pass.** User does not need to supervise—agents check work 10 different ways.
 
 1. **CodeReviewer** – DRY, style, guardrails, no console.log
 2. **APIValidator** – API contract, request/response, error format

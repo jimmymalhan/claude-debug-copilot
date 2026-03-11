@@ -10,7 +10,8 @@
     "MAX_RETRIES": "2",
     "COVERAGE_THRESHOLD": "60",
     "AUTO_MERGE": "true",
-    "ULTRA_AUTO": "true"
+    "ULTRA_AUTO": "true",
+    "RUN_TO_VEGAS": "true"
   },
 
   "hooks": {
@@ -84,7 +85,7 @@
         "model": "haiku",
         "role": "Code writing and test execution",
         "tools": ["All"],
-        "skills": ["evidence-proof", "backend-reliability", "ui-quality", "frontend-engineer", "backend-engineer", "qa-engineer", "pr-push-merge", "execution-agent", "dag-executor", "token-budget", "handoff-protocol", "failure-taxonomy", "explainability", "graceful-degradation", "property-based-testing", "secrets-scan", "reversibility", "circuit-breaker", "retry-with-backoff", "time-bounded-run", "heartbeat-monitor", "dead-man-switch", "feedback-loop", "feedback-log", "structured-logging", "audit-trail", "auto-merge", "skills-self-update", "five-agent-verification", "consensus-resolver", "self-fix", "conflict-resolution", "multi-pr-coordinator", "cost-guardrails"],
+        "skills": ["evidence-proof", "backend-reliability", "ui-quality", "frontend-engineer", "backend-engineer", "qa-engineer", "pr-push-merge", "execution-agent", "dag-executor", "token-budget", "handoff-protocol", "failure-taxonomy", "explainability", "graceful-degradation", "property-based-testing", "secrets-scan", "reversibility", "circuit-breaker", "retry-with-backoff", "time-bounded-run", "heartbeat-monitor", "dead-man-switch", "feedback-loop", "feedback-log", "structured-logging", "audit-trail", "auto-merge", "skills-self-update", "five-agent-verification", "ten-pass-verification", "consensus-resolver", "self-fix", "conflict-resolution", "multi-pr-coordinator", "cost-guardrails"],
         "capabilities": [
           "Implement approved plans",
           "Write and run tests",
@@ -100,7 +101,7 @@
         "model": "sonnet",
         "role": "Code quality, security, performance review",
         "tools": ["Read", "Grep", "Glob"],
-        "skills": ["project-guardrails", "evidence-proof", "consensus-resolver", "explainability", "confidence-decay", "anomaly-detection", "critic", "backend-reliability", "ui-quality", "skills-self-update", "five-agent-verification"],
+        "skills": ["project-guardrails", "evidence-proof", "consensus-resolver", "explainability", "confidence-decay", "anomaly-detection", "critic", "backend-reliability", "ui-quality", "skills-self-update", "five-agent-verification", "ten-pass-verification"],
         "use_when": "Need parallel code review while coding",
         "phase": 3
       },
@@ -136,7 +137,7 @@
         "model": "haiku",
         "role": "Test plan and validation specialist",
         "tools": ["Read","Write","Edit","Run","Glob","Grep"],
-        "skills": ["qa-engineer", "evidence-proof", "property-based-testing", "confidence-decay", "anomaly-detection", "failure-taxonomy", "critic", "pr-push-merge", "feedback-log", "skills-self-update", "five-agent-verification"],
+        "skills": ["qa-engineer", "evidence-proof", "property-based-testing", "confidence-decay", "anomaly-detection", "failure-taxonomy", "critic", "pr-push-merge", "feedback-log", "skills-self-update", "five-agent-verification", "ten-pass-verification"],
         "use_when": "Defining or verifying proof plans",
         "phase": 3
       },
@@ -216,6 +217,7 @@
 
   "rules": [
     "CLAUDE.md - project non-negotiable rules",
+    "REVIEW.md - code review guidelines, 10-pass verification",
     ".claude/CLAUDE.md - meta-rules (workflow, memory, subagents)",
     ".claude/rules/guardrails.md - anti-hallucination standards",
     ".claude/rules/testing.md - test requirements and coverage",
@@ -231,6 +233,7 @@
 
   "documentation": {
     "README.md": "Problem, quick start, features, integration",
+    "REVIEW.md": "Code review guidelines, ten-pass verification, Claude Code Review",
     "CLAUDE.md": "Project rules, workflow, output contract",
     ".claude/CLAUDE.md": "Meta-rules, Plan Mode, memory, subagents",
     "CHANGELOG.md": "Session-by-session change log",
@@ -240,6 +243,11 @@
   },
 
   "branchPermissions": {
+    "main": {
+      "autoAcceptEdits": true,
+      "noPermissionPrompts": true,
+      "description": "Run to Vegas - user granted full permissions; execute and report"
+    },
     "feature/*": {
       "autoAcceptEdits": true,
       "noPermissionPrompts": true,

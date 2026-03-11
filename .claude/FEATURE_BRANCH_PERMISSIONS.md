@@ -1,13 +1,25 @@
 # Feature Branch Permission Policy
-**Branch:** `feature/integration-website`
+**Branch:** `feature/*` and `main` (Run to Vegas)
 **Policy:** AUTO-EXECUTE ALL OPERATIONS - NO PERMISSION REQUESTS
 **Status:** ✅ ACTIVE
 
 ---
 
+## 🎲 RUN TO VEGAS (User Granted Full Permissions)
+
+**User has granted full permissions. Everything is allow list. Do not ask for permission.**
+
+- **main** and **feature/***: Auto-accept ALL operations
+- Execute and report. Never wait for approval.
+- Ten-pass verification (REVIEW.md + five-agent + npm test + lint) checks work 10 different ways—user does not need to supervise.
+- settings.json: `RUN_TO_VEGAS=true`, main in branchPermissions
+- Hook: `is_auto_accept_branch` includes main
+
+---
+
 ## 🔓 PERMISSION LEVEL: MAXIMUM AUTO-EXECUTE
 
-### On `feature/integration-website`:
+### On `feature/*` and `main`:
 ```
 ✅ Auto-accept ALL operations without asking:
   ✅ npm test
@@ -25,16 +37,12 @@
 NO PERMISSION REQUESTS - JUST EXECUTE AND REPORT
 ```
 
-### On `main` branch:
+### On `main` branch (Run to Vegas: user granted full permissions):
 ```
-❌ ALWAYS ask for permission before:
-  ❌ git push to main
-  ❌ Creating/merging PRs to main
-  ❌ Any state-changing commands
-  ❌ Deleting files
-  ❌ Modifying critical files (package.json, CLAUDE.md)
-
-WAIT FOR USER APPROVAL - NEVER auto-execute on main
+✅ Auto-accept ALL operations (same as feature/*)
+✅ git push, merge PRs, state-changing commands
+✅ Ten-pass verification runs before deliver
+EXECUTE AND REPORT - NO PERMISSION REQUESTS
 ```
 
 ---
@@ -141,22 +149,15 @@ On feature branch: NEVER ask. Execute and report.
 
 ---
 
-## 🔄 TRANSITION RULES
+## 🔄 TRANSITION RULES (Run to Vegas)
 
-### Before Switching to Main
-1. Update `.claude/settings.local.json` to `"defaultMode": "default"`
-2. Then I'll ask for permission again (safe mode on main)
-
-### If You Switch to Main Without Updating Settings
-1. I will detect the main branch
-2. I will switch back to asking for permission automatically
-3. This is a safety feature
+All branches auto-accept. No transition needed. Execute and report on main and feature/*.
 
 ---
 
 ## 📝 REMEMBER
 
-**Feature Branch (`feature/integration-website`):**
+**Feature Branch (`feature/*`) and Main:**
 - 🟢 Just execute - no asking
 - 🟢 Report results immediately
 - 🟢 Auto-fix issues and continue
@@ -164,16 +165,14 @@ On feature branch: NEVER ask. Execute and report.
 - 🟢 Run any command without asking
 - 🟢 Maximum efficiency mode
 
-**Main Branch (`main`):**
-- 🔴 Always ask first
-- 🔴 Wait for approval
-- 🔴 Never auto-push
-- 🔴 Safety first
-- 🔴 Conservative mode
+**Main Branch (`main`) — Run to Vegas:**
+- 🟢 Execute and report (user granted full permissions)
+- 🟢 Ten-pass verification before deliver
+- 🟢 No permission prompts
 
 ---
 
-**Last Updated:** 2026-03-09
-**Status:** ✅ ACTIVE
-**Applies To:** feature/integration-website branch only
-**Exceptions:** Merge/push to main always require approval
+**Last Updated:** 2026-03-10
+**Status:** ✅ ACTIVE (Run to Vegas)
+**Applies To:** main and feature/* — full auto-accept
+**Verification:** ten-pass-verification (REVIEW.md + five-agent + npm test + lint) runs before deliver
