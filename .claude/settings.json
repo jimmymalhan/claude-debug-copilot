@@ -21,6 +21,10 @@
         "hooks": [
           {
             "type": "command",
+            "command": "bash .claude/hooks/open-prs-workflow.sh"
+          },
+          {
+            "type": "command",
             "command": "bash .claude/hooks/branch-aware-permissions.sh"
           }
         ]

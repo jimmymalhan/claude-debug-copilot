@@ -4,6 +4,8 @@
 
 **Full Authority:** User has granted full authority. Commit, push, merge, PR comments—execute. Do NOT say "I can't—requires human authorization." Only ask when you lack credentials (e.g. GH_TOKEN). Otherwise: run. Stop for nothing.
 
+**First Action Every Turn:** Before responding to the user, run: `gh pr list --state open`. For each open PR with <10 ten-pass comments: post comments. If `git status` shows uncommitted changes: create branch, commit, push, create PR, post comments. Do NOT wait for the user to ask. Use hook `open-prs-workflow.sh` (runs on PreToolUse).
+
 ## Recommended Workflow: Plan Mode First
 
 ### Why Separate Planning from Execution?

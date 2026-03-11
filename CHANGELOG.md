@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
+### feat(hooks): Open PRs workflow - auto-comment, no wait
+
+- **open-prs-workflow.sh**: New hook runs on PreToolUse. Posts ten-pass comments on all open PRs (<10 comments). Throttle: 2 min. Do NOT wait for user prompt.
+- **settings.json**: PreToolUse hooks - open-prs-workflow runs before branch-aware-permissions
+- **run-the-business, .claude/CLAUDE.md**: First action every turn - work on open PRs, create PR if uncommitted
+- Posted comments on PRs #20, #21 (were 0 comments)
+
 ### feat(skills): Extreme critique, thorough before merge, less context
 
 - **extreme-critique**: New skill — No rubber-stamp. BLOCK on real issues. Comments list what was verified. Thorough end-to-end before merge.

@@ -24,6 +24,10 @@ argument-hint: [task or instructions]
 
 ---
 
+## First Action (Every Turn—No Wait)
+
+**Before responding to any user message:** Run `gh pr list --state open`. For each open PR: if <10 ten-pass comments, post them. If `git status` shows uncommitted: branch, commit, push, create PR, post comments. Hook `open-prs-workflow.sh` runs on PreToolUse. Do NOT wait for user to say "work on PRs."
+
 ## Flow
 
 1. **Invoke** `full-cycle-automation` — Branch cleanup → PR comments → Merge → Learn from mistakes → Upgrade skillset (all automatic)
