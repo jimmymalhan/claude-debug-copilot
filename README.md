@@ -131,7 +131,7 @@ Use any HTTP client (Python, Node, Go, bash). Set `Content-Type: application/jso
 
 ## Claude Code Skills
 
-This repo includes **66+ skills** in `.claude/skills/` for run-the-business automation, evidence-proof workflows, and ultra-automation.
+This repo includes **118+ skills** in `.claude/skills/` for run-the-business automation, evidence-proof workflows, and ultra-automation. Project 1.0.0 complete; handoff notes in [.claude/SKILLSETS.md](.claude/SKILLSETS.md).
 
 | Doc | Purpose |
 |-----|---------|

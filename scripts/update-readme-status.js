@@ -109,13 +109,11 @@ const roadmapFeatures = `### Roadmap Features (from [.github/PROJECT_1.0.0_CHECK
 
 const whatsNext = `## What's Next
 
-**Awaiting your confirmation** to automate the remaining roadmap. Once confirmed:
+**Project 1.0.0 complete** (29/29 checkpoints). Ready for 2.0.0 planning:
 
-1. **Org-chart + org-feedback-loop** — 50 roles (Junior→Founder) give critique and pushback; resolve conflicts; implement until 1.0.0 complete
+1. **workflow-router** — Entry point for all repo activity; DISCOVER → PLAN → IMPLEMENT → VERIFY
 2. **Run-the-business** — Spawn agents; plan-and-execute; PR → consensus → merge; no manual steps
-3. **Until 1.0.0** — Loop: org feedback → implement next batch → test → PR → repeat until all checkpoints done
-
-**Reply to confirm** and automation will proceed. No further direction needed—agents run until Project 1.0.0 is complete.`;
+3. **Handoff** — See [.claude/SKILLSETS.md](.claude/SKILLSETS.md) (1.0.0 Complete — Handoff) for next maintainer checklist`;
 
 const statusSection = `## Project 1.0.0 Status
 

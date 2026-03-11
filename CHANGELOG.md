@@ -5,6 +5,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
+### chore(handoff): ROADMAP 1.0.0 complete — skill set cleanup, handoff docs
+
+- **SKILLSETS.md**: Added "1.0.0 Complete — Handoff" section; updated org-feedback-loop, org-chart for post-1.0.0
+- **MASTER_TODO.json**: FC-007, FC-010 status=complete; roadmap_1_0_status=COMPLETE
+- **PROJECT_1.0.0_CHECKPOINTS.md**: 1.0.0 COMPLETE header
+- **README**: 118+ skills; What's Next updated for 2.0.0 planning
+- **scripts/update-readme-status.js**: What's Next reflects 1.0.0 complete
+
 ### feat(1.0.0): Project 1.0.0 completion — 28/29 (97%), Lighthouse CI, design-tokens doc
 
 - **DT-010**: Added Design Tokens section to CLAUDE.md (source, usage, WCAG AA, motion).

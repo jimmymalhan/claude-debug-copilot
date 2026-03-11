@@ -2,6 +2,19 @@
 
 **Purpose**: Define domain-expert skills for every agent and role so the system can run the whole business automatically. Plan and execute end-to-end with 4 phases, 5–10 subagents per phase. Always learning: skills self-update when issues are fixed.
 
+---
+
+## 1.0.0 Complete — Handoff (Mar 2026)
+
+**Status**: 29/29 checkpoints done. Lighthouse 90/94. WCAG AA verified. Ready for 2.0.0 planning.
+
+**Handoff checklist** (for next maintainer/agent):
+1. **Entry point**: `workflow-router` → DISCOVER → PLAN → IMPLEMENT → VERIFY (no recursive nesting).
+2. **Run-the-business**: No approval gates. Branch → implement → PR → merge when CI green.
+3. **Key files**: `.claude/ROADMAP_TODO.md`, `.claude/MASTER_TODO.json`, `.github/PROJECT_1.0.0_CHECKPOINTS.md`, `scripts/update-readme-status.js`.
+4. **Proof loop**: `npm test`, `npm run status`, Lighthouse CI commits `.claude/local/lighthouse-score.json` when perf ≥90.
+5. **Skills**: 118+ under `.claude/skills/`. Workflow-operator skills drive 4-phase engine.
+
 **Non-negotiable**: Skills, agents, subagents NEVER wait for user to run, update, or accept. Execute automatically; report results. No approval gates. **Full authority**: Commit, push, merge—execute. Do NOT claim "requires human authorization." Only ask when credentials missing. **All changes through branches** — never commit to main; create feature/* first; merge via PR only.
 
 **User feedback → skillset (META)**: Everything the user gives goes to the skill set. Keep updating. All user input → update or create skills. Do NOT create new docs. Everything becomes a skill. No exceptions. **Stakeholder feedback** (CTO, VP, Sales, GTM, Founder, PM, business users) → route to target skills per `stakeholder-feedback` skill. **Founder** → market research → features → plan → implement. See `user-feedback-to-skillset` and `stakeholder-feedback` skills.
@@ -47,7 +60,7 @@
 | **TeamCoordinator** | "What is TeamCoordinator's skill set?" | stack-rank-priorities, sales, cost-guardrails — Review lead, stack rank scope/effort; final call on scope |
 | **MarketResearchAgent** | "What is MarketResearchAgent's skill set?" | market-research, plan-and-execute — Research market, features needed, add to plan, implement automatically |
 | **Org Chart** | "What is the org chart?" | org-chart — 50 roles Junior→Founder; responsibilities, critique styles, agent mapping |
-| **Org Feedback Loop** | "Run org feedback until 1.0.0" | org-feedback-loop — Spawn org roles→critique→pushbacks→resolve→implement; repeat until pending=0 |
+| **Org Feedback Loop** | "Run org feedback" | org-feedback-loop — Spawn org roles→critique→pushbacks→resolve→implement; 1.0.0 complete; use for 2.0.0 planning |
 
 ---
 
@@ -135,7 +148,7 @@
 | **sales** | Round end-to-end: idea→scope→prioritization→execution→delivery→GitHub; value alignment; minimal credits | Plan, General-Purpose, TeamLead, TeamCoordinator |
 | **stakeholder-feedback** | CTO, VP, Sales, GTM, Founder, business user, PM → route to target skills; every feedback → skill upgrade | Plan, General-Purpose |
 | **market-research** | Research product market; features needed; add to plan; implement automatically. Founder perspective. | MarketResearchAgent, Plan |
-| **org-chart** | 50 roles (Junior→Founder); responsibilities, critique styles, agent mapping; run until 1.0.0 | run-the-business, plan-and-execute |
+| **org-chart** | 50 roles (Junior→Founder); responsibilities, critique styles, agent mapping; 1.0.0 complete | run-the-business, plan-and-execute |
 | **org-feedback-loop** | Spawn org roles→critique→pushbacks→resolve conflicts→implement; repeat until pending=0 | run-the-business, org-chart |
 | **project-governance-template** | Portable template from user prompts; apply to any project | Copy org-chart, commit-precheck, consensus-gates, CX, backend-frontend-alignment; see TEMPLATE_APPLY.md |
 | **run-24-7** | Continuous automation; ROADMAP_TODO; external test feedback (critical/upset) | run-the-business, open-prs-workflow, continuous-test-feedback |
@@ -250,7 +263,7 @@ Invoke `/e2e-orchestrator` to run the whole business end-to-end.
 | PR, push, localhost, merge | `pr-push-merge` | Commit→push→CI→localhost+PR links→consensus (multiple comments, 100%)→merge |
 | Don't ask, auto-execute | `push-hard` | No permission prompts, aggressive parallel |
 | Stakeholder feedback | `stakeholder-feedback` | CTO, VP, Sales, GTM, Founder, business user, PM → upgrade target skills; Founder → market research → implement |
-| Org chart + feedback loop | `org-chart`, `org-feedback-loop` | 50 roles → critique → pushbacks → resolve → implement; run until Project 1.0.0 complete |
+| Org chart + feedback loop | `org-chart`, `org-feedback-loop` | 50 roles → critique → pushbacks → resolve → implement; 1.0.0 complete; use for 2.0.0 |
 | Pull main, resolve conflicts | `conflict-resolution` | Stash, pull, resolve, don't lose changes |
 | Learn from mistakes | `feedback-log` | Common feedback, update guardrails |
 | UI premium, product story | `ui-premium-checklist` | Homepage, frontend-backend alignment |

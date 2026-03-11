@@ -1,7 +1,8 @@
 {
   "version": "1.0",
-  "updated": "2025-03-10T00:00:00Z",
+  "updated": "2026-03-11T00:00:00Z",
   "updated_by": "workflow-router",
+  "roadmap_1_0_status": "COMPLETE",
   "phases": ["DISCOVER", "PLAN", "IMPLEMENT", "VERIFY"],
   "items": [
     {
@@ -9,8 +10,8 @@
       "phase": "VERIFY",
       "owner": "end-to-end-verifier",
       "skill": "end-to-end-verifier",
-      "status": "pending",
-      "proof": "Lighthouse ≥90",
+      "status": "complete",
+      "proof": "Lighthouse 90 (CI)",
       "roadmap_ref": ".github/PROJECT_1.0.0_CHECKPOINTS.md"
     },
     {
@@ -18,8 +19,8 @@
       "phase": "VERIFY",
       "owner": "end-to-end-verifier",
       "skill": "end-to-end-verifier",
-      "status": "pending",
-      "proof": "WCAG AA",
+      "status": "complete",
+      "proof": "WCAG AA (accessibility.css, axe)",
       "roadmap_ref": ".github/PROJECT_1.0.0_CHECKPOINTS.md"
     }
   ],
