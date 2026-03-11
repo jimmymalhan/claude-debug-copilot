@@ -5,6 +5,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
+### feat(skills): repository-audit-to-skillset; check PRs/branches/commits → update skills
+
+- **repository-audit-to-skillset**: New skill — audit PRs (open/closed), branches, commits; use data to update skill set; commands, workflow, theme→skill mapping; current state from audit 2026-03-11
+- **user-feedback-to-skillset**: Added "Check PRs, branches, commits" trigger → repository-audit-to-skillset
+- **SKILLSETS.md**, **CODE_AND_DOCS.md**: repository-audit-to-skillset added
+
 ### feat(skills): User feedback → skillset; consensus-gates skill; everything is skillset
 
 - **user-feedback-to-skillset**: New meta-skill — All user input → update/create skills; never create new docs; everything becomes skillset

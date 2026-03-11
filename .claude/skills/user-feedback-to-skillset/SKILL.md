@@ -44,6 +44,7 @@ Never create docs/<new-feedback>.md
 | "I want Y" | Add Y to relevant skill or new skill | Create standalone doc |
 | "Change Z" | Update skill that covers Z | Create new doc for Z |
 | "All feedback → skillset" | This skill. Apply everywhere. | Create meta-doc |
+| "Check PRs, branches, commits" | Run `repository-audit-to-skillset`; use data to update skills | Create standalone audit doc |
 
 ---
 

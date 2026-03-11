@@ -107,6 +107,7 @@
 | **ten-pass-verification** | 10 checks: REVIEW.md + five-agent + npm test + lint; user doesn't need to supervise | Phase 3, pr-push-merge |
 | **branch-only** | HARD: All changes through feature/*; never commit to main; merge via PR only | project-guardrails, guardrails.md |
 | **user-feedback-to-skillset** | META: All user feedback → update/create skills; never create new docs; everything is skillset | Plan, General-Purpose, all agents |
+| **repository-audit-to-skillset** | Check PRs, branches, commits; use data to update skills | Plan, General-Purpose; run before skill updates from repo evidence |
 | **consensus-gates** | PR: multiple comments + 100% consensus; idea/project/task: stakeholder consensus | pr-push-merge, Plan, General-Purpose |
 
 ---
@@ -243,6 +244,7 @@ Invoke `/e2e-orchestrator` to run the whole business end-to-end.
 | Audit trail | `audit-trail` | Immutable action log |
 | Consensus gates | `consensus-gates` | PR: multiple comments + 100% consensus; idea/project/task: stakeholder consensus; merge only when all pass |
 | User feedback → skillset | `user-feedback-to-skillset` | All user input → update/create skills; never create new docs; everything is skillset |
+| Check PRs, branches, commits → update skills | `repository-audit-to-skillset` | Audit repo; use PR/branch/commit data to update skill set |
 | Ultra automation | `ultra-automation` | Max autonomy; no gates (opt-in) |
 | DAG executor | `dag-executor` | Parallel, dependency-ordered tasks |
 | Token budget | `token-budget` | Cap tokens per run |

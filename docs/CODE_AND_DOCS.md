@@ -20,6 +20,7 @@
 | Document | Drives | Files |
 |----------|--------|-------|
 | **user-feedback-to-skillset** (skill) | META: All user input → update/create skills; never create new docs | Plan, General-Purpose, all agents |
+| **repository-audit-to-skillset** (skill) | Check PRs, branches, commits; use data to update skills | Plan, General-Purpose |
 | **consensus-gates** (skill) | PR merge: multiple comments + 100% consensus; idea/project/task: stakeholder consensus | pr-push-merge, CLAUDE.md, guardrails |
 | **REVIEW.md** | Code review rules; ten-pass passes 6, 7, 10 | .claude/skills/ten-pass-verification/SKILL.md, five-agent-verification |
 | **CLAUDE.md** | Project standards, workflow, output contract | All agents; .claude/rules/ |
