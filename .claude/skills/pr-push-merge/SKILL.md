@@ -44,12 +44,12 @@ After each phase: `gh pr comment --body "Phase N: <summary>"` — in parallel wi
 - **Output**: `{ commit_sha, pushed: boolean, pr_url }`
 - **Gate**: committed AND pushed
 
-## Phase 4: VERIFY
+## Phase 4: VERIFY (HARD: 100% before merge)
 ### Sub-Agent: `CIWatcher` (model: haiku)
 - **Tools**: Bash, Read
-- **Prompt**: Check CI status (gh run list). Verify localhost works (curl health). Report pass/fail.
-- **Output**: `{ ci_status, localhost_ok: boolean, pr_url }`
-- **Gate**: CI green AND localhost works
+- **Prompt**: Block merge until 100% green: (1) Local `npm test` — all pass. (2) All CI: Validate, Security Audit, Test Node 18, Test Node 20, API Smoke Test, GitGuardian — all pass. (3) All QA types pass. (4) Additional tests pass. (5) docs/CONFIDENCE_SCORE.md shows confidence 100% with evidence. Verify localhost (curl health). If any fails → do NOT merge; fix first.
+- **Output**: `{ local_ok, ci_all_pass, qa_all_pass, confidence_100, merge_blocked: boolean, pr_url }`
+- **Gate**: All 100% AND localhost works — only then allow merge
 
 ## Phase 4.5: REVIEWERS (pr-reviewers)
 ### Sub-Agent: `ReviewerGate` (invoke pr-reviewers)
@@ -58,9 +58,9 @@ After each phase: `gh pr comment --body "Phase N: <summary>"` — in parallel wi
 
 ## Phase 5: DELIVER
 ### Sub-Agent: `PRPublisher` (model: haiku)
-- **Prompt**: Output REAL PR link only (never invent). Output localhost URL only if verified. **Do NOT merge until 10 ten-pass critiques have commented** AND reviewers recommend. Run critiques in parallel. **When gates pass, merge immediately** — do NOT leave PR hanging. See `consensus-gates` skill.
-- **Output**: `{ pr_url, localhost_url, server_status, merge_status: "awaiting_10_pass_comments" | "awaiting_reviewers" | "ready_to_merge" }`
-- **Gate**: links are real. For merge: 10 ten-pass comments + reviewers recommend + consensus → merge same session. No indefinite wait.
+- **Prompt**: Output REAL PR link only (never invent). Output localhost URL only if verified. **Do NOT merge until 10 ten-pass critiques have commented** AND reviewers recommend. Run critiques in parallel. **When gates pass, merge immediately** — do NOT leave PR hanging. **After merge: clean up branch** — `git checkout main && git pull && git branch -d feature/<name> && git push origin --delete feature/<name>`. See `consensus-gates`, `branch-cleanup` skills.
+- **Output**: `{ pr_url, localhost_url, server_status, merge_status: "awaiting_10_pass_comments" | "awaiting_reviewers" | "ready_to_merge", branch_cleaned: boolean }`
+- **Gate**: links are real. For merge: 10 ten-pass comments + reviewers recommend + consensus → merge same session. After merge → branch-cleanup.
 
 ## Contingency
 IF push fails → check branch permissions → retry once → if still failing → contingency L5 (ask user).

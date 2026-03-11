@@ -107,6 +107,7 @@
 | **ten-pass-verification** | 10 checks: REVIEW.md + five-agent + npm test + lint; user doesn't need to supervise | Phase 3, pr-push-merge |
 | **pr-reviewers** | Reviewers comment, push back, recommend tests; iterate; do NOT rush; merge only when recommend | pr-push-merge Phase 4.5; docs/reviewers.md |
 | **branch-only** | HARD: All changes through feature/*; never commit to main; merge via PR only | project-guardrails, guardrails.md |
+| **no-merge-until-100** | HARD: Local + CI + QA + confidence 100%; block merge if any fails | pr-push-merge Phase 4, guardrails.md |
 | **user-feedback-to-skillset** | META: All user feedback → update/create skills; never create new docs; everything is skillset | Plan, General-Purpose, all agents |
 | **repository-audit-to-skillset** | Check PRs, branches, commits; use data to update skills | Plan, General-Purpose; run before skill updates from repo evidence |
 | **confidence-score** | Evidence-backed scoring; ledger at .claude/CONFIDENCE_SCORE.md | guardrails, critic, evidence-proof |

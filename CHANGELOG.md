@@ -5,6 +5,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
+### feat(rules): HARD — No merge until 100% (local, CI, QA, confidence)
+
+- **CLAUDE.md**: Branch rule — block merge until local+CI+QA+confidence 100%
+- **guardrails.md**: No merge until 100% green
+- **pr-push-merge** Phase 4: CIWatcher blocks merge until all 100%; fix first if any fails
+- **confidence.md**: Merge gate (HARD)
+- **SKILLSETS.md**: no-merge-until-100 skill
+
+### feat(rules): Clean up branch after merge
+
+- **CLAUDE.md**: Branch rule — after PR merges, delete local and remote feature branch
+- **pr-push-merge**: Phase 5 — after merge, run branch-cleanup (checkout main, pull, branch -d, push --delete)
+
 ### feat(token): Lower tokens when making changes
 
 - **CLAUDE.md**: Token Conservation section - Read(offset,limit), Grep, compact skills, filter-test-output, prefer Haiku
@@ -136,6 +149,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 - **guardrails.md**: No merge without consensus; no idea/project/task without consensus
 - **SKILLSETS.md**, **CODE_AND_DOCS.md**: Consensus gates documented
 
+>>>>>>> origin/main
 
 ### feat(branch-only): HARD rule - all changes through branches, never main
 
