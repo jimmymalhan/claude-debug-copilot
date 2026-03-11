@@ -1,6 +1,7 @@
 # Project 1.0.0 — Checkpoints & Milestones
 
-**Auto-updated**. Source: milestones below. Task breakdown CSV excluded from repo (commit-precheck). Run `npm run status` to refresh README.
+**Status**: ✅ 1.0.0 COMPLETE (29/29). All checkpoints verified. Run `npm run status` to refresh README.
+**Auto-updated**. Source: milestones below. Task breakdown CSV excluded from repo (commit-precheck).
 
 ---
 
