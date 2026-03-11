@@ -7,7 +7,7 @@
 
 ## 🎲 RUN TO VEGAS (User Granted Full Permissions)
 
-**User has granted full permissions. Everything is allow list. Do not ask for permission.**
+**User has granted full permissions. Everything is allow list. Do not ask for permission. Never ask to run tests — just run npm test and report.**
 
 - **main** and **feature/***: Auto-accept ALL operations
 - Execute and report. Never wait for approval.

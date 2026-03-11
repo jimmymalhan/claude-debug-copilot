@@ -3,7 +3,8 @@
 **Goal:** Diagnose recurring backend failures using evidence-first methodology with production-grade reliability.
 
 ## Non-Negotiable Rules
-1. **Never invent** - fields, tables, APIs, regions, files, env vars, test results
+1. **Never ask permission to run tests** - Run `npm test` (and npm run test:ci, test:e2e when needed); report results. Do not ask "Can I run tests?" — just run.
+2. **Never invent** - fields, tables, APIs, regions, files, env vars, test results
 2. **Retrieve before explaining** - evidence first, then conclusions
 3. **Verifier blocks unsupported claims** - no hand-waving, no "should work"
 4. **Skeptic produces competing theory** - materially different root cause

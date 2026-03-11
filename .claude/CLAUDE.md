@@ -27,7 +27,7 @@
    - Commit with clear message linking to plan
 
 3. **Test Before Claiming Done**:
-   - Always run tests locally: `npm test`
+   - Always run tests locally: `npm test` — never ask permission to run tests; just run and report
    - Provide actual test output, not speculation
    - Critical workflows must be tested (no "should work")
    - Update docs/CONFIDENCE_SCORE.md with evidence

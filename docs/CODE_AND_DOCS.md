@@ -31,6 +31,11 @@
 
 ---
 
+## Execution Rules
+
+- **Never ask permission to run tests** — Run `npm test` (and test:ci, test:e2e when needed); report results. Do not ask "Can I run tests?"
+- **Docs and code go hand in hand** — Never push them separately.
+
 ## Commit Rule
 
 **Docs and code go hand in hand. Never push them separately.**
