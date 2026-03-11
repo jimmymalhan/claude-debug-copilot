@@ -3,6 +3,10 @@
 ## Authority (User-Granted)
 - **Commit, push, merge, PR comments**: Execute. Do NOT claim "requires human authorization." Only ask when you lack credentials. Otherwise: run. Stop for nothing.
 
+## Critique Rules
+- **No rubber-stamp** — PR comments must list what was verified. Never "PASS" alone. Look for fails, BLOCK on real issues. See `extreme-critique` skill.
+- **Thorough before merge** — End-to-end checklist. All flows tested. Edge cases. No shortcuts.
+
 ## Hard Rules (Branch Workflow)
 - **All changes through branches** — Never commit directly to main. If on main, run `git checkout -b feature/<name>` first. All commits go to feature/*. Merge to main only via PR. No exceptions.
 - **Product-centric naming** — Branch and commit names must reflect core product and use cases (diagnosis, pipeline, api, evidence, ui). Do NOT use rule/process names (e.g. consensus-gates, ten-pass). See `naming-convention-product` skill.

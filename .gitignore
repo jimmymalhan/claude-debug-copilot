@@ -330,6 +330,8 @@ docs/**/EXECUTION_PLAN*.md
 !.claude/skills/lint-fixer/SKILL.md
 !.claude/skills/pr-summary/
 !.claude/skills/pr-summary/SKILL.md
+!.claude/skills/extreme-critique/
+!.claude/skills/extreme-critique/SKILL.md
 
 # ──────────────────────────────────────────────────
 # Misc local directories

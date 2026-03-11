@@ -38,15 +38,15 @@ description: Assign every agent and sub-agent to skill-sets. All tasks run in pa
 
 ### five-agent-verification (Spawn ALL 5 in parallel)
 
-| Agent | From settings.json | Spawn when |
-|-------|--------------------|------------|
-| CodeReviewer | optional | ten-pass pass 1 |
-| APIValidator | optional | ten-pass pass 2 |
-| EvidenceReviewer | Retriever + evidence-proof | ten-pass pass 3 |
-| QAReviewer | qa-engineer | ten-pass pass 4 |
-| Critic | CodeReviewer (critic) | ten-pass pass 5 |
+| Agent | From settings.json | Input | Spawn when |
+|-------|--------------------|-------|------------|
+| CodeReviewer | optional | diff only | ten-pass pass 1 |
+| APIValidator | optional | routes + diff | ten-pass pass 2 |
+| EvidenceReviewer | optional | claims + grep | ten-pass pass 3 |
+| QAReviewer | qa-engineer | test list + npm output | ten-pass pass 4 |
+| Critic | optional | output checklist | ten-pass pass 5 |
 
-**Rule**: Spawn all 5 in same turn. Do NOT run one after another.
+**Rule**: Spawn all 5 in same turn. Each gets minimal context (see `extreme-critique`). Work together via compact handoff.
 
 ### pr-push-merge (Sub-agents already defined)
 

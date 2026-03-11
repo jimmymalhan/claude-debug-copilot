@@ -98,39 +98,43 @@ Any BLOCK?  → Fix issues → Re-run 5 agents → post new comments
 
 ## Agent Prompts (Copy to Spawn)
 
+**Input**: Give each agent ONLY: git diff + scope. No full files. See `extreme-critique` skill.
+
+**Mindset**: Be skeptical. Look for fails. BLOCK on real issues. Never rubber-stamp.
+
 ### Agent 1: CodeReviewer
 ```
-Review changed files. Check: DRY, style, guardrails, no console.log, no commented-out code.
+Review diff. Be critical. Check: DRY, style, guardrails, console.log, commented-out code, error handling gaps, edge cases.
 Output: { pass: boolean, issues: [{ file, line, issue }] }
-PASS only if no blocking issues.
+BLOCK if any issue. PASS only when genuinely clean. List what you verified.
 ```
 
 ### Agent 2: APIValidator
 ```
-Verify API contracts. Check: request/response alignment, error format, retry/timeout.
+Verify API. Be critical. Check: request/response, error format, retry/timeout, missing validation.
 Output: { pass: boolean, mismatches: [] }
-PASS only if no contract violations.
+BLOCK on any contract violation. List specific mismatches.
 ```
 
 ### Agent 3: EvidenceReviewer
 ```
-Verify evidence. Check: all file:line citations exist, no invented APIs/fields.
+Verify evidence. Be skeptical. grep every file:line citation. Check for invented APIs, fields, paths.
 Output: { pass: boolean, unsupported: [] }
-PASS only if no hallucinated claims.
+BLOCK if any citation invalid. List unsupported claims.
 ```
 
 ### Agent 4: QAReviewer
 ```
-Verify tests. Run npm test. Check: coverage, happy/error/retry paths covered.
+Run npm test. Be critical. Check: coverage gaps, missing error/retry tests, flaky patterns.
 Output: { pass: boolean, gaps: [], coverage: N }
-PASS only if tests pass and critical flows covered.
+BLOCK if critical flow untested. List gaps.
 ```
 
 ### Agent 5: Critic
 ```
-Quality gate. Check: confidence >= 0.70, root cause + evidence + fix plan + rollback + tests present.
+Quality gate. Be strict. Check: confidence >= 0.70, all 6 fields (root_cause, evidence, fix_plan, rollback, tests, confidence).
 Output: { approved: boolean, blocking: [] }
-APPROVED only if all fields present and confidence sufficient.
+REJECT if any field missing or weak. List blocking items.
 ```
 
 ---
