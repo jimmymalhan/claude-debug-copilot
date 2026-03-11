@@ -35,6 +35,7 @@
 
 - **Never ask permission to run tests** — Run `npm test` (and test:ci, test:e2e when needed); report results. Do not ask "Can I run tests?"
 - **Docs and code go hand in hand** — Never push them separately.
+- **Small commits, small PRs** — One small change per commit. Each PR = one feature iteration. Rollback = that feature only.
 
 ## Commit Rule
 
