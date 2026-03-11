@@ -18,6 +18,7 @@
 
 | Document | Drives | Files |
 |----------|--------|-------|
+| **docs/NAMING_CONVENTIONS.md** | Branches, commits, PRs, code, comments — apply everywhere | CLAUDE.md, guardrails.md, pr-push-merge, REVIEW.md |
 | **REVIEW.md** | Code review rules; ten-pass passes 6, 7, 10 | .claude/skills/ten-pass-verification/SKILL.md, five-agent-verification |
 | **CLAUDE.md** | Project standards, workflow, output contract | All agents; .claude/rules/ |
 | **.claude/CLAUDE.md** | Meta-rules, Plan Mode, subagents | .claude/settings.json subagents |

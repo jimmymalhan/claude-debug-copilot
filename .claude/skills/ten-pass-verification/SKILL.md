@@ -48,6 +48,7 @@ Any fail? → Fix → Re-run failed passes only
 - Confidence score backed by test output when ≥ 0.70
 
 **Style** (Pass 7):
+- **Naming**: `camelCase` vars/functions, `PascalCase` classes, `UPPER_SNAKE` constants. See `docs/NAMING_CONVENTIONS.md`.
 - Early returns over nested conditionals
 - Structured logging (JSON, traceId), not f-string
 - Backend errors: type, message, traceId, suggestion, retryable per RFC 7807

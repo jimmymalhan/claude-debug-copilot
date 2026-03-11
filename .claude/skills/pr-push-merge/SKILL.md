@@ -92,6 +92,7 @@ Phase 4 MUST verify localhost. Phase 5 MUST tell user: "Server running at localh
 
 ## Commit Rules
 
-- Use repo standard commit style
+- **Format**: `feat(scope): description` or `fix(scope): description`. Imperative, lowercase. ~50 chars.
+- **PR title**: Same as commit. **PR body**: Summary, Changes, Tests, Rollback. See `docs/NAMING_CONVENTIONS.md`.
 - No personal strategy, AI attribution, or private workflow in messages
 - No plans, reports, or internal notes in commits

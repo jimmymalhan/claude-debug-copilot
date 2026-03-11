@@ -21,6 +21,13 @@
 - Evidence: every claim has file:line citation; no invented fields or paths
 - Confidence score backed by test output when ≥ 0.70
 
+## Naming
+
+- **Branches**: `feature/<kebab-case>`, `fix/<kebab-case>`
+- **Commits/PR title**: `feat(scope): description` or `fix(scope): description`
+- **Code**: `camelCase` vars/functions, `PascalCase` classes, `UPPER_SNAKE` constants
+- See `docs/NAMING_CONVENTIONS.md` for full rules
+
 ## Style
 
 - Prefer early returns over nested conditionals

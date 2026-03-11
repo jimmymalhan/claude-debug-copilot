@@ -5,6 +5,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
+### docs: Ultra-clear naming conventions everywhere
+
+- **docs/NAMING_CONVENTIONS.md**: New doc — branches (`feature/<kebab-case>`), commits (`feat(scope): desc`), PRs (title/body/comments), code (vars, classes, files), comments; Bad vs Good examples
+- **CLAUDE.md**: NAMING_CONVENTIONS in Configuration; explicit naming in Branch Rules and Commit Frequently
+- **guardrails.md**: Naming rules with link to NAMING_CONVENTIONS
+- **pr-push-merge**: Commit/PR format; link to NAMING_CONVENTIONS
+- **docs/CODE_AND_DOCS.md**: NAMING_CONVENTIONS in doc→code map
+- **REVIEW.md**: Naming section (branches, commits, code); link to NAMING_CONVENTIONS
+- **ten-pass-verification**: Pass 7 includes naming check
+
 ### feat(branch-only): HARD rule - all changes through branches, never main
 
 - **CLAUDE.md**: Non-negotiable rule #9 — All changes through branches; create feature/* first; merge via PR only
