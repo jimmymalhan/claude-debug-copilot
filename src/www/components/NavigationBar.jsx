@@ -22,13 +22,13 @@ export default function NavigationBar({
         <div className="navbar-brand">
           <a href="/" className="logo">
             <span className="logo-icon">🔍</span>
-            <span className="logo-text">Claude Debug Copilot</span>
+            <span className="logo-text">Code Review Pilot</span>
           </a>
         </div>
 
         <nav className="navbar-nav">
           <a href="/#products" className="nav-link">Features</a>
-          <a href="/#integrate" className="nav-link">How It Works</a>
+          <a href="/#product" className="nav-link">How It Works</a>
           <a href="/api-reference.html" className="nav-link">API Reference</a>
         </nav>
 
@@ -46,7 +46,7 @@ export default function NavigationBar({
           <button
             className={`btn-icon ${showOrchestration ? 'active' : ''}`}
             onClick={onOrchestrationToggle}
-            title="Toggle Paperclip Orchestration"
+            title="Toggle Orchestration"
             aria-pressed={showOrchestration}
             type="button"
           >

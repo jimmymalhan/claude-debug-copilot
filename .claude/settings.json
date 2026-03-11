@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "projectName": "Claude Debug Copilot",
+  "projectName": "Code Review Pilot",
   "description": "Evidence-first diagnostic system with production-grade reliability",
 
   "environment": {
@@ -198,6 +198,11 @@
 
   "branchPermissions": {
     "feature/integration-website": {
+      "autoAcceptEdits": true,
+      "noPermissionPrompts": true,
+      "description": "Feature branch - auto-accept edits during development"
+    },
+    "feature/paperclip-integration": {
       "autoAcceptEdits": true,
       "noPermissionPrompts": true,
       "description": "Feature branch - auto-accept edits during development"

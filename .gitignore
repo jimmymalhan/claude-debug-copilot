@@ -118,10 +118,18 @@ API.md
 DATA_FLOW.md
 DEPLOYMENT.md
 IMPLEMENTATION_GUIDE.md
+IMPLEMENTATION_REPORT.md
 LUXURY_*.md
 REFACTORING_*.md
+REFACTORING_SUMMARY.md
 FRONTEND_UPGRADE_PLAN.md
 FRONTEND_TASK_BREAKDOWN.csv
+
+# Test output and phase artifacts
+PHASE_1_TEST_OUTPUT.txt
+*_TEST_OUTPUT*.txt
+*_OUTPUT*.txt
+test-output.log
 
 # Catch remaining internal docs at root (be explicit)
 INCIDENT_SENTINEL*.md

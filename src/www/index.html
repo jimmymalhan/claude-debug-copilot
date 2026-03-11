@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Claude Debug Copilot - Incident Diagnosis Made Simple">
+  <meta name="description" content="Code Review Pilot - Better code reviews. Faster diagnosis. Proof, not guesses.">
   <meta name="theme-color" content="#ffffff">
   <!-- Preconnect to external resources for faster loading -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="dns-prefetch" href="//anthropic.com">
-  <title>Claude Debug Copilot - Diagnose Incidents Instantly</title>
+  <title>Code Review Pilot - Better code reviews. Faster diagnosis.</title>
   <style>
     * {
       margin: 0;
@@ -515,12 +515,88 @@
       margin-top: 40px;
     }
 
+    .company-section {
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .company-section .section-subtitle {
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .product-card-3d {
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .product-card-3d:hover {
+      transform: translateZ(12px) rotateX(-2deg) rotateY(2deg);
+    }
+
+    .icon-3d {
+      display: inline-block;
+      transform-style: preserve-3d;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform;
+    }
+
+    .product-card-3d:hover .icon-3d {
+      transform: scale(1.15) translateZ(20px) rotateY(10deg) rotateX(-5deg);
+    }
+
+    .product-guide {
+      margin-top: 32px;
+      padding: 20px 24px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .product-guide-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .product-guide ul {
+      margin: 0;
+      padding: 0 0 0 20px;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .product-guide a {
+      color: #a5b4fc;
+    }
+
+    .product-guide a:hover {
+      text-decoration: underline;
+    }
+
     /* ===== DIAGNOSIS SECTION ===== */
     .diagnosis-section {
-      padding: 120px 0;
+      padding: 48px 0;
       background: linear-gradient(180deg, #fafafa 0%, #f0f0ff 50%, #fafafa 100%);
-      position: relative;
-      z-index: 1;
+    }
+    .diagnosis-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .diagnosis-header {
+      margin-bottom: 12px;
+    }
+    .diagnosis-subtitle {
+      margin-bottom: 24px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .section-title {
@@ -539,11 +615,13 @@
 
     .diagnosis-card {
       max-width: 700px;
+      width: 100%;
       margin: 0 auto;
+      text-align: left;
       background: rgba(255, 255, 255, 0.8);
       border: 1px solid rgba(0, 0, 0, 0.08);
       border-radius: 24px;
-      padding: 48px;
+      padding: 28px 32px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       transition: box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       animation: zoomInFade 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
@@ -678,6 +756,12 @@
     .error-title {
       font-weight: 600;
       margin-bottom: 8px;
+    }
+
+    .error-hint {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      opacity: 0.9;
     }
 
     .success-box {
@@ -1163,10 +1247,11 @@
     }
 
     .integrate-endpoint {
-      background: #000000;
-      border: 1px solid #333336;
+      background: #ffffff;
+      border: 1px solid #e5e5e7;
       border-radius: 10px;
       padding: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
 
     .integrate-endpoint .method {
@@ -1192,13 +1277,29 @@
     .integrate-endpoint .path {
       font-family: 'SF Mono', monospace;
       font-size: 0.85rem;
-      color: #f5f5f7;
+      color: #1d1d1f;
     }
 
     .integrate-endpoint .desc {
-      font-size: 0.8rem;
-      color: #86868b;
+      font-size: 0.9rem;
+      color: #424245;
       margin-top: 6px;
+      line-height: 1.6;
+    }
+
+    .integrate-endpoint h4 {
+      color: #1d1d1f;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .integrate-endpoint .desc code {
+      background: #f0f0f2;
+      color: #1d1d1f;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85em;
     }
 
     .integrate-cta {
@@ -1261,15 +1362,16 @@
   <header role="banner">
     <div class="container">
       <nav role="navigation" aria-label="Main navigation">
-        <a href="#" class="logo" onclick="scrollToTop()">🔍 Claude Debug Copilot</a>
+        <a href="#" class="logo" onclick="scrollToTop()">🔍 Code Review Pilot</a>
         <ul class="nav-links">
-          <li><a href="#diagnose">Diagnose</a></li>
-          <li><a href="#integrate">Integrate</a></li>
-          <li><a href="#products">Features</a></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="#product">Product</a></li>
+          <li><a href="#diagnose">Try It</a></li>
           <li><a href="#faq">FAQ</a></li>
+          <li><a href="/api-reference.html">API</a></li>
         </ul>
         <div class="nav-right">
-          <a href="/api-reference.html" class="btn btn-secondary" style="animation-delay: 0.14s;">Documentation</a>
+          <a href="#product" class="btn btn-secondary" style="animation-delay: 0.14s;">Product</a>
         </div>
       </nav>
     </div>
@@ -1280,20 +1382,72 @@
     <!-- Hero Section -->
     <section class="hero">
     <div class="container">
-      <h1>Diagnose Incidents Instantly</h1>
-      <p class="tagline">AI-powered root cause analysis with 94% accuracy. 4-agent pipeline → evidence-first diagnosis → fix plan → tests. 16-30 seconds.</p>
+      <h1>Code Review Pilot</h1>
+      <p class="tagline">Better code reviews. Faster diagnosis. Proof, not guesses.</p>
       <div class="btn-group">
-        <button onclick="scrollToDiagnose()" class="btn btn-primary" aria-label="Start incident diagnosis form">Start Diagnosis</button>
-        <a href="/api-reference.html" class="btn btn-secondary" aria-label="Learn more about features and capabilities">Learn More</a>
+        <a href="#product" class="btn btn-primary" aria-label="Explore product features">Explore Product</a>
+        <button onclick="scrollToDiagnose()" class="btn btn-secondary" aria-label="Try diagnosis demo">Try It</button>
       </div>
     </div>
   </section>
 
-  <!-- Diagnosis Section -->
-  <section class="diagnosis-section" id="diagnose">
+  <!-- Who We Are -->
+  <section class="company-section" id="who-we-are">
     <div class="container">
-      <h2 class="section-title">Describe Your Incident</h2>
+      <h2 class="section-title scroll-animate">Who We Are</h2>
+      <p class="section-subtitle scroll-animate">
+        We help teams review code and diagnose issues fast. Evidence first, then answers. No guessing.
+      </p>
+    </div>
+  </section>
 
+  <!-- The Problem -->
+  <section class="integrate-section" id="problem">
+    <div class="container">
+      <h2 class="section-title scroll-animate">The Problem We Solve</h2>
+      <p class="section-subtitle scroll-animate">
+        Backend failures are costly. Traditional debugging is slow, expensive, and often wrong.
+      </p>
+      <div class="integrate-endpoint-grid">
+        <div class="integrate-endpoint scroll-animate">
+          <p class="desc"><strong>4-6 hours</strong> to diagnose complex issues. Expensive senior engineers tied up in war rooms.</p>
+        </div>
+        <div class="integrate-endpoint scroll-animate">
+          <p class="desc"><strong>91% confident, 60% correct.</strong> People are overconfident in wrong answers with no reproducible process.</p>
+        </div>
+        <div class="integrate-endpoint scroll-animate">
+          <p class="desc"><strong>No audit trail.</strong> Hard to learn from past failures or meet compliance requirements.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Now -->
+  <section class="integrate-section" id="why-now">
+    <div class="container">
+      <h2 class="section-title scroll-animate">Why This Matters Now</h2>
+      <p class="section-subtitle scroll-animate">
+        Modern systems deploy dozens of times per day. Incidents are no longer rare; they are a weekly cost center.
+      </p>
+      <div class="integrate-endpoint-grid">
+        <div class="integrate-endpoint scroll-animate">
+          <p class="desc"><strong>Incidents are noisier.</strong> Logs, metrics, traces multiply faster than teams can read them.</p>
+        </div>
+        <div class="integrate-endpoint scroll-animate">
+          <p class="desc"><strong>AI is everywhere, but ungrounded.</strong> Generic chatbots hallucinate fixes with no evidence trail.</p>
+        </div>
+        <div class="integrate-endpoint scroll-animate">
+          <p class="desc"><strong>Budgets are tight.</strong> Fewer 3-hour war rooms, not more tooling to babysit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Try It: Diagnosis Section -->
+  <section class="diagnosis-section" id="diagnose">
+    <div class="container diagnosis-container">
+      <h2 class="section-title diagnosis-header">Try It</h2>
+      <p class="section-subtitle diagnosis-subtitle">Describe an incident and see the 4-agent pipeline in action.</p>
       <div class="diagnosis-card">
         <form onsubmit="submitDiagnosis(event)">
           <label for="incident" class="form-label">What's happening?</label>
@@ -1335,8 +1489,32 @@
     </div>
   </section>
 
-  <!-- Integrate With Your Stack -->
-  <section class="integrate-section" id="integrate">
+  <!-- Built For -->
+  <section class="integrate-section" id="who-for">
+    <div class="container">
+      <h2 class="section-title scroll-animate">Built For Teams Who Live In Incidents</h2>
+      <p class="section-subtitle scroll-animate">
+        SREs, backend engineers, and engineering leaders who need concrete root causes, not walls of logs.
+      </p>
+      <div class="integrate-endpoint-grid">
+        <div class="integrate-endpoint scroll-animate">
+          <div class="method get">SRE</div>
+          <p class="desc">On-call owners who need a concrete root cause, not a wall of logs.</p>
+        </div>
+        <div class="integrate-endpoint scroll-animate">
+          <div class="method get">Backend</div>
+          <p class="desc">Engineers shipping changes to critical APIs and data paths.</p>
+        </div>
+        <div class="integrate-endpoint scroll-animate">
+          <div class="method get">Leads</div>
+          <p class="desc">Engineering leaders who want faster MTTR and cleaner incident reports.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product: Integrate With Your Stack -->
+  <section class="integrate-section" id="product">
     <div class="container">
       <h2 class="section-title scroll-animate">Integrate With Your Stack</h2>
       <p class="section-subtitle scroll-animate">
@@ -1468,121 +1646,30 @@
     </div>
   </section>
 
-  <!-- Products Section -->
-  <section class="products-section" id="products">
-    <div class="container">
-      <h2 class="section-title">Powerful Features</h2>
-
-      <div class="products-grid">
-        <div class="product-card scroll-animate">
-          <div class="product-icon">🔍</div>
-          <div class="product-name">4-Agent Pipeline</div>
-          <div class="product-description">Router → Retriever → Skeptic → Verifier. Real-time orchestration with evidence-first analysis.</div>
-        </div>
-
-        <div class="product-card scroll-animate">
-          <div class="product-icon">📊</div>
-          <div class="product-name">Confidence Scoring</div>
-          <div class="product-description">Every diagnosis includes a confidence score (0-100) backed by evidence and verified workflows.</div>
-        </div>
-
-        <div class="product-card scroll-animate">
-          <div class="product-icon">🛠️</div>
-          <div class="product-name">Fix Plans</div>
-          <div class="product-description">Step-by-step implementation guide with specific code changes, testing strategy, and rollback procedure.</div>
-        </div>
-
-        <div class="product-card scroll-animate">
-          <div class="product-icon">✅</div>
-          <div class="product-name">Test Cases</div>
-          <div class="product-description">Get recommended test cases to verify the fix works and prevent the issue from happening again.</div>
-        </div>
-
-        <div class="product-card scroll-animate">
-          <div class="product-icon">📥</div>
-          <div class="product-name">Export & Share</div>
-          <div class="product-description">Export results as JSON or copy to clipboard. Share findings with your team instantly.</div>
-        </div>
-
-        <div class="product-card scroll-animate">
-          <div class="product-icon">🚀</div>
-          <div class="product-name">Scale Easily</div>
-          <div class="product-description">Process up to 100 incidents at once with batch API. Built for teams of any size.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Who It Is For -->
-  <section class="integrate-section" id="who-for">
-    <div class="container">
-      <h2 class="section-title scroll-animate">Built For Teams Who Live In Incidents</h2>
-      <p class="section-subtitle scroll-animate">
-        Claude Debug Copilot is for engineers who are tired of spending hours chasing vague errors across logs,
-        dashboards and runbooks while the business waits.
-      </p>
-      <div class="integrate-endpoint-grid">
-        <div class="integrate-endpoint scroll-animate">
-          <div class="method get">SRE</div>
-          <p class="desc">On-call owners who need a concrete root cause, not a wall of logs.</p>
-        </div>
-        <div class="integrate-endpoint scroll-animate">
-          <div class="method get">Backend</div>
-          <p class="desc">Backend engineers shipping changes to critical APIs and data paths.</p>
-        </div>
-        <div class="integrate-endpoint scroll-animate">
-          <div class="method get">Leads</div>
-          <p class="desc">Engineering leaders who want faster MTTR and cleaner incident reports.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Why Now -->
-  <section class="integrate-section" id="why-now">
-    <div class="container">
-      <h2 class="section-title scroll-animate">Why This Matters Now</h2>
-      <p class="section-subtitle scroll-animate">
-        Modern systems deploy dozens of times per day. Incidents are no longer rare—they are a weekly cost center.
-        Every extra hour of debugging is lost revenue, lost trust and lost engineering focus.
-      </p>
-      <div class="integrate-endpoint-grid">
-        <div class="integrate-endpoint scroll-animate">
-          <p class="desc"><strong>Incidents are getting noisier.</strong> Logs, metrics and traces multiply faster than teams can read them.</p>
-        </div>
-        <div class="integrate-endpoint scroll-animate">
-          <p class="desc"><strong>AI is everywhere, but ungrounded.</strong> Generic chatbots hallucinate fixes with no evidence trail.</p>
-        </div>
-        <div class="integrate-endpoint scroll-animate">
-          <p class="desc"><strong>Budgets are tight.</strong> You need fewer 3‑hour war rooms, not more tooling to babysit.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Use Cases -->
+  <!-- Use Cases Teaser -->
   <section class="products-section" id="use-cases">
     <div class="container">
-      <h2 class="section-title">Where Claude Debug Copilot Shines</h2>
+      <h2 class="section-title">Where We Shine</h2>
+      <p class="section-subtitle">Production incidents, slow APIs, flaky CI. See full features and how to use them in the <a href="#product">Product</a> section below.</p>
       <div class="products-grid">
-        <div class="product-card scroll-animate">
-          <div class="product-icon">🔥</div>
+        <div class="product-card scroll-animate product-card-3d">
+          <div class="product-icon icon-3d">🔥</div>
           <div class="product-name">Production incident at 2AM</div>
           <div class="product-description">
-            Paste the on-call summary, logs or alert text. The 4‑agent pipeline turns it into a root cause, fix plan,
+            Paste the on-call summary, logs or alert text. The 4-agent pipeline turns it into a root cause, fix plan,
             rollback steps and tests in under a minute.
           </div>
         </div>
-        <div class="product-card scroll-animate">
-          <div class="product-icon">📉</div>
+        <div class="product-card scroll-animate product-card-3d">
+          <div class="product-icon icon-3d">📉</div>
           <div class="product-name">Slow or failing API</div>
           <div class="product-description">
-            Explain the spike in latency or 500 errors. Claude Debug Copilot surfaces query patterns, resource pressure
+            Explain the spike in latency or 500 errors. Code Review Pilot surfaces query patterns, resource pressure
             and likely regressions with a concrete remediation path.
           </div>
         </div>
-        <div class="product-card scroll-animate">
-          <div class="product-icon">🧪</div>
+        <div class="product-card scroll-animate product-card-3d">
+          <div class="product-icon icon-3d">🧪</div>
           <div class="product-name">Flaky CI and test failures</div>
           <div class="product-description">
             Feed failing test output or build logs. The system suggests the most probable failure mode and tests to
@@ -1590,62 +1677,8 @@
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- What Happens After You Click -->
-  <section class="integrate-section" id="after-click">
-    <div class="container">
-      <h2 class="section-title scroll-animate">What Happens After You Click “Diagnose”</h2>
-      <p class="section-subtitle scroll-animate">
-        No canned demos. Every run goes through the same production‑grade pipeline that powers the backend API.
-      </p>
-      <div class="integrate-endpoint-grid">
-        <div class="integrate-endpoint scroll-animate">
-          <p class="desc"><strong>1. Intake.</strong> Your incident description is validated (10–2000 characters) and tagged with a trace ID.</p>
-        </div>
-        <div class="integrate-endpoint scroll-animate">
-          <p class="desc"><strong>2. Orchestrate.</strong> A Paperclip‑style orchestration task is created so every run is tracked, auditable and metered.</p>
-        </div>
-        <div class="integrate-endpoint scroll-animate">
-          <p class="desc"><strong>3. Diagnose.</strong> Router, Retriever, Skeptic and Verifier agents run, each adding evidence and pressure‑testing the theory.</p>
-        </div>
-        <div class="integrate-endpoint scroll-animate">
-          <p class="desc"><strong>4. Deliver.</strong> The UI and API return a root cause, fix plan, rollback, tests and orchestration task ID you can follow in the dashboard.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Why This Is Different -->
-  <section class="products-section" id="why-different">
-    <div class="container">
-      <h2 class="section-title">Why This Isn’t Just Another AI Debugger</h2>
-      <div class="products-grid">
-        <div class="product-card scroll-animate">
-          <div class="product-icon">🧾</div>
-          <div class="product-name">Evidence‑First, Not Vibes</div>
-          <div class="product-description">
-            Every diagnosis is built from structured evidence and logged to an audit trail. If something looks wrong,
-            you can see exactly why the system made that call.
-          </div>
-        </div>
-        <div class="product-card scroll-animate">
-          <div class="product-icon">🤝</div>
-          <div class="product-name">Orchestrated, Not One‑Shot</div>
-          <div class="product-description">
-            A dedicated orchestrator tracks tasks, approvals, heartbeats and budgets so incident analysis scales with
-            your team instead of becoming a single brittle prompt.
-          </div>
-        </div>
-        <div class="product-card scroll-animate">
-          <div class="product-icon">🏢</div>
-          <div class="product-name">Built For Real Teams</div>
-          <div class="product-description">
-            REST APIs, batch diagnosis, webhooks, exports and a live dashboard map directly to how SRE and platform teams
-            already work today—no toy buttons or fake flows.
-          </div>
-        </div>
+      <div class="section-cta" style="text-align: center; margin-top: 32px;">
+        <a href="#product" class="btn btn-primary">See All Features</a>
       </div>
     </div>
   </section>
@@ -1673,7 +1706,7 @@
           <h4>What about accuracy and coverage?</h4>
           <p class="desc">
             The system ships with hundreds of automated tests and high coverage on critical paths. The analytics section
-            shows real MTTR and success‑rate metrics pulled from the running instance.
+            shows real MTTR and success-rate metrics pulled from the running instance.
           </p>
         </div>
         <div class="integrate-endpoint scroll-animate">
@@ -1719,8 +1752,8 @@
     <div class="container">
       <div>
         <h3>Product</h3>
-        <a href="#diagnose">Diagnosis</a>
-        <a href="#products">Features</a>
+        <a href="#product">Product</a>
+        <a href="/#diagnose">Try It</a>
         <a href="/api-reference.html">API Reference</a>
       </div>
       <div>
@@ -1730,8 +1763,8 @@
       </div>
       <div>
         <h3>Company</h3>
-        <p>Claude Debug Copilot v3.0</p>
-        <p>Production-Ready Incident Diagnosis</p>
+        <p>Code Review Pilot v1.0</p>
+        <p>Code Review Pilot - Better code reviews. Faster diagnosis.</p>
       </div>
     </div>
   </footer>
@@ -1868,17 +1901,27 @@
           body: JSON.stringify({ incident })
         });
 
-        const data = await response.json();
+        const data = await response.json().catch(() => ({ message: response.statusText }));
 
         if (!response.ok) {
-          throw new Error(data.message || 'Failed to analyze incident');
+          const retryAfter = data.retryAfter || null;
+          const retryable = data.retryable === true || response.status === 429 || response.status >= 500;
+          let msg = data.message || 'Failed to analyze incident';
+          if (response.status === 429) {
+            msg = retryAfter ? 'Too many requests. Please wait before trying again.' : msg;
+          }
+          showError(msg, { retryAfter, retryable });
+          hideLoading();
+          return;
         }
 
         displayResults(data);
         hideLoading();
       } catch (error) {
         hideLoading();
-        showError(error.message);
+        const isNetwork = error.name === 'TypeError' && (error.message.includes('fetch') || error.message.includes('network'));
+        const msg = isNetwork ? 'Network error. Check your connection and try again.' : (error.message || 'Something went wrong. Please try again.');
+        showError(msg, { retryable: true });
       }
     }
 
@@ -1899,14 +1942,22 @@
       document.getElementById('submit-btn').removeAttribute('aria-busy');
     }
 
-    function showError(message) {
+    function showError(message, opts) {
+      const { retryAfter, retryable } = opts || {};
       const errorEl = document.getElementById('error');
-      errorEl.innerHTML = `<div class="error-title">Error</div><p>${message}</p>`;
+      let hint = '';
+      if (retryAfter) {
+        const mins = Math.ceil(retryAfter / 60);
+        hint = `<p class="error-hint">Retry in about ${mins} minute${mins !== 1 ? 's' : ''}.</p>`;
+      }
+      const retryBtn = retryable
+        ? '<button type="button" class="btn btn-secondary btn-small" onclick="document.getElementById(\'submit-btn\').click()" style="margin-top: 12px;">Retry</button>'
+        : '';
+      errorEl.innerHTML = `<div class="error-title">Error</div><p>${message}</p>${hint}${retryBtn}`;
       errorEl.style.display = 'block';
       errorEl.setAttribute('role', 'alert');
       errorEl.setAttribute('aria-live', 'assertive');
       document.getElementById('results').classList.add('show');
-      // Focus to error message for accessibility
       errorEl.focus();
     }
 

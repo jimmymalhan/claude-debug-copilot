@@ -1,9 +1,25 @@
 # Changelog
 
-All notable changes to Claude Debug Copilot are documented in this file.
+All notable changes to Code Review Pilot are documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [Conventional Commits](https://www.conventionalcommits.org/).
 
 ## [Unreleased]
+
+### feat(ui): Single-page Product, Try It fix, rate-limit E2E (PR)
+
+- **Single-page**: Product merged into homepage; `/product.html` redirects to `/#product`; nav links use anchors.
+- **Try It**: Centered subtitle and card; reduced padding; form `text-align: left`.
+- **Rate-limit E2E**: `tests/e2e/rate-limit.test.js` — 429, Retry-After header, response structure.
+- **Server**: `app.get('/product.html')` → 301 redirect to `/#product`.
+- **Links**: orchestration.html, api-reference.html, NavigationBar.jsx → `#product` or `/#product`.
+
+### feat(orchestration): Paperclip backend tasks visible and testable in UI
+
+- **Server**: Fixed `/api/tasks`, `/api/tasks/:taskId`, `/api/tasks/:taskId/approvals`, `/api/approvals` to use `await getOrchestrator()`. They were calling sync on an async function and returning 500.
+- **TaskManager**: Enriched `listTasks()` response with `id`, `createdAt`, `updatedAt`, `metadata`, `stateMachine` so the UI can display full task details.
+- **Task creation**: Store `metadata` (including `source`) when creating tasks so tasks show correct source in the UI.
+- **orchestration.html**: New standalone page at `/orchestration.html` to view Paperclip tasks, approvals, agents/budget, and audit trail. No React build required.
+- **index.html**: Added "Orchestration" link to main nav for quick access.
 
 ### fix(ui): Resolve UI inconsistencies
 
@@ -651,7 +667,7 @@ No breaking changes. Existing form submissions work as before with enhanced vali
 - docs/PHASE_D_MOTION_ARCHITECTURE.md
 - Updated src/www/App.jsx
 
-## [3.0.0] - 2026-03-10
+## [1.0.0] - 2026-03-10
 
 ### Production-Ready Incident Diagnosis System (Apple/Meta Grade UI)
 
@@ -1056,7 +1072,7 @@ No breaking changes. Existing form submissions work as before with enhanced vali
 - docs/PHASE_D_MOTION_ARCHITECTURE.md
 - Updated src/www/App.jsx
 
-## [3.0.0] - 2026-03-10
+## [1.0.0] - 2026-03-10
 
 ### Production-Ready Incident Diagnosis System (Apple/Meta Grade UI)
 
@@ -1301,7 +1317,7 @@ Major release focused on production-readiness with comprehensive testing, securi
   - `DebugOrchestratorClient` → `DebugOrchestrator`
   - `DebugOrchestratorApiError` → `OrchestratorError`
   - All test files updated for new naming convention
-  - Module comments updated to reference Debug Copilot Orchestration
+  - Module comments updated to reference Code Review Pilot Orchestration
 
 - **Documentation Cleanup**: Removed architectural/planning content
   - Removed DebugOrchestrator Integration Guide (integration planning docs)

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orchestration - Code Review Pilot</title>
+  <link rel="stylesheet" href="/styles/app.css">
+</head>
+<body>
+  <div class="app" style="min-height: 100vh;">
+    <header class="navbar" style="padding: 12px 20px;">
+      <div class="navbar-container">
+        <a href="/" class="logo">
+          <span class="logo-icon">🔍</span>
+          <span class="logo-text">Code Review Pilot</span>
+        </a>
+        <nav class="navbar-nav">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/#product" class="nav-link">Product</a>
+          <a href="/#diagnose" class="nav-link">Try It</a>
+          <a href="/orchestration.html" class="nav-link" style="color: var(--primary-color);">Orchestration</a>
+          <a href="/api-reference.html" class="nav-link">API</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="app-main" style="padding: 24px;">
+      <section class="orch-dashboard" aria-label="Orchestration dashboard">
+        <header class="orch-header">
+          <div>
+            <h2>Orchestration</h2>
+            <p class="orch-subtitle">
+              Tasks, approvals, agents, and budget from the 4-agent pipeline.
+            </p>
+            <div class="orch-how-to" role="region" aria-label="How to use">
+              <h4>How to use</h4>
+              <ol>
+                <li><strong>Create tasks:</strong> <a href="/#diagnose">Run a diagnosis</a> on the homepage. Each diagnosis creates an orchestration task.</li>
+                <li><strong>Tasks tab:</strong> View all tasks. Use <strong>Start review</strong> on pending tasks, then <strong>Skeptic: Approve</strong>, <strong>Verifier: Proceed</strong>, <strong>Approve</strong> to advance the approval flow. Use the <strong>Set status</strong> dropdown to mark in_progress, completed, failed, or cancelled.</li>
+                <li><strong>Approvals tab:</strong> See tasks waiting for approval. Same actions as Tasks.</li>
+                <li><strong>Agents & Budget tab:</strong> View orchestrator status, total tasks, heartbeat agents, and budget used.</li>
+                <li><strong>Audit tab:</strong> View the orchestration event trail.</li>
+              </ol>
+            </div>
+          </div>
+          <div class="orch-tabs" role="tablist">
+            <button type="button" class="orch-tab active" data-tab="tasks">Tasks</button>
+            <button type="button" class="orch-tab" data-tab="approvals">Approvals</button>
+            <button type="button" class="orch-tab" data-tab="agents">Agents & Budget</button>
+            <button type="button" class="orch-tab" data-tab="audit">Audit</button>
+          </div>
+        </header>
+
+        <div id="orch-error-banner" class="orch-error-banner" role="alert" aria-live="assertive" style="display:none;">
+          <span id="orch-error-text"></span>
+          <button type="button" class="btn btn-secondary btn-small" onclick="dismissOrchError()">Dismiss</button>
+        </div>
+        <div class="orch-content">
+          <div id="panel-tasks" class="orch-panel active">
+            <div id="tasks-content"></div>
+          </div>
+          <div id="panel-approvals" class="orch-panel" style="display:none">
+            <div id="approvals-content"></div>
+          </div>
+          <div id="panel-agents" class="orch-panel" style="display:none">
+            <div id="agents-content"></div>
+          </div>
+          <div id="panel-audit" class="orch-panel" style="display:none">
+            <div id="audit-content"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const API = '/api';
+    const panels = document.querySelectorAll('.orch-panel');
+    const tabs = document.querySelectorAll('.orch-tab');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const name = tab.dataset.tab;
+        tabs.forEach(t => t.classList.toggle('active', t === tab));
+        panels.forEach(p => {
+          const show = p.id === 'panel-' + name;
+          p.classList.toggle('active', show);
+          p.style.display = show ? 'block' : 'none';
+        });
+        if (name === 'tasks') loadTasks();
+        if (name === 'approvals') loadApprovals();
+        if (name === 'audit') loadAudit();
+      });
+    });
+
+    function loading(el) {
+      el.innerHTML = '<div class="orch-section-loading"><div class="orch-spinner"></div><p>Loading...</p></div>';
+    }
+
+    function error(el, msg, retryFn, retryAfterSec) {
+      const id = 'retry-' + Math.random().toString(36).slice(2);
+      if (retryFn) window[id] = retryFn;
+      const hint = retryAfterSec
+        ? `<p class="orch-error-hint">You can retry in about ${Math.ceil(retryAfterSec / 60)} minute(s), or reduce polling by refreshing less often.</p>`
+        : '';
+      el.innerHTML = `<div class="orch-section-error">
+        <div class="orch-error-header">
+          <span class="orch-error-icon">⚠️</span>
+          <div><h4>Unable to load</h4><p>${msg}</p>${hint}</div>
+        </div>
+        <div class="orch-error-actions">
+          ${retryFn ? `<button class="btn btn-secondary" onclick="window['${id}']&&window['${id}']()">Retry</button>` : ''}
+        </div>
+      </div>`;
+    }
+
+    async function fetchAPI(path, opts) {
+      const r = await fetch(API + path, opts);
+      if (!r.ok) {
+        const err = await r.json().catch(() => ({ message: r.statusText, retryAfter: null }));
+        const msg = r.status === 429 && err.retryAfter
+          ? `Rate limited. Retry in ${Math.ceil(err.retryAfter / 60)} minute(s).`
+          : err.message || r.statusText;
+        const e = new Error(msg);
+        e.status = r.status;
+        e.retryAfter = err.retryAfter;
+        throw e;
+      }
+      return r.json();
+    }
+
+    function showOrchError(msg, retryAfter) {
+      const b = document.getElementById('orch-error-banner');
+      const t = document.getElementById('orch-error-text');
+      t.textContent = msg;
+      if (retryAfter) {
+        t.textContent += ' Retry in about ' + Math.ceil(retryAfter / 60) + ' minute(s).';
+      }
+      b.style.display = 'flex';
+    }
+
+    function dismissOrchError() {
+      document.getElementById('orch-error-banner').style.display = 'none';
+    }
+
+    async function approveTask(taskId, action) {
+      try {
+        await fetchAPI('/tasks/' + encodeURIComponent(taskId) + '/approve', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(action)
+        });
+        dismissOrchError();
+        loadTasks();
+        loadApprovals();
+      } catch (e) {
+        showOrchError(e.message, e.retryAfter);
+      }
+    }
+
+    async function updateTaskStatus(taskId, status) {
+      try {
+        await fetchAPI('/tasks/' + encodeURIComponent(taskId), {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status })
+        });
+        dismissOrchError();
+        loadTasks();
+      } catch (e) {
+        showOrchError(e.message, e.retryAfter);
+      }
+    }
+
+    function actionButtons(t) {
+      const state = t.stateMachine?.state || t.state || 'pending';
+      const id = t.id || t.taskId;
+      let actions = [];
+      if (state === 'pending') {
+        actions.push(`<button class="btn btn-primary btn-small" onclick="approveTask('${id}', {type:'start_review'})">Start review</button>`);
+      } else if (state === 'skeptic_review') {
+        actions.push(`<button class="btn btn-primary btn-small" onclick="approveTask('${id}', {type:'skeptic_verdict',verdict:'approve'})">Skeptic: Approve</button>`);
+        actions.push(`<button class="btn btn-secondary btn-small" onclick="approveTask('${id}', {type:'skeptic_verdict',verdict:'challenge'})">Challenge</button>`);
+      } else if (state === 'verifier_review') {
+        actions.push(`<button class="btn btn-primary btn-small" onclick="approveTask('${id}', {type:'verifier_verdict',verdict:'proceed'})">Verifier: Proceed</button>`);
+      } else if (state === 'awaiting_approver') {
+        actions.push(`<button class="btn btn-primary btn-small" onclick="approveTask('${id}', {type:'approver_verdict',verdict:'approve'})">Approve</button>`);
+        actions.push(`<button class="btn btn-secondary btn-small" onclick="approveTask('${id}', {type:'approver_verdict',verdict:'deny'})">Deny</button>`);
+      }
+      if (['pending','in_progress'].includes(t.status)) {
+        actions.push(`<select class="orch-status-select" onchange="updateTaskStatus('${id}', this.value)">
+          <option value="">Set status...</option>
+          <option value="in_progress">in_progress</option>
+          <option value="completed">completed</option>
+          <option value="failed">failed</option>
+          <option value="cancelled">cancelled</option>
+        </select>`);
+      }
+      return actions.length ? `<div class="orch-card-actions">${actions.join(' ')}</div>` : '';
+    }
+
+    async function loadTasks() {
+      const el = document.getElementById('tasks-content');
+      loading(el);
+      try {
+        const data = await fetchAPI('/tasks');
+        const tasks = Array.isArray(data) ? data : (data.tasks || []);
+        if (tasks.length === 0) {
+          el.innerHTML = '<div class="orch-empty"><p>No orchestration tasks yet. <a href="/#diagnose">Run a diagnosis</a> to create a task.</p></div>';
+          return;
+        }
+        el.innerHTML = `<div class="orch-tasks-grid">${tasks.map(t => `
+          <article class="orch-card">
+            <header class="orch-card-header">
+              <div>
+                <h4>${t.type || 'debug'}</h4>
+                <code class="orch-task-id">${t.id || t.taskId}</code>
+              </div>
+              <span class="orch-pill orch-pill-${t.status || 'unknown'}">${t.status || 'unknown'}</span>
+            </header>
+            <dl class="orch-metadata">
+              <div><dt>Source</dt><dd>${t.metadata?.source || 'http_api'}</dd></div>
+              <div><dt>Created</dt><dd>${t.createdAt ? new Date(t.createdAt).toLocaleString() : '-'}</dd></div>
+              <div><dt>Approval state</dt><dd>${t.stateMachine?.state || t.state || '-'}</dd></div>
+            </dl>
+            ${actionButtons(t)}
+          </article>
+        `).join('')}</div>`;
+      } catch (e) {
+        error(el, e.message, () => loadTasks(), e.retryAfter);
+      }
+    }
+
+    async function loadApprovals() {
+      const el = document.getElementById('approvals-content');
+      loading(el);
+      try {
+        const data = await fetchAPI('/approvals');
+        const approvals = Array.isArray(data) ? data : (data.approvals || []);
+        if (approvals.length === 0) {
+          el.innerHTML = '<div class="orch-empty"><p>No approvals waiting.</p></div>';
+          return;
+        }
+        el.innerHTML = `<div class="orch-approvals-list">${approvals.map(a => {
+          const id = a.taskId;
+          const state = a.state || 'pending';
+          let btns = '';
+          if (state === 'pending') btns = `<button class="btn btn-primary btn-small" onclick="approveTask('${id}', {type:'start_review'})">Start review</button>`;
+          else if (state === 'skeptic_review') btns = `<button class="btn btn-primary btn-small" onclick="approveTask('${id}', {type:'skeptic_verdict',verdict:'approve'})">Approve</button> <button class="btn btn-secondary btn-small" onclick="approveTask('${id}', {type:'skeptic_verdict',verdict:'challenge'})">Challenge</button>`;
+          else if (state === 'verifier_review') btns = `<button class="btn btn-primary btn-small" onclick="approveTask('${id}', {type:'verifier_verdict',verdict:'proceed'})">Proceed</button>`;
+          else if (state === 'awaiting_approver') btns = `<button class="btn btn-primary btn-small" onclick="approveTask('${id}', {type:'approver_verdict',verdict:'approve'})">Approve</button> <button class="btn btn-secondary btn-small" onclick="approveTask('${id}', {type:'approver_verdict',verdict:'deny'})">Deny</button>`;
+          return `
+          <article class="orch-card">
+            <header class="orch-card-header">
+              <div><h4>Approval required</h4><code class="orch-task-id">${id}</code></div>
+              <span class="orch-pill orch-pill-pending">${state}</span>
+            </header>
+            <dl class="orch-metadata">
+              <div><dt>Task type</dt><dd>${a.taskType || 'debug'}</dd></div>
+              <div><dt>Created</dt><dd>${a.createdAt ? new Date(a.createdAt).toLocaleString() : '-'}</dd></div>
+            </dl>
+            ${btns ? `<div class="orch-card-actions">${btns}</div>` : ''}
+          </article>`;
+        }).join('')}</div>`;
+      } catch (e) {
+        error(el, e.message, () => loadApprovals(), e.retryAfter);
+      }
+    }
+
+    async function loadDashboard() {
+      const el = document.getElementById('agents-content');
+      try {
+        const data = await fetchAPI('/dashboard');
+        const orch = data?.orchestration || {};
+        const { isInitialized, taskCount, budgetStatus, heartbeatStatus } = orch;
+        el.innerHTML = `
+          <div class="orch-agents-grid">
+            <div class="orch-stat-card">
+              <p class="orch-stat-label">Orchestrator</p>
+              <p class="orch-stat-value ${isInitialized ? 'orch-status-ready' : 'orch-status-off'}">${isInitialized ? 'Active' : 'Offline'}</p>
+            </div>
+            <div class="orch-stat-card">
+              <p class="orch-stat-label">Total Tasks</p>
+              <p class="orch-stat-value">${taskCount ?? 0}</p>
+            </div>
+            <div class="orch-stat-card">
+              <p class="orch-stat-label">Heartbeat Agents</p>
+              <p class="orch-stat-value">${heartbeatStatus ?? 0}</p>
+            </div>
+            <div class="orch-stat-card">
+              <p class="orch-stat-label">Budget Used</p>
+              <p class="orch-stat-value">${budgetStatus ? `${budgetStatus.used ?? 0}/${budgetStatus.limit ?? '-'}` : '-'}</p>
+            </div>
+          </div>
+        `;
+      } catch (e) {
+        error(el, e.message, () => loadDashboard(), e.retryAfter);
+      }
+    }
+
+    async function loadAudit() {
+      const el = document.getElementById('audit-content');
+      loading(el);
+      try {
+        const data = await fetchAPI('/orchestration/audit');
+        const events = Array.isArray(data) ? data : (data.events || []);
+        if (events.length === 0) {
+          el.innerHTML = '<div class="orch-empty"><p>No orchestration audit events yet.</p></div>';
+          return;
+        }
+        el.innerHTML = `<ul class="orch-audit-list">${events.slice(0, 20).map((e, i) => {
+          const msg = e.message || e.action || (e.event ? `${e.event}${e.taskId ? ': ' + e.taskId : ''}${e.fromState && e.toState ? ' (' + e.fromState + ' -> ' + e.toState + ')' : ''}` : 'Event');
+          return `
+          <li class="orch-audit-item">
+            <div class="orch-audit-meta">
+              <span class="orch-audit-time">${e.timestamp ? new Date(e.timestamp).toLocaleTimeString() : '-'}</span>
+              ${e.level ? `<span class="orch-audit-level orch-audit-level-${(e.level || '').toLowerCase()}">${e.level}</span>` : ''}
+            </div>
+            <p class="orch-audit-message">${msg}</p>
+            ${e.taskId ? `<p class="orch-audit-task">Task <code>${e.taskId}</code></p>` : ''}
+          </li>
+        `}).join('')}</ul>`;
+      } catch (e) {
+        error(el, e.message, () => loadAudit(), e.retryAfter);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadTasks();
+      loadApprovals();
+      loadDashboard();
+      loadAudit();
+      setInterval(() => {
+        const active = document.querySelector('.orch-tab.active');
+        if (active?.dataset.tab === 'tasks') loadTasks();
+        if (active?.dataset.tab === 'approvals') loadApprovals();
+        if (active?.dataset.tab === 'agents') loadDashboard();
+      }, 8000);
+    });
+  </script>
+</body>
+</html>

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Claude Debug Copilot - Complete API Reference">
-  <title>API Reference - Claude Debug Copilot</title>
+  <meta name="description" content="Code Review Pilot - Complete API Reference">
+  <title>API Reference - Code Review Pilot</title>
   <style>
     * {
       margin: 0;
@@ -105,12 +105,14 @@
       border-radius: 12px;
       padding: 32px;
       margin-bottom: 24px;
-      transition: all 0.3s;
+      transform-style: preserve-3d;
+      transition: transform 0.3s, box-shadow 0.3s;
     }
 
     .endpoint:hover {
       background: #efefef;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transform: translateZ(6px);
     }
 
     .method {
@@ -257,23 +259,24 @@
   <header>
     <div class="container">
       <nav>
-        <a href="/" class="logo">🔍 Claude Debug Copilot</a>
+        <a href="/" class="logo">🔍 Code Review Pilot</a>
         <ul class="nav-links">
           <li><a href="/">Home</a></li>
-          <li><a href="#endpoints">Endpoints</a></li>
-          <li><a href="#examples">Examples</a></li>
-          <li><a href="#status-codes">Status Codes</a></li>
+          <li><a href="/#product">Product</a></li>
+          <li><a href="/#diagnose">Try It</a></li>
+          <li><a href="/orchestration.html">Orchestration</a></li>
+          <li><a href="/api-reference.html" style="color: #0071e3;">API</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <main class="container">
-    <a href="/" class="back-button">← Back to Home</a>
+    <a href="/#product" class="back-button">← Product</a>
 
     <h1>API Reference</h1>
     <p class="description">
-      Complete reference for Claude Debug Copilot REST API.
+      Complete reference for Code Review Pilot REST API.
       All endpoints require POST/GET requests with JSON payloads.
     </p>
 
@@ -535,8 +538,8 @@ curl http://localhost:3000/api/diagnose/diag-123/export?format=json
 
   <footer>
     <div class="container">
-      <p>Claude Debug Copilot v3.0 | Production-Ready Incident Diagnosis</p>
-      <p style="margin-top: 12px; color: #999;">© 2026 Claude Debug Copilot. All rights reserved.</p>
+      <p>Code Review Pilot v1.0 | Code reviews and fast diagnosis</p>
+      <p style="margin-top: 12px; color: #999;">© 2026 Code Review Pilot. All rights reserved.</p>
     </div>
   </footer>
 </body>

@@ -53,6 +53,10 @@ const getOrchestrator = async () => {
 
 // Middleware
 app.use(express.json({ limit: '10mb' }))
+
+// Redirect product.html to single-page #product anchor
+app.get('/product.html', (_req, res) => res.redirect(301, '/#product'))
+
 app.use(express.static(join(__dirname, 'www')))
 
 // Attach traceId and start time to every request
@@ -63,10 +67,14 @@ app.use((req, res, next) => {
   next()
 })
 
-// Request rate limiting
+// Request rate limiting (100/hour for write/heavy ops; orchestration reads exempt)
 const requestCounts = new Map()
+const ORCH_READ_PATHS = ['/api/tasks', '/api/approvals', '/api/dashboard', '/api/orchestration/audit', '/api/budget', '/health']
 app.use((req, res, next) => {
   const ip = req.ip
+  const isOrchRead = req.method === 'GET' && ORCH_READ_PATHS.some(p => req.path === p || req.path.startsWith(p + '/'))
+  if (isOrchRead) return next()
+
   const now = Date.now()
   if (!requestCounts.has(ip)) requestCounts.set(ip, [])
 
@@ -327,11 +335,11 @@ app.post('/api/batch-diagnose', express.json({ limit: '50mb' }), async (req, res
 })
 
 // ============================================================
-// Orchestration API Endpoints (Paperclip Integration)
+// Orchestration API Endpoints (Orchestration Integration)
 // ============================================================
 
 // List all tasks (paginated, filterable)
-app.get('/api/tasks', (req, res) => {
+app.get('/api/tasks', async (req, res) => {
   const { traceId, startTime } = req
   try {
     const page = parseInt(req.query.page) || 1
@@ -339,7 +347,7 @@ app.get('/api/tasks', (req, res) => {
     const status = req.query.status || null
     const type = req.query.type || null
 
-    const orchestrator = getOrchestrator()
+    const orchestrator = await getOrchestrator()
     const filter = {}
     if (status) filter.status = status
     if (type) filter.type = type
@@ -376,7 +384,7 @@ app.get('/api/tasks', (req, res) => {
 })
 
 // Get single task details
-app.get('/api/tasks/:taskId', (req, res) => {
+app.get('/api/tasks/:taskId', async (req, res) => {
   const { taskId } = req.params
   const { traceId, startTime } = req
 
@@ -393,7 +401,7 @@ app.get('/api/tasks/:taskId', (req, res) => {
       })
     }
 
-    const orchestrator = getOrchestrator()
+    const orchestrator = await getOrchestrator()
     const task = orchestrator.taskManager.getTask(taskId)
 
     const duration = Date.now() - startTime
@@ -444,7 +452,7 @@ app.get('/api/tasks/:taskId', (req, res) => {
 })
 
 // Get approval state for a task
-app.get('/api/tasks/:taskId/approvals', (req, res) => {
+app.get('/api/tasks/:taskId/approvals', async (req, res) => {
   const { taskId } = req.params
   const { traceId, startTime } = req
 
@@ -460,7 +468,7 @@ app.get('/api/tasks/:taskId/approvals', (req, res) => {
       })
     }
 
-    const orchestrator = getOrchestrator()
+    const orchestrator = await getOrchestrator()
     const task = orchestrator.taskManager.getTask(taskId)
     const stateMachine = task.stateMachine
 
@@ -507,7 +515,7 @@ app.get('/api/tasks/:taskId/approvals', (req, res) => {
 })
 
 // List pending approvals across all tasks
-app.get('/api/approvals', (req, res) => {
+app.get('/api/approvals', async (req, res) => {
   const { traceId, startTime } = req
   try {
     const page = parseInt(req.query.page) || 1
@@ -515,7 +523,7 @@ app.get('/api/approvals', (req, res) => {
     const state = req.query.state || null
     const taskType = req.query.taskType || null
 
-    const orchestrator = getOrchestrator()
+    const orchestrator = await getOrchestrator()
     const allTasks = orchestrator.taskManager.listTasks({})
 
     // Filter tasks by approval state and task type
@@ -889,7 +897,7 @@ app.use((err, req, res, next) => {
 
 // Start server
 const server = app.listen(PORT, () => {
-  console.log(`🚀 Claude Debug Copilot Server`)
+  console.log(`🚀 Code Review Pilot Server`)
   console.log(`📍 Running at http://localhost:${PORT}`)
   console.log(`📚 API Docs at http://localhost:${PORT}/api-reference.html`)
   console.log(`💚 Health check at http://localhost:${PORT}/health`)
