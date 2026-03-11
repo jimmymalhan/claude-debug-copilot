@@ -905,6 +905,7 @@ When creating PR:
 | Project rules | `.claude/rules/*.md` |
 | This document | `docs/SKILLSETS.md` |
 | Ultra-advance roadmap & review | `docs/ULTRA_ADVANCE_REVIEW.md` |
+| Claude Code alignment & execution | `docs/CLAUDE_CODE_ULTRA_ADVANCE.md` |
 | Confidence ledger | `docs/CONFIDENCE_SCORE.md` |
 | Change log | `CHANGELOG.md` |
 

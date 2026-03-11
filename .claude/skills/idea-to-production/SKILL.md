@@ -55,7 +55,7 @@ Before HANDOFF 1: verify server is UP and localhost works. Tell user: "Server ru
 
 **Purpose**: Run the full business from idea to production. Codifies flow, handoff points, cost optimization, and quality gates.
 
-**Reference**: [Claude Code Skills](https://code.claude.com/docs/en/skills), [Manage costs](https://code.claude.com/docs/en/costs.md), [Common workflows](https://code.claude.com/docs/en/common-workflows), [Subagents](https://code.claude.com/docs/en/sub-agents)
+**Reference**: [Claude Code Skills](https://code.claude.com/docs/en/skills), [Costs](https://code.claude.com/docs/en/costs), [Common workflows](https://code.claude.com/en/common-workflows), [Subagents](https://code.claude.com/docs/en/sub-agents). See `docs/CLAUDE_CODE_ULTRA_ADVANCE.md` for alignment and execution checklist.
 
 ---
 

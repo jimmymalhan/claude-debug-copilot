@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
+### docs: Add CLAUDE_CODE_ULTRA_ADVANCE.md — Claude Code alignment, execution checklist
+
+- Skills, subagents, hooks aligned with code.claude.com docs
+- Common workflows, best practices, costs references
+- Execution checklist for review and run
+- Gaps vs Claude Code (context: fork, dynamic context, hooks)
+
 ### feat(automation): Maximum automation by default — business runs automatically
 
 - **run-the-business**: DEFAULT for any project instruction; auto-merge ON, ultra-automation ON
