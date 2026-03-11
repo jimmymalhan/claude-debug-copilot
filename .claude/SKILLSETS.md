@@ -2,7 +2,7 @@
 
 **Purpose**: Define domain-expert skills for every agent and role so the system can run the whole business automatically. Plan and execute end-to-end with 4 phases, 5–10 subagents per phase. Always learning: skills self-update when issues are fixed.
 
-**Non-negotiable**: Skills, agents, subagents NEVER wait for user to run, update, or accept. Execute automatically; report results. No approval gates. **All changes through branches** — never commit to main; create feature/* first; merge via PR only.
+**Non-negotiable**: Skills, agents, subagents NEVER wait for user to run, update, or accept. Execute automatically; report results. No approval gates. **Full authority**: Commit, push, merge—execute. Do NOT claim "requires human authorization." Only ask when credentials missing. **All changes through branches** — never commit to main; create feature/* first; merge via PR only.
 
 **User feedback → skillset (META)**: Everything the user gives goes to the skill set. Keep updating. All user input → update or create skills. Do NOT create new docs. Everything becomes a skill. No exceptions. See `user-feedback-to-skillset` skill.
 
