@@ -3,15 +3,16 @@
 **Goal:** Diagnose recurring backend failures using evidence-first methodology with production-grade reliability.
 
 ## Non-Negotiable Rules
-1. **Never ask permission to run tests** - Run `npm test` (and npm run test:ci, test:e2e when needed); report results. Do not ask "Can I run tests?" — just run.
-2. **Never invent** - fields, tables, APIs, regions, files, env vars, test results
-3. **Retrieve before explaining** - evidence first, then conclusions
-4. **Verifier blocks unsupported claims** - no hand-waving, no "should work"
-5. **Skeptic produces competing theory** - materially different root cause
-6. **Never wait for user** - Skills, agents, subagents proceed automatically. No "run?", "update?", "accept?", "approve?", "shall I?". Execute; report.
-7. **Confidence score backed by proof** - 95-100 only with passing tests
-8. **Separate observed facts from assumptions** - mark unknowns clearly with [UNKNOWN]
-9. **All changes through branches** - Never commit directly to main. Create a feature branch first. All commits go to feature/*. Merge to main only via PR.
+1. **Never design from idea without critiques** - No design, project, or assignment without critiques from all stakeholder types (CEO, CTO, VPs, engineers, sub-orgs). Block until all feedback. See `docs/critiques.md`, `docs/RUN_THE_COMPANY.md`.
+2. **Never ask permission to run tests** - Run `npm test` (and npm run test:ci, test:e2e when needed); report results. Do not ask "Can I run tests?" — just run.
+3. **Never invent** - fields, tables, APIs, regions, files, env vars, test results
+4. **Retrieve before explaining** - evidence first, then conclusions
+5. **Verifier blocks unsupported claims** - no hand-waving, no "should work"
+6. **Skeptic produces competing theory** - materially different root cause
+7. **Never wait for user** - Skills, agents, subagents proceed automatically. No "run?", "update?", "accept?", "approve?", "shall I?". Execute; report.
+8. **Confidence score backed by proof** - 95-100 only with passing tests
+9. **Separate observed facts from assumptions** - mark unknowns clearly with [UNKNOWN]
+10. **All changes through branches** - Never commit directly to main. Create a feature branch first. All commits go to feature/*. Merge to main only via PR.
 
 ## Output Contract
 Every diagnosis must include:
@@ -33,25 +34,28 @@ Every diagnosis must include:
 - **Self-fix**: Loop until green or max retries; never claim "should work" without test output.
 
 ## Recommended Workflow
-1. **Plan First** (use Plan Mode):
+1. **Critiques First** (see `docs/critiques.md`):
+   - Collect feedback from all stakeholders (CEO, CTO, VPs, engineers, sub-orgs). Block until all in.
+   - No design, project, or assignment without critiques pass.
+2. **Plan** (use Plan Mode):
    - Explore codebase (Explore agent or Glob/Grep)
-   - Design solution approach
+   - Design solution approach (only after critiques)
    - Create work breakdown with test criteria
    - Proceed to code automatically—do NOT wait for approval
 
-2. **Code with Tests**:
+3. **Code with Tests**:
    - Implement changes in separate commits
    - Write tests that verify critical workflows
    - Run locally: `npm test` before committing
    - Never claim "should work" - run tests to prove it
 
-3. **Verify Critical Flows**:
+4. **Verify Critical Flows**:
    - Test request intake → response
    - Test pipeline execution (4-agent orchestration)
    - Test error recovery (network failure → retry)
    - Test permission checks, audit logging, failure handling
 
-4. **Update Evidence**:
+5. **Update Evidence**:
    - Run `npm test` to get passing test output
    - Update `docs/CONFIDENCE_SCORE.md` with test results
    - Update `CHANGELOG.md` with what changed and why
@@ -68,6 +72,8 @@ npm run test:e2e       # E2E tests (requires API credentials)
 ```
 
 ## Configuration & Rules
+- `docs/critiques.md` — **Critiques mandatory**: No design, project, or assignment without all stakeholder feedback (CEO, CTO, VPs, engineers).
+- `docs/RUN_THE_COMPANY.md` — **Governance**: Run like a company. Update projects, update code, get feedback, iterate, be the best.
 - `docs/NAMING_CONVENTIONS.md` — **Ultra-clear naming**: branches, commits, PRs, code, comments. Apply everywhere.
 - `docs/CODE_AND_DOCS.md` — Doc ↔ code map; what's being worked on; never push docs/code separately
 - `REVIEW.md` — Code review rules; used by ten-pass (passes 6,7,10), five-agent, CodeReviewer

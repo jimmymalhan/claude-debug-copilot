@@ -8,6 +8,7 @@
 
 | Focus | Docs | Code | Status |
 |-------|------|------|--------|
+| **Critiques-first (HARD)** | docs/critiques.md, docs/RUN_THE_COMPANY.md | All plans, design, project creation, assignment | Active |
 | **Branch-only (HARD)** | FEATURE_BRANCH_PERMISSIONS.md, guardrails.md | branch-aware-permissions.sh (feature/* only), settings.json | Active |
 | **Ten-pass verification** | REVIEW.md, ten-pass-verification/SKILL.md | pr-push-merge, e2e-orchestrator, General-Purpose | Active |
 | **Evidence-first diagnosis** | CLAUDE.md, guardrails.md | src/local-pipeline.js, Router/Retriever/Skeptic/Verifier | Core |
@@ -18,6 +19,8 @@
 
 | Document | Drives | Files |
 |----------|--------|-------|
+| **docs/critiques.md** | No design/project/assign without all stakeholder critiques (CEO, CTO, VPs, engineers) | CLAUDE.md, guardrails.md, PLAN, run-the-business |
+| **docs/RUN_THE_COMPANY.md** | Governance: update projects, update code, get feedback, iterate, be the best | critiques.md, PLAN |
 | **docs/NAMING_CONVENTIONS.md** | Branches, commits, PRs, code, comments — apply everywhere | CLAUDE.md, guardrails.md, pr-push-merge, REVIEW.md |
 | **REVIEW.md** | Code review rules; ten-pass passes 6, 7, 10 | .claude/skills/ten-pass-verification/SKILL.md, five-agent-verification |
 | **CLAUDE.md** | Project standards, workflow, output contract | All agents; .claude/rules/ |

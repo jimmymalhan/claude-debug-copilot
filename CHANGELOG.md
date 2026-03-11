@@ -5,6 +5,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
+### feat(governance): Critiques-first, run-the-company, all stakeholder feedback
+
+- **docs/critiques.md**: Gates — no design/project/assign without critique; executive stakeholders (CEO, CTO, VPs); all engineers across sub-orgs; run-the-company loop (update projects, update code, get feedback, iterate, be the best)
+- **docs/RUN_THE_COMPANY.md**: New governance doc — 9-step loop from idea to best business; all stakeholder coverage; relation to critiques, CLAUDE, PLAN
+- **CLAUDE.md**: Non-negotiable rule #1 — never design from idea without critiques; Config refs critiques + RUN_THE_COMPANY; Recommended Workflow — Critiques First step
+- **guardrails.md**: Critiques-first hard rule
+- **docs/PLAN_AGENTS_SKILLS_RUN_BUSINESS.md**: Governance section — critique-first, run-the-company
+- **docs/CODE_AND_DOCS.md**: Critiques-first in Current Work; critiques + RUN_THE_COMPANY in doc→code map
+
 ### feat(rules): Clean up branches and PRs after done
 
 - **CLAUDE.md**: Branch Rules — "Clean up after done"; Done Definition — cleanup checklist item

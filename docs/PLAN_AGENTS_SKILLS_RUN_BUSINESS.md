@@ -2,6 +2,8 @@
 
 **Goal**: Idea → production, fully autonomous. Domain-expert agents. Live monitoring, self-fix, fix PRs. Minimal API credits. Model-agnostic: performs at its best whether using Haiku, Sonnet, or Opus. No limiting issues. Devise and plan only—no coding until approved.
 
+**Governance**: No design, project, or assignment without critiques from all stakeholders (CEO, CTO, VPs, engineers, sub-orgs). Run the company. Get feedback. Iterate. Be the best. See `docs/critiques.md`, `docs/RUN_THE_COMPANY.md`.
+
 ---
 
 ## Model-Agnostic Design & Cost Guardrails

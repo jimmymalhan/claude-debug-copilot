@@ -2,6 +2,7 @@
 
 ## Hard Rules (Branch Workflow)
 - **All changes through branches** — Never commit directly to main. If on main, run `git checkout -b feature/<name>` first. All commits go to feature/*. Merge to main only via PR. No exceptions.
+- **Critiques first** — No design, project, or assignment without critiques from all stakeholders (CEO, CTO, VPs, engineers). See `docs/critiques.md`, `docs/RUN_THE_COMPANY.md`.
 - **Naming**: Branches `feature/<kebab-case>`, `fix/<kebab-case>`. Commits `feat(scope): description`. See `docs/NAMING_CONVENTIONS.md` — apply everywhere.
 
 ## Proof Requirements
