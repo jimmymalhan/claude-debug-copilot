@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
+### feat(skills): no-direct-main — nothing goes to main without peers
+
+- **no-direct-main skill**: HARD rule—no commits directly to main. Operational and product features go through peers (PR review). Zero exceptions.
+- **guardrails, CLAUDE.md**: References no-direct-main.
+- **TEMPLATE_APPLY.md**: Added to template checklist.
+- **SKILLSETS.md**: Documented.
+
 ### feat(roadmap): Complete 1.0.0 automation + run-24-7 + external test feedback
 
 - **Roadmap**: LS-001 Skeleton, LS-006 StepProgressBar, PUI-001 SkeletonList, PUI-002 StepProgressBar wired. 25/29 checkpoints (86%). FC-007 Lighthouse, FC-010 WCAG remain.

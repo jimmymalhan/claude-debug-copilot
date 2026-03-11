@@ -31,6 +31,7 @@ cp $SOURCE/hooks/commit-precheck.sh $TARGET/hooks/
 
 ## Template Checklist
 
+- [ ] **no-direct-main** — No commits to main; everything through peers (PR)
 - [ ] **org-chart** — Define roles for your org size (customize counts)
 - [ ] **org-feedback-loop** — Spawn roles → critique → implement until done
 - [ ] **commit-precheck** — Forbidden patterns (customize for your project)

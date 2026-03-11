@@ -14,6 +14,7 @@ argument-hint: [apply | list | customize]
 
 | User Said | Becomes | Skill / Rule |
 |-----------|---------|--------------|
+| No changes direct to main; everything through peers | Peer-review-only | no-direct-main |
 | Org chart 50 roles, feedback, pushbacks, iterate until roadmap done | Org roles + feedback loop | org-chart, org-feedback-loop |
 | Clean PRs; no task breakdowns; only feature files; check before commit | Commit cleanliness | commit-precheck |
 | README exact status, roadmap, What's Next, keep updating | Project status in README | update-readme-status.js, scripts/ |
@@ -28,6 +29,7 @@ argument-hint: [apply | list | customize]
 
 ```
 .claude/skills/
+├── no-direct-main/      # HARD: No commits to main; everything through peers (PR)
 ├── org-chart/           # Roles: Eng, Product, Design, Sales, GTM, CX (15), Leadership
 ├── org-feedback-loop/   # Spawn roles → critique → resolve → implement
 ├── commit-precheck/     # BLOCK task breakdowns, progress docs

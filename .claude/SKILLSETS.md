@@ -98,6 +98,7 @@
 | **structured-logging** | JSON logs, traceId, agent, phase | All agents |
 | **secrets-scan** | Block commit if secrets in diff | General-Purpose, pr-push-merge |
 | **commit-precheck** | Block commit if task breakdowns, progress docs, implementation reports; only feature/template files | pr-push-merge, guardrails |
+| **no-direct-main** | HARD: No commits to main; operational + product—all through peers (PR). Zero exceptions | guardrails, branch-permissions |
 | **backend-frontend-alignment** | 1:1 UI–backend; no hallucination; CX team BLOCK on mismatch | evidence-proof, consensus-gates, Director of CX |
 | **reversibility** | Rollback steps for every change | General-Purpose, FixAgent, pr-push-merge |
 | **audit-trail** | Append-only action log | All agents |
