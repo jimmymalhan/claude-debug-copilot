@@ -5,6 +5,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
+### feat(skills): Reinforce everything → skillset; keep updating
+
+- **user-feedback-to-skillset**: Added "Everything. Always." rule; "Keep updating the skill set" and "Everything needs to go to the skill set" to When User Says; fixed .claude/SKILLSETS.md path
+- **SKILLSETS.md**: Strengthened meta-rule — "Everything the user gives goes to the skill set. Keep updating. No exceptions."
+
 ### feat(skills): PR comments live + parallel execution
 
 - **pr-comments-live**: New skill — Post PR comment at same time as every commit, push, update; never work in silence

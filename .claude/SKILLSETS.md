@@ -4,7 +4,7 @@
 
 **Non-negotiable**: Skills, agents, subagents NEVER wait for user to run, update, or accept. Execute automatically; report results. No approval gates. **All changes through branches** — never commit to main; create feature/* first; merge via PR only.
 
-**User feedback → skillset (META)**: All user input goes to the skill set. Update existing skills or create new skills. Do NOT create new docs for user feedback. Everything becomes a skill. See `user-feedback-to-skillset` skill.
+**User feedback → skillset (META)**: Everything the user gives goes to the skill set. Keep updating. All user input → update or create skills. Do NOT create new docs. Everything becomes a skill. No exceptions. See `user-feedback-to-skillset` skill.
 
 ---
 
