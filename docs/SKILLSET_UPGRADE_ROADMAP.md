@@ -71,9 +71,23 @@
 
 ---
 
-## 7. Related
+## 7. YouTube-Derived Patterns (See YOUTUBE_SKILL_UPGRADES.md)
+
+| Pattern | Source | Action |
+|---------|--------|--------|
+| **Six-step framework** | Nate Herk | Name→Goal→Steps→References→Rules→Self-improvement |
+| **Feedback cycle** | All | Invoke→watch→feedback→fix skill→repeat |
+| **Progressive loading** | Anthropic | Frontmatter ~100 tokens; SKILL.md <500 lines; refs on demand |
+| **Token savings** | Nate Herk | Hardcode IDs, reference.md over web search, subagent delegation |
+| **When to build** | Claude official | "Explaining same thing repeatedly = skill waiting to be written" |
+| **Testing fixes** | Nate Herk | Wrong order→edit; missing context→refs; triggers too often→disable-model-invocation |
+
+---
+
+## 8. Related
 
 - [SKILLSETS.md](./SKILLSETS.md) — Full skill reference
+- [YOUTUBE_SKILL_UPGRADES.md](./YOUTUBE_SKILL_UPGRADES.md) — Video-derived upgrade patterns
 - [SKILLSET_UPGRADE_PLAN.md](./SKILLSET_UPGRADE_PLAN.md) — Plan and execution log
 - [ULTRA_ADVANCE_REVIEW.md](./ULTRA_ADVANCE_REVIEW.md) — Gaps, review checklist
 - [CLAUDE_CODE_ULTRA_ADVANCE.md](./CLAUDE_CODE_ULTRA_ADVANCE.md) — Claude Code alignment

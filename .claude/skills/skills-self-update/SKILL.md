@@ -47,7 +47,7 @@ IF SKILL.md is too large (>300 lines) → move older lessons to feedback-log →
 
 **Purpose**: Keep skills updated when issues are found and fixed. Always be learning.
 
-**Reference**: [geo-seo-claude](https://github.com/zubair-trabzada/geo-seo-claude/tree/main/skills) – skills evolve with audits; [Claude Code Skills](https://code.claude.com/docs/en/skills)
+**Reference**: [geo-seo-claude](https://github.com/zubair-trabzada/geo-seo-claude/tree/main/skills), `docs/YOUTUBE_SKILL_UPGRADES.md` – feedback cycle, six-step framework
 
 ## When to Update
 
@@ -86,3 +86,12 @@ Issue found → Root cause identified → Fix applied → Update skill(s) → Co
 - Skill updates are project-relevant – commit them
 - Keep lessons concise (1–2 sentences each)
 - Do not duplicate across multiple skills; reference from feedback-log if shared
+
+## Six-Step Audit (When Creating/Updating a Skill)
+
+1. **Name & trigger** — Clear natural-language phrase
+2. **Goal** — One-sentence outcome
+3. **Step-by-step** — Exact order, decisions
+4. **Reference files** — Context (style guides, constants)
+5. **Rules** — Guardrails for recurring mistakes
+6. **Self-improvement** — Run→watch→feedback→fix→repeat
