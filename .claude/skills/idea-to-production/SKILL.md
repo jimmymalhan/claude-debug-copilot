@@ -1,8 +1,10 @@
 ---
 name: idea-to-production
-description: Idea → Execute → Production with merge/deploy handoffs. Use when user gives idea, "add feature", "fix bug", or wants full flow to production. Handoff 1: merge (user approves). Handoff 2: deploy (explicit approval). Cost-optimized.
+description: Idea → Execute → Production with merge/deploy handoffs. Use when user gives idea, "add feature", "fix bug", or wants full flow to production. Handoff 1: merge (user approves, or auto-merge when enabled). Handoff 2: deploy (explicit approval). Cost-optimized.
 argument-hint: [idea or task]
 ---
+
+**Uses** `auto-merge`: When AUTO_MERGE or FULL_AUTO enabled, skip "merge now" — merge when CI green.
 
 ## Execution Standard (Apply to Every Skill)
 

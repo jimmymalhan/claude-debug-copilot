@@ -282,6 +282,34 @@ docs/**/EXECUTION_PLAN*.md
 !.claude/skills/anomaly-detection/SKILL.md
 !.claude/skills/cron-awareness/
 !.claude/skills/cron-awareness/SKILL.md
+!.claude/skills/structured-logging/
+!.claude/skills/structured-logging/SKILL.md
+!.claude/skills/secrets-scan/
+!.claude/skills/secrets-scan/SKILL.md
+!.claude/skills/reversibility/
+!.claude/skills/reversibility/SKILL.md
+!.claude/skills/audit-trail/
+!.claude/skills/audit-trail/SKILL.md
+!.claude/skills/auto-merge/
+!.claude/skills/auto-merge/SKILL.md
+!.claude/skills/dag-executor/
+!.claude/skills/dag-executor/SKILL.md
+!.claude/skills/token-budget/
+!.claude/skills/token-budget/SKILL.md
+!.claude/skills/consensus-resolver/
+!.claude/skills/consensus-resolver/SKILL.md
+!.claude/skills/handoff-protocol/
+!.claude/skills/handoff-protocol/SKILL.md
+!.claude/skills/failure-taxonomy/
+!.claude/skills/failure-taxonomy/SKILL.md
+!.claude/skills/explainability/
+!.claude/skills/explainability/SKILL.md
+!.claude/skills/graceful-degradation/
+!.claude/skills/graceful-degradation/SKILL.md
+!.claude/skills/property-based-testing/
+!.claude/skills/property-based-testing/SKILL.md
+!.claude/skills/ultra-automation/
+!.claude/skills/ultra-automation/SKILL.md
 
 # ──────────────────────────────────────────────────
 # Misc local directories

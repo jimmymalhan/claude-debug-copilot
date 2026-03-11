@@ -7,6 +7,10 @@ argument-hint: [branch or ""]
 
 **Uses** `execution-agent`: Enforce required fields (description, source prompt, web link, screenshot if frontend) before create. Fail loudly if missing.
 
+**Uses** `secrets-scan`: Before commit, scan staged diff. Block if secrets detected.
+
+**Uses** `reversibility`: PR body must include rollback section.
+
 ## Phase 1: DISCOVER
 ### Sub-Agent: `CommitScout` (model: haiku)
 - **Tools**: Bash, Read

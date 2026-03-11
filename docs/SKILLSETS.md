@@ -35,7 +35,7 @@
 | **Backend Engineer** | "What is BE's skill set?" | backend-engineer, backend-reliability — Validation, retry, timeout, structured errors |
 | **QA Engineer** | "What is QA's skill set?" | qa-engineer, evidence-proof — Test plans, npm test before done |
 | **E2E Orchestrator** | "What is Orchestrator's skill set?" | e2e-orchestrator, plan-and-execute — 4 phases, 5–10 subagents/phase |
-| **Code Reviewer** | "What is CodeReviewer's skill set?" | critic, backend-reliability, ui-quality — DRY, quality, efficiency |
+| **Code Reviewer** | "What is CodeReviewer's skill set?" | critic, consensus-resolver, explainability, backend-reliability, ui-quality — DRY, quality, efficiency |
 | **API Validator** | "What is APIValidator's skill set?" | verifier, backend-reliability — Contract testing, endpoint verification |
 | **ChaosTester** | "What is ChaosTester's skill set?" | chaos-tester, evidence-proof — End-user, internal, engineer personas; random tests; iterate; handoff to FixAgent |
 | **Execution Agent** | (preload) | execution-agent — Dumb checklists, enforced checkpoints, fail loudly; script over AI |
@@ -86,6 +86,40 @@
 | **confidence-decay** | Stale evidence = lower weight | Evidence proof |
 | **anomaly-detection** | Baseline deviation | Test metrics |
 | **cron-awareness** | Off-peak for heavy | Poll interval |
+| **structured-logging** | JSON logs, traceId, agent, phase | All agents |
+| **secrets-scan** | Block commit if secrets in diff | General-Purpose, pr-push-merge |
+| **reversibility** | Rollback steps for every change | General-Purpose, FixAgent, pr-push-merge |
+| **audit-trail** | Append-only action log | All agents |
+| **auto-merge** | Merge when CI green (opt-in) | Plan, General-Purpose, LiveWatchdog |
+| **ultra-automation** | Max autonomy; no gates; all advanced (opt-in) | Plan, LiveWatchdog |
+| **dag-executor** | Dependency-ordered parallel tasks | Plan, General-Purpose |
+| **token-budget** | Cap tokens per run | Plan |
+| **consensus-resolver** | Resolve agent disagreements | CodeReviewer, General-Purpose |
+| **handoff-protocol** | Structured state transfer | General-Purpose, FixAgent |
+| **failure-taxonomy** | Categorize failures; learn patterns | General-Purpose, FixAgent, LiveWatchdog, QA |
+| **explainability** | Rationale for critical decisions | CodeReviewer, General-Purpose, FixAgent |
+| **graceful-degradation** | Reduce scope under pressure | Plan, General-Purpose |
+| **property-based-testing** | Generative edge case tests | General-Purpose, QA |
+
+---
+
+## Ultra-Automation Mode
+
+**Activate**: "Ultra automation", "Full autonomous", or `ULTRA_AUTO=true`
+
+**Stack**: DAG executor, token budget, consensus, handoff, failure taxonomy, explainability, graceful degradation, property-based testing, auto-merge, full observability. Idea → production with no approval gates.
+
+---
+
+## World-Class Skills (Observability, Security, Full-Auto)
+
+| Skill | Purpose |
+|-------|---------|
+| **structured-logging** | JSON logs with traceId for debugging |
+| **secrets-scan** | Block commit if API keys, tokens in diff |
+| **reversibility** | Every change has rollback steps |
+| **audit-trail** | Immutable append-only action log |
+| **auto-merge** | Merge when CI green; full-auto mode opt-in |
 
 ---
 
@@ -194,6 +228,20 @@ Invoke `/e2e-orchestrator` to run the whole business end-to-end.
 | Confidence decay | `confidence-decay` | Stale evidence = lower weight |
 | Anomaly detection | `anomaly-detection` | Baseline deviation alerts |
 | Cron awareness | `cron-awareness` | Off-peak for heavy runs |
+| Structured logging | `structured-logging` | JSON logs, traceId, debugging |
+| Secrets scan | `secrets-scan` | Block commit if secrets detected |
+| Reversibility | `reversibility` | Rollback steps for every change |
+| Audit trail | `audit-trail` | Immutable action log |
+| Auto-merge | `auto-merge` | Merge when CI green (opt-in) |
+| Ultra automation | `ultra-automation` | Max autonomy; no gates (opt-in) |
+| DAG executor | `dag-executor` | Parallel, dependency-ordered tasks |
+| Token budget | `token-budget` | Cap tokens per run |
+| Consensus | `consensus-resolver` | Resolve agent disagreements |
+| Handoff | `handoff-protocol` | Structured state transfer |
+| Failure taxonomy | `failure-taxonomy` | Categorize, learn patterns |
+| Explainability | `explainability` | Rationale for decisions |
+| Graceful degradation | `graceful-degradation` | Reduce scope under pressure |
+| Property-based testing | `property-based-testing` | Generative edge cases |
 
 ## End-to-End Workflow (Break, Agents, Branches, Tests, Feedback, Push, Merge)
 
@@ -826,6 +874,20 @@ When creating PR:
 | `confidence-decay` | Stale evidence = lower weight | QA, CodeReviewer |
 | `anomaly-detection` | Flag baseline deviation (test count, duration) | QA, CodeReviewer |
 | `cron-awareness` | Time-of-day for heavy runs; poll interval | Plan, LiveWatchdog |
+| `structured-logging` | JSON logs, traceId, agent, phase | Explore, Plan, General-Purpose, FixAgent, LiveWatchdog |
+| `secrets-scan` | Block commit if secrets in diff | General-Purpose |
+| `reversibility` | Rollback steps for every change | General-Purpose, FixAgent |
+| `audit-trail` | Append-only action log | Explore, Plan, General-Purpose, FixAgent, LiveWatchdog |
+| `auto-merge` | Merge when CI green; full-auto opt-in | Plan, General-Purpose, LiveWatchdog |
+| `ultra-automation` | Max autonomy; all advanced skills (opt-in) | Plan, LiveWatchdog |
+| `dag-executor` | Dependency-ordered parallel execution | Plan, General-Purpose |
+| `token-budget` | Token cap per run | Plan |
+| `consensus-resolver` | Resolve agent disagreements | CodeReviewer, General-Purpose |
+| `handoff-protocol` | Structured state transfer | General-Purpose, FixAgent |
+| `failure-taxonomy` | Categorize failures; learn | General-Purpose, FixAgent, LiveWatchdog, QA |
+| `explainability` | Rationale for decisions | CodeReviewer, General-Purpose, FixAgent |
+| `graceful-degradation` | Reduce scope under pressure | Plan, General-Purpose |
+| `property-based-testing` | Generative edge cases | General-Purpose, QA |
 
 ---
 

@@ -5,6 +5,28 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
+### feat(skills): Ultra automation — 8 advanced skills, max autonomy
+
+- **dag-executor**: Dependency-ordered parallel tasks
+- **token-budget**: Cap tokens per run; save at limit
+- **consensus-resolver**: Resolve agent disagreements
+- **handoff-protocol**: Structured state transfer between agents
+- **failure-taxonomy**: Categorize failures; learn patterns
+- **explainability**: Rationale for critical decisions
+- **graceful-degradation**: Reduce scope under pressure
+- **property-based-testing**: Generative edge case tests
+- **ultra-automation**: Max autonomy mode; "Ultra automation" or ULTRA_AUTO=true
+- Assign to Plan, General-Purpose, FixAgent, LiveWatchdog, QA, CodeReviewer
+
+### feat(skills): Add 5 world-class skills — structured-logging, secrets-scan, reversibility, audit-trail, auto-merge
+
+- **structured-logging**: JSON logs with traceId, agent, phase for debugging
+- **secrets-scan**: Block commit if API keys, tokens, .env patterns in diff
+- **reversibility**: Every change has explicit rollback steps
+- **audit-trail**: Append-only immutable action log for compliance
+- **auto-merge**: Merge when CI green; full-auto mode (idea→production) opt-in
+- Preload on Plan, General-Purpose, FixAgent, LiveWatchdog
+
 ### feat(skills): Add 9 watchdog/resilience skills — circuit breaker, retry, time-bounded, etc.
 
 - **circuit-breaker**: N failures → stop, hand off. FixAgent, LiveWatchdog.

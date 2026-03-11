@@ -27,6 +27,7 @@ argument-hint: [task or instructions]
 | "Run the project" | idea-to-production + live-watchdog |
 | "Project instructions only" | Same |
 | "Full E2E" | Same |
+| "Ultra automation" / "Full autonomous" | ultra-automation mode: all advanced skills, auto-merge, no approval gates |
 | "Watch and fix" | Start live-watchdog only (if already executed) |
 
 ---
@@ -42,6 +43,7 @@ argument-hint: [task or instructions]
 
 ## Related Skills
 
+- `ultra-automation` — Max autonomy; no approval gates (opt-in)
 - `idea-to-production` — Master flow
 - `live-watchdog` — Poll and detect errors
 - `error-detector` — Classify error, route fix agent
