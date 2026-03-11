@@ -77,6 +77,15 @@ npm run test:e2e       # E2E tests (requires API credentials)
 - `docs/CONFIDENCE_SCORE.md` - Truth ledger for all tasks with evidence
 - `CHANGELOG.md` - Session-by-session change log
 
+## Token Conservation (When Making Changes)
+
+- **Lower tokens** — Read with offset/limit over full file. Grep for targeted search. Keep context small.
+- **Compact skills** — SKILL.md under 500 lines; details in reference.md. Load refs only when needed.
+- **Prefer Haiku** — Explore, QA, most implementation. Sonnet for Plan + final review only.
+- **Filter test output** — filter-test-output.sh for npm test (failures only). Saves tokens.
+- **Reference over search** — Scrape docs to reference.md; read file instead of web search.
+- **token-budget, cost-guardrails** — Check after each phase. Default Haiku for 80%+ of work.
+
 ## Commit Frequently
 - Commit after any small change; don't batch
 - **Docs and code go hand in hand** — never push them separately. One commit = code + its docs.
