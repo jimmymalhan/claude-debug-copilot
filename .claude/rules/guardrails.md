@@ -2,6 +2,7 @@
 
 ## Hard Rules (Branch Workflow)
 - **All changes through branches** — Never commit directly to main. If on main, run `git checkout -b feature/<name>` first. All commits go to feature/*. Merge to main only via PR. No exceptions.
+- **Small commits, small PRs** — One small change per commit. Each PR = small iteration of one feature. No big changes. Rollback = revert that feature only, not the whole project.
 
 ## Proof Requirements
 - **Never invent files** - only read/edit files that exist or are explicitly requested
