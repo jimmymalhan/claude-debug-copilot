@@ -359,6 +359,8 @@ describe('Integration: UI Workflow via Server API', () => {
       expect(typeof res.body.totalDiagnoses).toBe('number');
       expect(typeof res.body.averageConfidence).toBe('number');
       expect(typeof res.body.successRate).toBe('number');
+      expect(typeof res.body.activeDiagnosers).toBe('number');
+      expect(res.body.activeDiagnosers).toBeGreaterThanOrEqual(47);
     });
   });
 

@@ -81,8 +81,10 @@
 | Agent | Skills (Preloaded) | Phase | Use |
 |-------|--------------------|-------|-----|
 | **Explore** | project-guardrails, evidence-proof, router, retriever | 1 | Discovery, classification |
-| **Plan** | project-guardrails, evidence-proof, e2e-orchestrator | 1 | Plan Mode, orchestration |
-| **General-Purpose** | evidence-proof, backend-reliability, ui-quality, frontend-engineer, backend-engineer, qa-engineer | 2 | Implementation |
+| **Plan** | project-guardrails, evidence-proof, e2e-orchestrator, stack-rank-priorities, sales | 1 | Plan Mode, orchestration |
+| **General-Purpose** | evidence-proof, backend-reliability, ui-quality, frontend-engineer, backend-engineer, qa-engineer, sales | 2 | Implementation |
+| **TeamLead** | stack-rank-priorities, sales, cost-guardrails | 1 | Stack rank, final call delivery |
+| **TeamCoordinator** | stack-rank-priorities, sales, cost-guardrails | 1 | Stack rank, final call scope |
 | **CodeReviewer** | project-guardrails, evidence-proof, critic, backend-reliability, ui-quality | 3 | Review, quality gate |
 | **APIValidator** | backend-reliability, verifier, evidence-proof | 2 | API testing |
 | **frontend-engineer** | frontend-engineer, ui-quality, evidence-proof | 2 | FE features |

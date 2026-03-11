@@ -1,0 +1,12 @@
+# GitGuardian secrets detection configuration
+# https://docs.gitguardian.com/secrets-detection/customize-detection/exclusion-rules
+
+# Paths to exclude from secrets scan (test placeholders, sanitizer tests)
+paths-ignore:
+  - "tests/log-sanitizer.test.js"
+  - "**/*.test.js"
+  - "**/*.spec.js"
+  - "**/tests/**"
+
+# Ensure .env and secrets never committed
+version: "1.0"

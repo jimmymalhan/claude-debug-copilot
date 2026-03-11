@@ -11,19 +11,35 @@
 
 ## Project 1.0.0 Status
 
-| Area | Progress | Status |
+| Area | Progress | Detail |
 |------|----------|--------|
-| **Overall** | **50%** | [██████████░░░░░░░░░░] |
+| **Overall** | **93%** | [███████████████████░] |
 | Core (4-agent, API, webhooks) | 100% | ✅ Shipped in v1.0.1 |
-| Premium UI roadmap | See milestones | — |
+| Premium UI checkpoints | **25/29** (86%) | [█████████████████░░░] |
 
-**Source:** [.github/PROJECT_1.0.0_CHECKPOINTS.md](.github/PROJECT_1.0.0_CHECKPOINTS.md) · Task breakdown excluded from repo (commit-precheck)
+**What's done:** Core pipeline, API, webhooks, audit trail, orchestration UI. Design tokens (colors, typography, motion). ThemeProvider, UIStateProvider, ThemeContext. AnimatedSection, FadeIn, motion-utils (prefersReducedMotion). Layout, ErrorBoundary, App.jsx. Dark/light themes.
 
-**Completed:** Core pipeline, API, webhooks, audit trail, orchestration UI.  
-**Left (≈50%):** Design tokens (DT), motion utilities (MU), style factory (SF), React migration (RC/RI/CM), loading/error states (LS/ES), dark theme, final checklist.
+**What's left:** Skeleton, ProgressBar, StepProgressBar components. Wire PUI. Lighthouse ≥90, WCAG AA final checklist.
 
 ---
+### Roadmap Features (from [.github/PROJECT_1.0.0_CHECKPOINTS.md](.github/PROJECT_1.0.0_CHECKPOINTS.md))
 
+| Phase | Milestone | Scope |
+|-------|-----------|-------|
+| 1 | v1.1.0 Design Tokens & Motion | DT-001…DT-010: Colors, typography, motion, spacing, shadows, radius |
+| 2 | v1.2.0 React Core & Migration | RC, RI, CM: App, ThemeProvider, UIStateProvider, Layout, ErrorBoundary |
+| 3 | v1.3.0 Motion & Loading | MC, LS: AnimatedSection, FadeIn, Skeleton, ProgressBar, StepProgressBar |
+| 4 | v1.4.0 Premium UI Complete | PUI, FC: Wire components, Lighthouse ≥90, WCAG AA |
+
+| GitHub Milestone | Status |
+|------------------|--------|
+| [v1.0.0 Core](https://github.com/jimmymalhan/codereview-pilot/milestone/1) | ✅ Closed |
+| [v1.2.0 React Core & Migration](https://github.com/jimmymalhan/codereview-pilot/milestone/2) | Open |
+| [v1.1.0 Design Tokens & Motion](https://github.com/jimmymalhan/codereview-pilot/milestone/3) | Open |
+| [v1.4.0 Premium UI Complete](https://github.com/jimmymalhan/codereview-pilot/milestone/4) | Open |
+| [v1.3.0 Motion & Loading States](https://github.com/jimmymalhan/codereview-pilot/milestone/5) | Open |
+
+---
 
 ## Quick Start
 
@@ -223,5 +239,15 @@ Rate limit: 100 requests/hour per IP (configurable).
 - **Health**: http://localhost:3000/health
 
 ---
+
+## What's Next
+
+**Awaiting your confirmation** to automate the remaining roadmap. Once confirmed:
+
+1. **Org-chart + org-feedback-loop** — 50 roles (Junior→Founder) give critique and pushback; resolve conflicts; implement until 1.0.0 complete
+2. **Run-the-business** — Spawn agents; plan-and-execute; PR → consensus → merge; no manual steps
+3. **Until 1.0.0** — Loop: org feedback → implement next batch → test → PR → repeat until all checkpoints done
+
+**Reply to confirm** and automation will proceed. No further direction needed—agents run until Project 1.0.0 is complete.
 
 **Code Review Pilot** | Evidence first. Root cause in seconds. [MIT](LICENSE)

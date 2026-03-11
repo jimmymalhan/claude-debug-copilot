@@ -199,11 +199,13 @@ describe('Homepage index.html', () => {
   });
 
   describe('live stats section', () => {
-    it('should have 4 live stat elements', () => {
+    it('should have 5 live stat elements including active diagnosers', () => {
+      expect(html).toContain('id="live-active-diagnosers"');
       expect(html).toContain('id="live-total-diagnoses"');
       expect(html).toContain('id="live-success-rate"');
       expect(html).toContain('id="live-avg-confidence"');
       expect(html).toContain('id="live-uptime"');
+      expect(html).toContain('Users, Bots & Agents');
     });
   });
 

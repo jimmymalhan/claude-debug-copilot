@@ -37,6 +37,17 @@ Never create docs/<new-feedback>.md
 
 ---
 
+## Stakeholder Feedback Routing
+
+When feedback is from or about a stakeholder (CTO, VP, Sales, GTM, business user, PM):
+1. Classify persona → use `stakeholder-feedback` skill's Stakeholder → Skill Upgrade table
+2. Update target skills from that table
+3. Add to SKILL.md: `**[Stakeholder: X]**: <feedback>. **Fix**: <change>. **Prevention**: <how skill prevents recurrence>`.
+
+Keep upgrading. Every relevant feedback from any stakeholder → skill update. Become the best at automating the whole workflow.
+
+---
+
 ## When User Says
 
 | User says | Do | Don't |
@@ -47,8 +58,12 @@ Never create docs/<new-feedback>.md
 | "All feedback → skillset" | This skill. Apply everywhere. | Create meta-doc |
 | "Keep updating the skill set" | Reinforce: everything → skillset. Update this skill. | Ignore or defer |
 | "Everything needs to go to the skill set" | Same. Every user input → skill. No exceptions. | Create docs, leave out |
+| "Template for projects" / "Use for other projects" | Update project-governance-template; add to TEMPLATE_APPLY.md | Create project-specific doc only |
 | "Check PRs, branches, commits" | Run `repository-audit-to-skillset`; use data to update skills | Create standalone audit doc |
 | "Naming convention", "branch names", "commit format" | Update `naming-convention-product` skill | Create docs/naming.md |
+| "CTO/VP/Sales/GTM/PM/Founder/business user feedback" | Use stakeholder-feedback skill; update target skills per persona table | Ignore or create standalone doc |
+| "Keep upgrading skills from stakeholders" | Every CTO/VP/Sales/GTM/PM/Founder/business user feedback → target skill update | Skip or defer |
+| "Founder", "market research", "features from market" | Spawn MarketResearchAgent; market-research skill → plan → implement | Create standalone doc |
 
 ---
 

@@ -29,7 +29,7 @@ Keep SKILL.md under 500 lines; move detailed templates to references/ if needed.
 ## Phase 1: DISCOVER
 ### Sub-Agent: `ScopeScout` (model: haiku)
 - **Tools**: Glob, Grep, Read
-- **Prompt**: Find all files related to the task. Search using keywords from the task description. Check if work is already done: read `CHANGELOG.md` last 20 lines, read `.claude/local/checklists/` for existing checklists, run `git log --oneline -5`. List risks and unknowns.
+- **Prompt**: Find all files related to the task. Search using keywords from the task description. **If task mentions "market-research" or "market research findings"**: read `.claude/local/checklists/market-research-*.md` first—use that checklist as source of tasks. Check if work is already done: read `CHANGELOG.md` last 20 lines, read `.claude/local/checklists/` for existing checklists, run `git log --oneline -5`. List risks and unknowns.
 - **Output**:
 ```json
 {

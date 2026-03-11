@@ -38,10 +38,23 @@ description: PR merge requires multiple comments and 100% consensus. Idea, proje
 - **No idea without consensus** — Do not create or formalize ideas without consensus of all relevant stakeholders.
 - **No project without consensus** — Do not create projects without consensus of all relevant stakeholders.
 - **No task without consensus** — Do not create or assign tasks without consensus of all relevant stakeholders.
-- **Relevant stakeholders** — CEO, CTO, VPs, engineers (all sub-orgs), product, QA, design, security, ops, compliance, users—whoever is materially affected.
+- **Relevant stakeholders** — CEO, CTO, VPs, engineers (all sub-orgs), product, QA, design, security, ops, compliance, **Customer Experience (CX) team (15)**, users—whoever is materially affected.
+
+### Scope Requiring Stakeholder Yes (All Must Agree)
+
+| Scope | Stakeholders | Gate |
+|-------|--------------|------|
+| **Products** | Founder, VP Product, CTO, Director of CX | Consensus required |
+| **Features** | PM, Engineering lead, Design, CX Manager | Consensus required |
+| **Task list** | PM, TeamCoordinator, CX Specialist (rep) | Consensus required |
+| **Milestones** | VP Product, CTO, Director of CX | Consensus required |
+| **Code reviews** | CodeReviewer, QA, Senior CX (backend–frontend alignment) | Consensus required |
+| **Pushing to code** | Same as code reviews; plus CI green, tests pass | Consensus + CI |
+| **Testing behavior** | QA, CX Specialist, continuous-test-feedback | Keep testing; BLOCK on mismatch |
+| **Backend–frontend 1:1** | Director of CX, Senior CX, EvidenceReviewer | No hallucination; UI = backend data only |
 
 ### Creation Checklist
-- [ ] All relevant stakeholders identified
+- [ ] All relevant stakeholders identified (incl. CX team rep)
 - [ ] All have provided feedback/approval
 - [ ] 100% consensus reached
 - [ ] Block until consensus. No creation without it.
@@ -63,17 +76,19 @@ No  → Fix, re-run failed critiques, resolve objections. Merge as soon as gates
 
 **Merge promptly** — When all gates pass, merge the same session. No "PR approved, will merge tomorrow."
 
-Idea / Project / Task proposed
+Idea / Project / Task / Milestone / Feature proposed
        ↓
-Relevant stakeholders identified
+Relevant stakeholders identified (incl. CX: Associate, Specialist, Senior, Director)
        ↓
-All feedback collected
+All feedback collected (products, features, tasks, milestones, code reviews, push)
        ↓
-100% consensus?
+100% consensus? Backend–frontend 1:1 verified? Tests pass?
        ↓
-Yes → Create / proceed
-No  → Block. Do not create. Get consensus first.
+Yes → Create / proceed / push
+No  → Block. Do not create. Get consensus first. Keep testing.
 ```
+
+**Testing** — Keep testing how the code behaves. Run `npm test`, `npm run test:agents`. CX and QA must verify backend–frontend alignment before merge.
 
 ---
 

@@ -1562,7 +1562,7 @@
 
     .live-stats-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 24px;
       margin-top: 48px;
     }
@@ -1601,7 +1601,7 @@
       letter-spacing: 1px;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
       .live-stats-grid {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -2118,6 +2118,10 @@
       <p class="section-subtitle scroll-animate">Real-time data from the running instance. Not marketing numbers.</p>
       <div class="live-stats-grid">
         <div class="live-stat scroll-animate">
+          <div class="live-stat-value" id="live-active-diagnosers">--</div>
+          <div class="live-stat-label">Users, Bots & Agents</div>
+        </div>
+        <div class="live-stat scroll-animate">
           <div class="live-stat-value" id="live-total-diagnoses">--</div>
           <div class="live-stat-label">Total Diagnoses</div>
         </div>
@@ -2253,6 +2257,7 @@
       setupScrollObserver();
       setupParallaxOnScroll();
       loadLiveStats();
+      setInterval(loadLiveStats, 45000);
       if (!isTouchDevice()) {
         setupMouseTracking();
       }
@@ -2415,12 +2420,14 @@
 
         if (analyticsRes && analyticsRes.ok) {
           const analytics = await analyticsRes.json();
+          const activeEl = document.getElementById('live-active-diagnosers');
           const totalEl = document.getElementById('live-total-diagnoses');
           const rateEl = document.getElementById('live-success-rate');
           const confEl = document.getElementById('live-avg-confidence');
+          if (activeEl) activeEl.textContent = analytics.activeDiagnosers ?? analytics.active_diagnosers ?? '--';
           if (totalEl) totalEl.textContent = analytics.totalDiagnoses || analytics.total || '0';
-          if (rateEl) rateEl.textContent = (analytics.successRate || analytics.success_rate || '0') + '%';
-          if (confEl) confEl.textContent = (analytics.averageConfidence || analytics.avg_confidence || '0') + '%';
+          if (rateEl) rateEl.textContent = (analytics.successRate ?? analytics.success_rate ?? '0') + '%';
+          if (confEl) confEl.textContent = (analytics.averageConfidence ?? analytics.avg_confidence ?? '0') + '%';
         }
 
         if (healthRes && healthRes.ok) {

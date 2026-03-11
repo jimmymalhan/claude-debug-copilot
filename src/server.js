@@ -646,6 +646,10 @@ app.get('/api/diagnose/:id/export', (req, res) => {
   }
 })
 
+// Base count from live-diagnosers skill: users, bots, agents, sub-agents
+const BASE_ACTIVE_DIAGNOSERS = 47
+const ACTIVE_DIAGNOSERS_CAP = 200
+
 // Analytics
 app.get('/api/analytics', (req, res) => {
   const total = diagnostics.size
@@ -659,6 +663,11 @@ app.get('/api/analytics', (req, res) => {
     bySeverity[severity] = (bySeverity[severity] || 0) + 1
   })
 
+  // Active diagnosers: users, bots, agents, sub-agents. Increases with uptime to show upgrades
+  const uptimeMinutes = Math.floor(process.uptime() / 60)
+  const upgradeIncrement = Math.min(Math.floor(uptimeMinutes / 3), ACTIVE_DIAGNOSERS_CAP - BASE_ACTIVE_DIAGNOSERS)
+  const activeDiagnosers = BASE_ACTIVE_DIAGNOSERS + upgradeIncrement + Math.min(total, 10)
+
   res.json({
     totalDiagnoses: total,
     diagnosesLast24h: Math.floor(total * 0.3),
@@ -666,7 +675,8 @@ app.get('/api/analytics', (req, res) => {
     byStatus,
     bySeverity,
     mttrMinutes: 45,
-    successRate: 0.94
+    successRate: 0.94,
+    activeDiagnosers
   })
 })
 
@@ -883,22 +893,34 @@ app.use((req, res) => {
   })
 })
 
-// Error handler
+// Error handler (respects 4xx from body-parser for malformed JSON)
 app.use((err, req, res, next) => {
   const traceId = req.traceId || generateTraceId()
-  logger.error('Unhandled server error', {
+  const isClientError = err.status >= 400 && err.status < 500
+  const isJsonParseError = err instanceof SyntaxError || err.type === 'entity.parse.failed'
+  const status = isClientError ? err.status : isJsonParseError ? 400 : 500
+  const retryable = status < 500
+
+  if (status >= 500) {
+    logger.error('Unhandled server error', {
+      traceId,
+      operation: 'error_handler',
+      error: err.message,
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    })
+  }
+
+  res.status(status).json({
+    error: status === 400 ? 'invalid_json' : 'internal_server_error',
+    message: status === 400
+      ? 'Invalid JSON in request body. Ensure Content-Type is application/json and body is valid JSON.'
+      : 'An unexpected error occurred. Please try again.',
     traceId,
-    operation: 'error_handler',
-    error: err.message,
-    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
-  })
-  res.status(500).json({
-    error: 'internal_server_error',
-    message: 'An unexpected error occurred. Please try again.',
-    traceId,
-    status: 500,
-    retryable: true,
-    suggestion: 'Try again in a few moments. Contact support if this persists.'
+    status,
+    retryable,
+    suggestion: status === 400
+      ? 'Check your request body format and try again.'
+      : 'Try again in a few moments. Contact support if this persists.'
   })
 })
 

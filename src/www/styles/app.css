@@ -804,6 +804,42 @@ body {
   margin: 0 auto;
 }
 
+/* LS-001 Skeleton */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-tertiary) 50%, var(--bg-secondary) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+.skeleton-list { display: flex; flex-direction: column; gap: 12px; }
+.skeleton-list-item { margin-bottom: 4px; }
+@keyframes skeleton-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+/* LS-006 StepProgressBar */
+.step-progress-bar { margin-bottom: 8px; }
+.step-progress-bar-track {
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.step-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+  border-radius: 3px;
+  transition: width var(--transition-slow);
+}
+.step-progress-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+.step-progress-bar-labels .active { color: var(--primary-color); font-weight: 500; }
+
 .progress-bar {
   height: 4px;
   background: var(--border-color);

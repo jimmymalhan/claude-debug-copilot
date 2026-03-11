@@ -5,6 +5,56 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
+### feat(skills): no-direct-main — nothing goes to main without peers
+
+- **no-direct-main skill**: HARD rule—no commits directly to main. Operational and product features go through peers (PR review). Zero exceptions.
+- **guardrails, CLAUDE.md**: References no-direct-main.
+- **TEMPLATE_APPLY.md**: Added to template checklist.
+- **SKILLSETS.md**: Documented.
+
+### feat(roadmap): Complete 1.0.0 automation + run-24-7 + external test feedback
+
+- **Roadmap**: LS-001 Skeleton, LS-006 StepProgressBar, PUI-001 SkeletonList, PUI-002 StepProgressBar wired. 25/29 checkpoints (86%). FC-007 Lighthouse, FC-010 WCAG remain.
+- **run-24-7 skill**: Continuous automation for internal stakeholders. ROADMAP_TODO.md self-maintained. External users: relevant + irrelevant use cases → critical/upset feedback.
+- **continuous-test-matrix**: Added irrelevant/upset cases (wrong endpoint 404, huge payload, wrong method).
+- **ROADMAP_TODO.md**: Persistent checklist; agents consume and update.
+- **run-the-business**: Step 8 — run-24-7; read ROADMAP_TODO; keep applying.
+- **PR #34 merged**; branches cleaned.
+
+### feat(template): Project governance template — portable for any project
+
+- **project-governance-template skill**: Captures all user prompts as governance pillars. Apply to any project.
+- **TEMPLATE_APPLY.md**: Copy-paste bootstrap; checklist; customize variables (TEAM_SIZE, ROADMAP_PATH, etc.).
+- **COMMANDS.md**: /project-governance-template [apply | list | customize].
+- **User prompts → skills**: (1) org chart + feedback loop, (2) commit-precheck, (3) README status, (4) CX + consensus, (5) backend-frontend 1:1, (6) template for projects.
+
+### feat(stakeholders): Customer Experience (CX) team 15 + backend-frontend 1:1 alignment
+
+- **CX team (15)** added to org-chart: CX Associate, Specialist, Senior Specialist, Success Manager, Voice of Customer Lead, Research Analyst, Ops, Manager, Director of CX. Each has responsibility, critique style, agent mapping.
+- **stakeholder-feedback**: CX personas route to feedback-log, continuous-test-feedback, ui-quality, evidence-proof, backend-frontend-alignment.
+- **consensus-gates**: Products, features, task list, milestones, code reviews, push-to-code all require stakeholder yes. CX team included. Table of scope → stakeholders.
+- **backend-frontend-alignment skill**: 1:1 UI–backend; no hallucination; UI shows only what backend provides. Director of CX BLOCK on mismatch.
+- **guardrails**: Backend–Frontend 1:1 rule; keep testing; CX BLOCK on mismatch.
+- **org-feedback-loop**: CX roles (Specialist, Senior, Director) spawn in feedback rounds.
+
+### feat(docs): README status with exact progress + roadmap + What's Next
+
+- **update-readme-status.js**: Parses `.github/PROJECT_1.0.0_CHECKPOINTS.md`; checks codebase for each checkpoint (design-tokens, ThemeProvider, AnimatedSection, etc.); computes done/total.
+- **README Project 1.0.0 Status**: Exact detail—23/29 checkpoints (79%), what's done, what's left.
+- **Roadmap Features**: Table of phases (v1.1.0 DT, v1.2.0 React, v1.3.0 Motion/Loading, v1.4.0 Premium UI) + GitHub milestone links.
+- **What's Next** (at end of README): Awaiting user confirmation to automate org-chart + org-feedback-loop until 1.0.0 complete.
+- **open-prs-workflow** already runs `npm run status` to keep README current.
+
+### feat(cleanup): Commit precheck + remove task breakdowns from repo
+
+- **commit-precheck skill**: Before every `git commit`, run `bash .claude/hooks/commit-precheck.sh`. BLOCK task breakdowns, progress dashboards, implementation reports, audit reports. Only feature code and templates. Deletions allowed (cleanup).
+- **commit-precheck.sh**: Hook checks staged files (added/modified only). Exits 1 if forbidden. check-edits.sh invokes it.
+- **guardrails**: Hard rule—run commit-precheck before every commit.
+- **pr-push-merge**: Uses commit-precheck before commit.
+- **.gitignore**: Added patterns for task breakdowns, progress docs, implementation reports, runtime data, logs.
+- **Removed from repo** (git rm --cached): FRONTEND_TASK_BREAKDOWN.csv, TASK_BREAKDOWN_DETAILED.md, PROGRESS_DASHBOARD*.md, IMPLEMENTATION_GUIDE.md, REFACTORING_SUMMARY.md, E1-01_API_CLIENT_ARCHITECTURE.md, LUXURY_UI_FEATURES.md, ACCESSIBILITY_AUDIT_REPORT.md, UI_QA_TEST_SUITE.md.
+- **package.json**: Added `npm run precommit` script.
+
 ### feat(skills): Org chart (50 roles) + org-feedback-loop until Project 1.0.0
 
 - **org-chart skill**: 50 roles from Junior Engineer to Founder — responsibilities, critique styles, agent mapping. Eng (24), Product (6), Design (3), Sales/GTM (8), Ops (4), Leadership (5).

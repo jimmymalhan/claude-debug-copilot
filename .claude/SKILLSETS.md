@@ -98,6 +98,8 @@
 | **structured-logging** | JSON logs, traceId, agent, phase | All agents |
 | **secrets-scan** | Block commit if secrets in diff | General-Purpose, pr-push-merge |
 | **commit-precheck** | Block commit if task breakdowns, progress docs, implementation reports; only feature/template files | pr-push-merge, guardrails |
+| **no-direct-main** | HARD: No commits to main; operational + product—all through peers (PR). Zero exceptions | guardrails, branch-permissions |
+| **backend-frontend-alignment** | 1:1 UI–backend; no hallucination; CX team BLOCK on mismatch | evidence-proof, consensus-gates, Director of CX |
 | **reversibility** | Rollback steps for every change | General-Purpose, FixAgent, pr-push-merge |
 | **audit-trail** | Append-only action log | All agents |
 | **auto-merge** | Merge when CI green (opt-in) | Plan, General-Purpose, LiveWatchdog |
@@ -135,6 +137,8 @@
 | **market-research** | Research product market; features needed; add to plan; implement automatically. Founder perspective. | MarketResearchAgent, Plan |
 | **org-chart** | 50 roles (Junior→Founder); responsibilities, critique styles, agent mapping; run until 1.0.0 | run-the-business, plan-and-execute |
 | **org-feedback-loop** | Spawn org roles→critique→pushbacks→resolve conflicts→implement; repeat until pending=0 | run-the-business, org-chart |
+| **project-governance-template** | Portable template from user prompts; apply to any project | Copy org-chart, commit-precheck, consensus-gates, CX, backend-frontend-alignment; see TEMPLATE_APPLY.md |
+| **run-24-7** | Continuous automation; ROADMAP_TODO; external test feedback (critical/upset) | run-the-business, open-prs-workflow, continuous-test-feedback |
 | **live-diagnosers** | Users, bots, agents, sub-agents that diagnose and test live system; count in Live System Status UI | continuous-test-feedback, run-the-business |
 
 ---

@@ -11,10 +11,12 @@ import { LogSanitizer } from '../src/orchestrator/log-sanitizer.js';
 describe('LogSanitizer: SC-4 Compliance Tests', () => {
   describe('API Key Sanitization', () => {
     test('should sanitize Anthropic API keys', () => {
-      const input = 'My API key is sk-abcdefghij1234567890 please handle it';
+      // Use runtime construction to avoid GitGuardian false positives; sanitizer matches sk-[a-z0-9]{20+}
+      const testKey = 'sk-' + 'x'.repeat(24);
+      const input = `My API key is ${testKey} please handle it`;
       const result = LogSanitizer.sanitize(input);
       expect(result).toContain('[REDACTED:API_KEY]');
-      expect(result).not.toContain('sk-abcdefghij1234567890');
+      expect(result).not.toContain(testKey);
     });
 
     test('should not sanitize short sk- prefixes', () => {
@@ -99,9 +101,10 @@ describe('LogSanitizer: SC-4 Compliance Tests', () => {
 
   describe('Object Sanitization', () => {
     test('should sanitize object with string values', () => {
+      const testKey = 'sk-' + 'x'.repeat(24);
       const input = {
         username: 'user@example.com',
-        apiKey: 'sk-abcdefghij1234567890',
+        apiKey: testKey,
         message: 'Log entry'
       };
       const result = LogSanitizer.sanitizeObject(input);
@@ -147,13 +150,15 @@ describe('LogSanitizer: SC-4 Compliance Tests', () => {
 
   describe('Sensitive Pattern Detection', () => {
     test('should detect API keys', () => {
-      const input = 'Key: sk-abcdefghij1234567890';
+      const testKey = 'sk-' + 'x'.repeat(24);
+      const input = `Key: ${testKey}`;
       const detected = LogSanitizer.detectSensitivePatterns(input);
       expect(detected).toContain('ANTHROPIC_API_KEY');
     });
 
     test('should detect multiple patterns', () => {
-      const input = 'Email: user@example.com API: sk-abcdefghij1234567890';
+      const testKey = 'sk-' + 'x'.repeat(24);
+      const input = `Email: user@example.com API: ${testKey}`;
       const detected = LogSanitizer.detectSensitivePatterns(input);
       expect(detected).toContain('EMAIL_ADDRESS');
       expect(detected).toContain('ANTHROPIC_API_KEY');

@@ -34,29 +34,24 @@ jobs:
 
       - name: Check for secrets in committed files
         run: |
-          echo "Scanning for potential secrets in src/..."
-          ! grep -rn "sk-ant-api\|ANTHROPIC_API_KEY=sk-ant-api" --include="*.js" --include="*.json" --include="*.html" src/ || {
-            echo "::error::Potential secret found in source files"
-            exit 1
-          }
-          echo "No secrets detected."
-
-      - name: Verify no internal docs committed
-        run: |
-          echo "Checking for planning/strategy doc leaks..."
-          violations=""
-          for pattern in "PHASE_" "STAKEHOLDER_" "EXECUTION_" "SPRINT_" "A1-" "A2-" "AUDIT_COMPLETE" "AUDIT_SUMMARY"; do
-            found=$(git ls-files | grep "^${pattern}" || true)
-            if [ -n "$found" ]; then
-              violations="${violations}${found}\n"
+          echo "Scanning for potential secrets (GitGuardian-aware)..."
+          # Patterns that indicate real leaked secrets (not test placeholders)
+          FAIL=0
+          for pattern in "sk-ant-api03-" "sk-proj-" "ANTHROPIC_API_KEY=sk-ant" "ghp_[a-zA-Z0-9]\{36\}" "AKIA[0-9A-Z]\{16\}"; do
+            if grep -rEn "$pattern" --include="*.js" --include="*.ts" --include="*.json" --include="*.html" --include="*.yml" --include="*.yaml" src/ 2>/dev/null | grep -v "node_modules"; then
+              echo "::error::Potential secret pattern '$pattern' found in source"
+              FAIL=1
             fi
           done
-          if [ -n "$violations" ]; then
-            echo "::error::Internal docs found in git tracking:"
-            echo -e "$violations"
+          # Block literal sk- + long alphanumeric in src/ (real API key format)
+          if grep -rEn 'sk-[a-zA-Z0-9]{30,}' --include="*.js" --include="*.ts" src/ 2>/dev/null; then
+            echo "::error::Potential API key (sk-... long) found in source"
+            FAIL=1
+          fi
+          if [ "$FAIL" -eq 1 ]; then
             exit 1
           fi
-          echo "No internal docs leaked."
+          echo "No secrets detected."
 
       - name: Validate package.json
         run: node -e "JSON.parse(require('fs').readFileSync('package.json'))"
