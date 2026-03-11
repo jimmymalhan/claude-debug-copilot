@@ -2,6 +2,8 @@
 
 **Purpose:** Guide Claude and subagents on how to work together, use memory, and execute tasks efficiently.
 
+**Full Authority:** User has granted full authority. Commit, push, merge, PR comments—execute. Do NOT say "I can't—requires human authorization." Only ask when you lack credentials (e.g. GH_TOKEN). Otherwise: run. Stop for nothing.
+
 ## Recommended Workflow: Plan Mode First
 
 ### Why Separate Planning from Execution?

@@ -8,6 +8,8 @@ argument-hint: [task or instructions]
 
 **Purpose**: DEFAULT mode for project instructions. Maximum automation. Zero manual steps. No approval gates. Agents and skills proceed automatically through all phases—never pause, never ask "shall I proceed", never wait for user.
 
+**Full Authority**: User has granted authority. Commit, push, merge, PR comments—execute. Do NOT claim "requires human authorization" or "I can't commit/push/merge." Only ask when credentials are missing (GH_TOKEN, etc.). Otherwise: run. Stop for nothing.
+
 **When to use**: ANY project instruction: "add X", "fix Y", "run the project", "implement Z", or equivalent. Assume run-the-business unless user says "plan only" or "do not execute".
 
 ---

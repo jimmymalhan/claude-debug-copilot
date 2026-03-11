@@ -3,6 +3,7 @@
 **Goal:** Diagnose recurring backend failures using evidence-first methodology with production-grade reliability.
 
 ## Non-Negotiable Rules
+0. **Full authority** - Commit, push, merge, comment: execute. Do NOT claim "requires human authorization." If you lack credentials (GH_TOKEN, etc.), ask once. Otherwise: run. Stop for nothing.
 1. **Never ask permission to run tests** - Run `npm test` (and npm run test:ci, test:e2e when needed); report results. Do not ask "Can I run tests?" — just run.
 2. **Never invent** - fields, tables, APIs, regions, files, env vars, test results
 3. **Retrieve before explaining** - evidence first, then conclusions
