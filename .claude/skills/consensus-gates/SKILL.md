@@ -1,6 +1,9 @@
-# Consensus Gates (HARD)
+---
+name: consensus-gates
+description: PR merge requires multiple comments and 100% consensus. Idea, project, and task creation require stakeholder consensus. Block until all gates pass. Use when merging PRs, creating ideas, projects, or tasks.
+---
 
-**Canonical source**: `.claude/skills/consensus-gates/SKILL.md` — This doc mirrors the skill. The skill is authoritative.
+# Consensus Gates (HARD)
 
 **Purpose**: No merge without 100% consensus. No idea, project, or task without stakeholder consensus. Multiple comments required on PRs. Block until all gates pass.
 
@@ -64,9 +67,8 @@ No  → Block. Do not create. Get consensus first.
 
 ---
 
-## Relation to Other Docs
+## Integration
 
 - **pr-push-merge** — Phase 5: Merge only after consensus gate passes
 - **ten-pass-verification** — Counts as agent/skill comments; contributes to multiple comments
 - **five-agent-verification** — Counts as 5 comments; all must pass for consensus
-- **critiques.md** — Stakeholder feedback required before design/project/assign; aligns with consensus gate

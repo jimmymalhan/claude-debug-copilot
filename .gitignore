@@ -310,6 +310,10 @@ docs/**/EXECUTION_PLAN*.md
 !.claude/skills/graceful-degradation/SKILL.md
 !.claude/skills/property-based-testing/
 !.claude/skills/property-based-testing/SKILL.md
+!.claude/skills/user-feedback-to-skillset/
+!.claude/skills/user-feedback-to-skillset/SKILL.md
+!.claude/skills/consensus-gates/
+!.claude/skills/consensus-gates/SKILL.md
 !.claude/skills/ultra-automation/
 !.claude/skills/ultra-automation/SKILL.md
 !.claude/skills/lint-fixer/

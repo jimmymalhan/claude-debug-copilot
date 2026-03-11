@@ -4,6 +4,8 @@
 
 **Non-negotiable**: Skills, agents, subagents NEVER wait for user to run, update, or accept. Execute automatically; report results. No approval gates. **All changes through branches** — never commit to main; create feature/* first; merge via PR only.
 
+**User feedback → skillset (META)**: All user input goes to the skill set. Update existing skills or create new skills. Do NOT create new docs for user feedback. Everything becomes a skill. See `user-feedback-to-skillset` skill.
+
 ---
 
 ## Project Instructions Only — Run the Whole Business (DEFAULT)
@@ -104,6 +106,8 @@
 | **property-based-testing** | Generative edge case tests | General-Purpose, QA |
 | **ten-pass-verification** | 10 checks: REVIEW.md + five-agent + npm test + lint; user doesn't need to supervise | Phase 3, pr-push-merge |
 | **branch-only** | HARD: All changes through feature/*; never commit to main; merge via PR only | project-guardrails, guardrails.md |
+| **user-feedback-to-skillset** | META: All user feedback → update/create skills; never create new docs; everything is skillset | Plan, General-Purpose, all agents |
+| **consensus-gates** | PR: multiple comments + 100% consensus; idea/project/task: stakeholder consensus | pr-push-merge, Plan, General-Purpose |
 
 ---
 
@@ -111,7 +115,7 @@
 
 **ON by default** when run-the-business. `AUTO_MERGE=true`, `ULTRA_AUTO=true` in settings.
 
-**Stack**: DAG executor, token budget, consensus, handoff, failure taxonomy, explainability, graceful degradation, property-based testing. **Merge gate**: CI green + multiple comments + 100% consensus (see `docs/CONSENSUS_GATES.md`). No idea/project/task without stakeholder consensus. Agents and skills proceed automatically—never pause except for consensus gates.
+**Stack**: DAG executor, token budget, consensus, handoff, failure taxonomy, explainability, graceful degradation, property-based testing. **Merge gate**: CI green + multiple comments + 100% consensus (`consensus-gates` skill). No idea/project/task without stakeholder consensus. Agents and skills proceed automatically—never pause except for consensus gates.
 
 ---
 
@@ -123,7 +127,7 @@
 | **secrets-scan** | Block commit if API keys, tokens in diff |
 | **reversibility** | Every change has rollback steps |
 | **audit-trail** | Immutable append-only action log |
-| **consensus-gates** | PR: multiple comments + 100% consensus; idea/project/task: stakeholder consensus; see `docs/CONSENSUS_GATES.md` |
+| **consensus-gates** | PR: multiple comments + 100% consensus; idea/project/task: stakeholder consensus; `.claude/skills/consensus-gates/` |
 
 ---
 
@@ -237,7 +241,8 @@ Invoke `/e2e-orchestrator` to run the whole business end-to-end.
 | Secrets scan | `secrets-scan` | Block commit if secrets detected |
 | Reversibility | `reversibility` | Rollback steps for every change |
 | Audit trail | `audit-trail` | Immutable action log |
-| Consensus gates | `docs/CONSENSUS_GATES.md` | PR: multiple comments + 100% consensus; idea/project/task: stakeholder consensus; merge only when all pass |
+| Consensus gates | `consensus-gates` | PR: multiple comments + 100% consensus; idea/project/task: stakeholder consensus; merge only when all pass |
+| User feedback → skillset | `user-feedback-to-skillset` | All user input → update/create skills; never create new docs; everything is skillset |
 | Ultra automation | `ultra-automation` | Max autonomy; no gates (opt-in) |
 | DAG executor | `dag-executor` | Parallel, dependency-ordered tasks |
 | Token budget | `token-budget` | Cap tokens per run |
@@ -260,7 +265,7 @@ Invoke `/e2e-orchestrator` to run the whole business end-to-end.
 6. **Feedback** – `stakeholder-feedback`; `feedback-log` for common patterns
 7. **Push** – `pr-push-merge`: commit relevant only, push, CI green
 8. **Handoff** – Localhost URL + PR link only if real and working
-9. **Consensus gate** – Multiple comments (2+); 100% approval. Do NOT merge without. See `docs/CONSENSUS_GATES.md`.
+9. **Consensus gate** – Multiple comments (2+); 100% approval. Do NOT merge without. See `consensus-gates` skill.
 10. **Merge** – Only when consensus gate passes; then delete branch
 
 ## Watchdog Flow (Live Monitoring)

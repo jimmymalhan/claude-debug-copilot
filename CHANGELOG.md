@@ -5,9 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
-### feat(consensus): PR merge + idea/project/task require 100% consensus
+### feat(skills): User feedback → skillset; consensus-gates skill; everything is skillset
 
-- **docs/CONSENSUS_GATES.md**: New doc — PR merge gate (multiple comments, 100% consensus); idea/project/task creation gate (stakeholder consensus); block until all pass
+- **user-feedback-to-skillset**: New meta-skill — All user input → update/create skills; never create new docs; everything becomes skillset
+- **consensus-gates**: New skill — PR merge (multiple comments, 100% consensus); idea/project/task (stakeholder consensus); canonical source for consensus gates
+- **SKILLSETS.md**: Meta-rule added; user-feedback-to-skillset, consensus-gates in skill tables; references point to skills not docs
+- **docs/CONSENSUS_GATES.md**: Now points to consensus-gates skill as canonical
+- **pr-push-merge, CLAUDE, guardrails, CODE_AND_DOCS**: Reference consensus-gates skill
 - **pr-push-merge**: Phase 5 — do NOT merge without multiple comments + 100% consensus; Flow step 6 Consensus gate; Flow step 7 Merge only when consensus
 - **CLAUDE.md**: Non-negotiable #10 — no merge without 100% consensus; #11 — no idea/project/task without stakeholder consensus; Merge gate replaces auto-merge
 - **guardrails.md**: No merge without consensus; no idea/project/task without consensus
