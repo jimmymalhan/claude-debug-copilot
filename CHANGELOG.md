@@ -5,6 +5,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
+### feat(ten-pass): 10-pass applies end-to-end—inputs, idea, planning, feedback, execution
+
+- **ten-pass-verification**: Scope expanded — applies at every stage (inputs, idea, planning, feedback, execution, deliver), not just before merge; new "Scope: End-to-End" table; flow per stage
+- **SKILLSETS.md**, **CODE_AND_DOCS.md**, **CLAUDE.md**, **REVIEW.md**, **pr-push-merge**: End-to-end scope documented
+
 ### feat(branch-only): HARD rule - all changes through branches, never main
 
 - **CLAUDE.md**: Non-negotiable rule #9 — All changes through branches; create feature/* first; merge via PR only

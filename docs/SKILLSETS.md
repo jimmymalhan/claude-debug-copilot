@@ -102,7 +102,7 @@
 | **explainability** | Rationale for critical decisions | CodeReviewer, General-Purpose, FixAgent |
 | **graceful-degradation** | Reduce scope under pressure | Plan, General-Purpose |
 | **property-based-testing** | Generative edge case tests | General-Purpose, QA |
-| **ten-pass-verification** | 10 checks: REVIEW.md + five-agent + npm test + lint; user doesn't need to supervise | Phase 3, pr-push-merge |
+| **ten-pass-verification** | 10 checks end-to-end: inputs, idea, planning, feedback, execution, deliver; REVIEW.md + five-agent + npm test + lint; user doesn't need to supervise | Every stage, pr-push-merge, e2e-orchestrator |
 | **branch-only** | HARD: All changes through feature/*; never commit to main; merge via PR only | project-guardrails, guardrails.md |
 
 ---
@@ -218,7 +218,7 @@ Invoke `/e2e-orchestrator` to run the whole business end-to-end.
 | Update skills when fixed | `skills-self-update` | After fix: add lesson to SKILL.md, commit |
 | Idea → Production (handoffs) | `idea-to-production` | Full flow with merge/deploy handoff points |
 | 5-agent verification | `five-agent-verification` | Code review by 5 agents; all must pass before accept |
-| 10-pass verification | `ten-pass-verification` | REVIEW.md + five-agent + npm test + lint; 10 checks so user doesn't need to supervise |
+| 10-pass verification | `ten-pass-verification` | End-to-end: inputs, idea, planning, feedback, execution, deliver. 10 checks at every stage; user doesn't need to supervise |
 | Run the business (live) | `run-the-business` | Entry: idea-to-production + live-watchdog; full E2E |
 | Live monitoring | `live-watchdog` | Poll CI, deploy, health; on error → fix PR |
 | Fix PR flow | `fix-pr-creator`, `self-fix` | Error → branch fix/X → spawn FixAgent → self-fix until green |
@@ -343,7 +343,7 @@ Config: `branchPermissions` in `.claude/settings.json` for feature branches
 
 **Flow**:
 1. **Create** role skill set (e.g. frontend-engineer) with 4–5 phases, 5–10 subagents/phase
-2. **Review** — Run `ten-pass-verification`: REVIEW.md + five-agent + npm test + lint (10 checks; user doesn't need to supervise)
+2. **Review** — Run `ten-pass-verification` at every stage (inputs, idea, planning, feedback, execution, deliver): REVIEW.md + five-agent + npm test + lint (10 checks end-to-end; user doesn't need to supervise)
 3. **Iterate** — For each blocker: fix skill, re-run reviewers
 4. **Update** — Use `skills-self-update` with lessons from critique
 5. **Reference** — Incorporate patterns from YouTube videos (FE/BE, PR automation, multi-PR); see [docs/YOUTUBE_SKILL_UPGRADES.md](YOUTUBE_SKILL_UPGRADES.md) for extracted upgrades

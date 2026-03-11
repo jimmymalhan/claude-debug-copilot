@@ -13,7 +13,7 @@ argument-hint: [branch or ""]
 
 **Uses** `reversibility`: PR body must include rollback section.
 
-**Uses** `ten-pass-verification`: Before Phase 4, run 10-pass (REVIEW.md + five-agent + npm test + lint). All must pass.
+**Uses** `ten-pass-verification`: 10-pass applies end-to-end (inputs, idea, planning, feedback, execution, deliver). Before Phase 4 (deliver), run 10-pass (REVIEW.md + five-agent + npm test + lint). All must pass.
 
 ## Phase 1: DISCOVER
 ### Sub-Agent: `CommitScout` (model: haiku)

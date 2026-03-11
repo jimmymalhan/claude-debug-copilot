@@ -69,7 +69,7 @@ npm run test:e2e       # E2E tests (requires API credentials)
 
 ## Configuration & Rules
 - `docs/CODE_AND_DOCS.md` — Doc ↔ code map; what's being worked on; never push docs/code separately
-- `REVIEW.md` — Code review rules; used by ten-pass (passes 6,7,10), five-agent, CodeReviewer
+- `REVIEW.md` — Code review rules; ten-pass applies end-to-end (inputs, idea, planning, feedback, execution, deliver); passes 6,7,10; five-agent, CodeReviewer
 - `.claude/CLAUDE.md` - Meta-rules (workflow, memory, subagents)
 - `.claude/rules/` - Specific standards (guardrails, testing, backend, ui, confidence)
 - `.claude/settings.json` - Hooks, commands, allowed paths, agent definitions

@@ -5,7 +5,7 @@
 **Used by** (doc ↔ code):
 | Consumer | Passes | Code |
 |----------|--------|------|
-| **ten-pass-verification** | 6, 7, 10 | `.claude/skills/ten-pass-verification/SKILL.md` |
+| **ten-pass-verification** | 6, 7, 10 (end-to-end: inputs, idea, planning, feedback, execution, deliver) | `.claude/skills/ten-pass-verification/SKILL.md` |
 | **five-agent-verification** | All sections | `.claude/skills/five-agent-verification/SKILL.md` |
 | **CodeReviewer** | All | critic, consensus-resolver skills |
 | **Claude Code Review** | All | https://code.claude.com/docs/en/code-review |

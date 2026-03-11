@@ -9,7 +9,7 @@
 | Focus | Docs | Code | Status |
 |-------|------|------|--------|
 | **Branch-only (HARD)** | FEATURE_BRANCH_PERMISSIONS.md, guardrails.md | branch-aware-permissions.sh (feature/* only), settings.json | Active |
-| **Ten-pass verification** | REVIEW.md, ten-pass-verification/SKILL.md | pr-push-merge, e2e-orchestrator, General-Purpose | Active |
+| **Ten-pass verification** | REVIEW.md, ten-pass-verification/SKILL.md | End-to-end: inputs, idea, planning, feedback, execution, deliver; pr-push-merge, e2e-orchestrator, General-Purpose | Active |
 | **Evidence-first diagnosis** | CLAUDE.md, guardrails.md | src/local-pipeline.js, Router/Retriever/Skeptic/Verifier | Core |
 
 ---
@@ -24,7 +24,7 @@
 | **.claude/settings.json** | Hooks, branch permissions, allowed commands | branch-aware-permissions.sh, PreToolUse hooks |
 | **FEATURE_BRANCH_PERMISSIONS.md** | Permission policy (branch-only; no main commits) | branch-aware-permissions.sh is_auto_accept_branch |
 | **docs/SKILLSETS.md** | Skill reference, role prompts | .claude/skills/*/SKILL.md |
-| **ten-pass-verification/SKILL.md** | 10 checks before deliver | pr-push-merge Phase 3, e2e-orchestrator Phase 3 |
+| **ten-pass-verification/SKILL.md** | 10 checks end-to-end (inputs, idea, planning, feedback, execution, deliver) | Every stage; pr-push-merge, e2e-orchestrator |
 | **.claude/rules/guardrails.md** | Anti-hallucination | All skills, evidence-proof |
 | **.claude/rules/testing.md** | Test requirements | qa-engineer, pr-push-merge |
 | **.claude/rules/confidence.md** | Confidence scoring | critic, verifier |

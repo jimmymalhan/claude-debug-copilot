@@ -1,11 +1,11 @@
 ---
 name: ten-pass-verification
-description: 10 distinct checks before accept. REVIEW.md + five-agent + npm test + lint. Run before merge/deliver. User does not need to supervise—agents check work 10 different ways.
+description: 10 distinct checks end-to-end—inputs, idea, planning, feedback, execution. Applies everywhere. REVIEW.md + five-agent + npm test + lint. Not just before merge: from first input to final deliver. User does not need to supervise—agents check work 10 different ways at every stage.
 ---
 
 ## Purpose
 
-Every change is verified by **10 distinct passes** before acceptance. Skills + REVIEW.md + agents check work so you don't need to sit on our shoulder. All 10 must pass.
+Every change is verified by **10 distinct passes** at every stage. **End-to-end**: inputs → idea → planning → feedback → execution → deliver. Not just before merge. All 10 must pass wherever they apply. Skills + REVIEW.md + agents check work so you don't need to sit on our shoulder.
 
 ## The 10 Passes
 
@@ -22,20 +22,33 @@ Every change is verified by **10 distinct passes** before acceptance. Skills + R
 | 9 | **Lint** | lint-fixer | npm run lint (or --fix); no violations |
 | 10 | **REVIEW Project** | REVIEW.md | Diagnosis: 6 fields; never invent |
 
-## Flow
+## Scope: End-to-End
+
+**10-pass applies everywhere**: inputs, idea, planning, feedback, execution. Not just before merge/deliver.
+
+| Stage | 10-pass gate |
+|-------|--------------|
+| **Inputs** | Validate inputs; evidence-proof, no invented fields |
+| **Idea** | Critic pass; clarity, scope, confidence |
+| **Planning** | CodeReviewer, APIValidator; plan quality, dependencies |
+| **Feedback** | EvidenceReviewer, QAReviewer; feedback loop checks |
+| **Execution** | All 10 before any commit/push/merge |
+| **Deliver** | Final 10-pass before merge; all green |
+
+## Flow (Per Stage)
 
 ```
-Implementation done
+Stage complete (inputs / idea / plan / feedback / execution / deliver)
        ↓
-Run five-agent-verification (passes 1–5)
+Run five-agent-verification (passes 1–5) where applicable
        ↓
 Run REVIEW.md checklist (passes 6, 7, 10)
        ↓
-Run npm test (pass 8)
+Run npm test (pass 8) when code exists
        ↓
 Run lint-fixer / npm run lint (pass 9)
        ↓
-All 10 pass? → ACCEPT (proceed to push/merge)
+All 10 pass (for this stage)? → Proceed
 Any fail? → Fix → Re-run failed passes only
 ```
 
@@ -64,7 +77,8 @@ Any fail? → Fix → Re-run failed passes only
 
 ## Integration
 
-- Invoked before `pr-push-merge` hands off PR
-- Invoked during Phase 3 of `e2e-orchestrator` and `plan-and-execute`
+- **End-to-end**: Invoked at inputs, idea, planning, feedback, execution, and deliver
+- Invoked before `pr-push-merge` hands off PR (deliver)
+- Invoked during every phase of `e2e-orchestrator` and `plan-and-execute` where applicable
 - Replaces or extends five-agent-verification when thoroughness is required
-- User does not need to supervise; 10 checks run automatically
+- User does not need to supervise; 10 checks run automatically at every stage
