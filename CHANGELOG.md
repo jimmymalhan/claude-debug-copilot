@@ -5,6 +5,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and commits use [
 
 ## [Unreleased]
 
+### feat(rules): Clean up branch after merge
+
+- **CLAUDE.md**: Branch rule — after PR merges, delete local and remote feature branch
+- **pr-push-merge**: Phase 5 — after merge, run cleanup (checkout main, pull, branch -d, push --delete)
+
 ### feat(branch-only): HARD rule - all changes through branches, never main
 
 - **CLAUDE.md**: Non-negotiable rule #9 — All changes through branches; create feature/* first; merge via PR only
